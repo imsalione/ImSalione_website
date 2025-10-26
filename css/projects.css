@@ -1,0 +1,210 @@
+/* =======================================================
+💼 PROJECTS SECTION (3D Flip Cards + GitHub Button on Back)
+Final Professional Version - ImSalione 2025
+======================================================= */
+
+/* ---------------------------------
+📦 Section Container
+--------------------------------- */
+#projects {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding: 1rem 1rem;
+  perspective: 1200px;
+  animation: fadeIn 0.6s ease;
+}
+
+/* ---------------------------------
+🧩 Grid Layout
+--------------------------------- */
+.projects-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1rem;
+  padding: 0 0.5rem;
+}
+
+/* ---------------------------------
+🎴 Flip Card Container
+--------------------------------- */
+.project-card {
+  background: transparent;
+  perspective: 1000px;
+  height: 220px;
+  position: relative;
+  animation: cardAppear 0.6s ease forwards;
+  transform-style: preserve-3d;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.project-card:hover .card-inner {
+  transform: rotateY(180deg) rotateX(2deg) scale(1.02);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------------------------------
+🔹 Front & Back Faces
+--------------------------------- */
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  overflow: hidden;
+  transform-origin: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------------------
+🔹 Front Side (Info)
+--------------------------------- */
+.card-front {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  transform: rotateY(0deg);
+}
+
+.card-front:hover {
+  border-color: var(--primary);
+  box-shadow: 0 10px 24px var(--shadow);
+}
+
+/* ---------------------------------
+🔸 Back Side (Image + Button)
+--------------------------------- */
+.card-back {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: rotateY(180deg);
+  border: 1px solid var(--border-color);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  filter: brightness(0.9);
+}
+
+/* 🔘 GitHub Button - Neutral Base + Themed Hover */
+.card-back .github-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0.6rem 0;
+  background: #9ca3af;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+
+.card-back .github-btn:hover {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  letter-spacing: 0.5px;
+  transform: translateY(-1px);
+}
+
+/* subtle dark overlay to improve contrast */
+.card-back::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 0;
+}
+
+.card-back .github-btn {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------------------------------
+📝 Text Styles (Front Side)
+--------------------------------- */
+.card-front h3 {
+  color: var(--primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.card-front p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 0.8rem;
+  flex-grow: 1;
+}
+
+/* ---------------------------------
+📱 Responsive
+--------------------------------- */
+@media (max-width: 768px) {
+  .projects-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .project-card {
+    height: 200px;
+  }
+  .card-front h3 {
+    font-size: 1rem;
+  }
+  .card-front p {
+    font-size: 0.85rem;
+  }
+  .card-inner {
+    transition: transform 0.8s ease;
+  }
+}
+
+/* ---------------------------------
+🌈 Animations
+--------------------------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cardAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}

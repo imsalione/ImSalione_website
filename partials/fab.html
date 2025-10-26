@@ -1,0 +1,35 @@
+<!-- =======================================================
+⚙️ Floating Action Settings Button (Vertical Animated Version)
+======================================================= -->
+<div class="fab-menu" id="fabMenu">
+  <!-- Main central button -->
+  <button class="fab-main" id="fabMain" title="Settings">
+    <i class="fas fa-gear"></i>
+  </button>
+
+  <!-- Vertical submenu -->
+  <div class="fab-submenu" id="fabSubmenu">
+    <button class="fab-option" id="themeToggle" title="Theme">
+      <i class="fas fa-moon"></i>
+    </button>
+    <button class="fab-option" id="langToggle" title="Language">
+      <i class="fas fa-globe"></i>
+    </button>
+
+    <!-- Palette with nested submenu -->
+    <div class="fab-palette-wrapper">
+      <button class="fab-option" id="paletteToggle" title="Palette">
+        <i class="fas fa-palette"></i>
+      </button>
+
+      <!-- Palette color options -->
+      <div class="fab-palette" id="fabPalette">
+        <div class="color-swatch" data-color="default" title="Default"></div>
+        <div class="color-swatch" data-color="warm"    title="Warm"></div>
+        <div class="color-swatch" data-color="cool"    title="Cool"></div>
+        <div class="color-swatch" data-color="teal"    title="Teal"></div>
+        <div class="color-swatch" data-color="rose"    title="Rose"></div>
+      </div>
+    </div>
+  </div>
+</div>

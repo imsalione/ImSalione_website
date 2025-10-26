@@ -1,0 +1,32 @@
+<!-- =======================================================
+🧩 GitHub Activity Card (with Loading State)
+======================================================= -->
+<div class="project-card github-activity-card">
+  <div class="card-inner">
+    <!-- Front Side -->
+    <div class="github-front">
+      <div class="gh-header">
+        <i class="fab fa-github"></i>
+        <div class="live-badge" title="Live Data from GitHub API">Live Data 🔥</div>
+      </div>
+
+      <!-- Chart Loading Spinner -->
+      <div class="chart-loader">
+        <div class="spinner"></div>
+        <span class="loading-text">Loading GitHub activity...</span>
+      </div>
+
+      <!-- Chart Canvas -->
+      <div class="gh-body">
+        <canvas id="ghContribChart" height="160"></canvas>
+      </div>
+    </div>
+
+    <!-- Back Side -->
+    <div class="github-back">
+      <a href="https://github.com/ImSalione" target="_blank" rel="noopener" class="github-btn">
+        <i class="fas fa-external-link-alt"></i> View on GitHub
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+{
+  "home": {
+    "title": "I'm Saleh",
+    "subtitle": "Data Analyst and Data Engineer",
+    "description": "Turning data into decisions through analytics, automation, and intelligent systems."
+  },
+  "about": {
+    "title": "About Me",
+    "paragraphs": [
+      "My professional journey began with a passion for structuring complex and unorganized data, which evolved into deep expertise in data analytics and intelligent decision-support systems.",
+      "In the early stages of my career, Microsoft Excel became my main analytical platform — transforming from a simple spreadsheet tool into a powerful environment for modeling, visualization, and reporting. My advanced command of PivotTables, Power Query, Power Pivot, and data modeling techniques enabled me to turn raw, scattered data into actionable insights.",
+      "One of my key achievements was designing and implementing a flat data warehouse that centralized sales, performance, and financial data from multiple sources. This architecture, integrated with Excel and ERP systems, became the foundation for automated reporting and smart analytics within the organization.",
+      "Currently, I focus on advancing my technical expertise in Python, Django, SQL, and data engineering — with a strong interest in building scalable, intelligent data pipelines for efficient collection, transformation, and analysis.",
+      "My long-term vision is to develop a personal platform called XWork — an innovative ecosystem designed to help individuals manage their professional identity and career growth. XWork aims to integrate AI and data analytics to empower users with smarter, data-driven career decisions."
+    ]
+  },
+  "skills": [
+    { "name": "Python", "desc": "Python for data pipelines, analytics, and automation" },
+    { "name": "Django", "desc": "Django for scalable web applications and APIs" },
+    { "name": "SQL", "desc": "SQL for data modeling and query optimization" },
+    { "name": "Excel", "desc": "Excel for advanced modeling and reporting" },
+    { "name": "Power BI", "desc": "Power BI for interactive dashboards and KPIs" },
+    { "name": "Data Engineering", "desc": "Collecting, transforming, and orchestrating data" },
+    { "name": "Machine Learning", "desc": "Predictive and classification models" },
+    { "name": "Data Visualization", "desc": "Presenting data in a clear and understandable way" }
+  ],
+  "timeline": [
+    { "date": "2022 – Present", "title": "Freelance Data Engineer", "subtitle": "Independent Projects" },
+    { "date": "2022 – 2023", "title": "Data Science Program", "subtitle": "Sharif University of Technology" },
+    { "date": "2011 – 2022", "title": "Budget and Planning Analyst", "subtitle": "National Organization of Educational Testing" },
+    { "date": "2013 – 2015", "title": "Associate in Computer Programming", "subtitle": "Gostaresh Informatics University" }
+  ],
+  "projects": [
+    {
+      "title": "XWork",
+      "desc": "A multilingual professional networking platform for creating and showcasing career profiles with activity timelines, skills, and AI-powered insights. XWork helps users document their career growth and leverage AI to generate smart resumes and cover letters.",
+      "link": "https://github.com/imsalione/xwork",
+      "image": "assets/images/project-cards/xwork.png"
+    },
+    {
+      "title": "MiniRates",
+      "desc": "A modern Python desktop application for real-time monitoring of currency, gold, and coin prices. The app integrates multiple data sources simultaneously, visualizes market trends, and includes light/dark themes with analytical trend displays.",
+      "link": "https://github.com/imsalione/Price_Checker",
+      "image": "assets/images/project-cards/minirates.png"
+    },
+    {
+      "title": "Data Pipeline Automation",
+      "desc": "An automated ETL system designed for organizations to collect, clean, merge, and process data from multiple data sources. The project includes a dynamic reporting module, duplicate detection, and structured outputs for managerial decision-making.",
+      "link": "#",
+      "image": "assets/images/project-cards/etl.png"
+    },
+    {
+      "title": "Python in Persian",
+      "desc": "An interactive educational platform for learning Python in Persian, focusing on hands-on training within Jupyter Notebook. The project simplifies programming concepts for Persian speakers through practical exercises, data analysis, and real-world projects.",
+      "link": "#",
+      "image": "assets/images/project-cards/python-course.png"
+    },
+    {
+      "title": "Sales & Financial Dashboard",
+      "desc": "An interactive Excel dashboard for analyzing sales and financial performance using ERP-sourced data. This project includes data modeling, key performance indicators (KPIs), and visual reports to support strategic decision-making in organizations.",
+      "link": "https://github.com/imsalione/faostat-assignment",
+      "image": "assets/images/project-cards/excel-dashboard.png"
+    },
+    {
+      "title": "Diabetes Prediction",
+      "desc": "A machine learning project from Sharif University’s Data Science program aimed at predicting the likelihood of diabetes based on patient data. Using classification models and health-related features, a predictive algorithm was developed to estimate.",
+      "link": "https://github.com/imsalione/Diabetes",
+      "image": "assets/images/project-cards/diabetes-prediction.png"
+    }
+  ]
+}

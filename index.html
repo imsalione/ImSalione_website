@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<!-- =======================================================
+🌐 ImSalione Portfolio – Index Page (Enhanced GitHub Chart Version)
+Loads partials (home, skills, projects) and integrates animated GitHub chart.
+======================================================= -->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+        content="Portfolio of Saleh Abedinezhad – Data Analytics & Engineering Specialist.">
+  <meta name="author" content="Saleh Abedinezhad" />
+  <title>Saleh Abedinezhad – Data Analytics & Engineering</title>
+
+  <!-- =======================================================
+  🧩 NORMALIZATION & ICONS
+  ======================================================= -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- =======================================================
+  🎨 CORE STYLES
+  ======================================================= -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/color-theme.css">
+  <link rel="stylesheet" href="css/layout.css">
+
+  <!-- =======================================================
+  📄 PAGE-SPECIFIC STYLES
+  ======================================================= -->
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/skills.css">
+  <link rel="stylesheet" href="css/projects.css">
+
+  <!-- =======================================================
+  ⚙️ FAB MODULE STYLES
+  ======================================================= -->
+  <link rel="stylesheet" href="css/fab.css">
+
+  <!-- =======================================================
+  📊 GitHub Contributions Styles
+  ======================================================= -->
+  <link rel="stylesheet" href="css/github-contrib.css">
+</head>
+
+<body data-theme="dark" data-theme-style="modern">
+  <noscript>
+    <div style="padding:1rem;margin:1rem;border:1px solid #f59e0b;border-radius:8px;background:#fff3cd;color:#7c5b00;">
+      JavaScript is required to load this page content.
+    </div>
+  </noscript>
+
+  <!-- =======================================================
+  🧭 MAIN PAGE STRUCTURE
+  loader.js dynamically injects partials into these containers.
+  ======================================================= -->
+  <main class="page-wrapper">
+    <!-- Left Column (Home + About) -->
+    <section id="home-about"></section>
+
+    <!-- Right Column (Skills + Projects) -->
+    <div class="right-column">
+      <section id="skills-timeline"></section>
+      <section id="projects"></section>
+    </div>
+  </main>
+
+  <!-- =======================================================
+  ⚙️ FAB MOUNT POINT
+  ======================================================= -->
+  <div id="fab-container"></div>
+
+  <!-- =======================================================
+  💡 SCRIPTS
+  ======================================================= -->
+
+  <!-- Core Utilities -->
+  <script src="js/utils.js"></script>
+  <script src="js/script.js"></script>
+
+  <!-- Chart.js must load BEFORE github-contrib.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Loader (loads partials dynamically) -->
+  <script src="js/loader.js"></script>
+
+  <!-- Feature Modules -->
+  <script src="js/skills.js"></script>
+  <script src="js/github-contrib.js"></script>
+  <script src="js/projects.js"></script>
+
+  <!-- FAB Module -->
+  <script src="js/fab.js" defer></script>
+
+
+  <!-- =======================================================
+  🧠 FAB Initialization + Event Binding
+  ======================================================= -->
+  <script>
+    // Load FAB partial
+    fetch("partials/fab.html")
+      .then(r => r.text())
+      .then(html => {
+        const mount = document.getElementById("fab-container");
+        mount.innerHTML = html;
+
+        // Initialize FAB module after injection
+        if (typeof initFabMenu === "function") initFabMenu();
+      })
+      .catch(err => console.error("❌ FAB partial load error:", err));
+
+    // Toggle Theme (Dark/Light)
+    document.addEventListener("fabThemeToggle", () => {
+      if (typeof updateTheme === "function") {
+        const current = document.body.getAttribute("data-theme") || "dark";
+        updateTheme(current === "dark" ? "light" : "dark");
+      }
+    });
+
+    // Toggle Language (EN/FA)
+    document.addEventListener("fabLangToggle", () => {
+      if (typeof updateLanguage === "function") {
+        const dir = document.documentElement.getAttribute("dir") || "ltr";
+        updateLanguage(dir === "ltr" ? "fa" : "en");
+      }
+    });
+
+    // Toggle Palette Menu
+    document.addEventListener("fabPaletteToggle", () => {
+      const panel = document.querySelector(".palette-panel");
+      if (panel) panel.classList.toggle("active");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ==========================================================
+🗺️ ImSalione Portfolio - sitemap.xml (2025)
+Multi-language optimized for English & Persian content
+========================================================== -->
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0">
+
+  <!-- 🏠 Home -->
+  <url>
+    <loc>https://www.imsalione.ir/</loc>
+    <lastmod>2025-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.imsalione.ir/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://www.imsalione.ir/?lang=fa"/>
+  </url>
+
+  <!-- 💡 Skills & Timeline -->
+  <url>
+    <loc>https://www.imsalione.ir/#skills</loc>
+    <lastmod>2025-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.imsalione.ir/#skills?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://www.imsalione.ir/#skills?lang=fa"/>
+  </url>
+
+  <!-- 💼 Projects -->
+  <url>
+    <loc>https://www.imsalione.ir/#projects</loc>
+    <lastmod>2025-10-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.imsalione.ir/#projects?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://www.imsalione.ir/#projects?lang=fa"/>
+  </url>
+
+</urlset>

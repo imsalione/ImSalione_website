@@ -1,0 +1,114 @@
+/* =======================================================
+ImSalione Portfolio - Page Layout (Final 2025)
+Defines Grid Structure, Positioning, and Responsiveness
+======================================================= */
+
+/* =======================================================
+PAGE WRAPPER (Main Grid Container)
+======================================================= */
+.page-wrapper {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  gap: 1.5rem;
+  width: 100%;
+  height: 100vh;
+  margin: auto;
+  padding: 1.5rem;
+  align-items: stretch;
+  justify-content: center;
+  border-radius: var(--radius);
+  background: var(--bg-primary);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Reverse order in RTL */
+html[dir="rtl"] .page-wrapper {
+  grid-template-columns: 30% 70%;
+  direction: rtl;
+}
+
+/* =======================================================
+🏠 HOME-ABOUT MODULE
+======================================================= */
+#home-about {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  overflow: auto;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 24px var(--shadow);
+  transition: all var(--transition);
+}
+
+/* =======================================================
+🧠 RIGHT COLUMN (Skills + Projects)
+======================================================= */
+.right-column {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 1.5rem;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Skills Section */
+#skills-timeline {
+  overflow-y: auto;
+  padding: 1.6rem;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 24px var(--shadow);
+  transition: all var(--transition);
+}
+
+/* Projects Section */
+#projects {
+  overflow-y: auto;
+  padding: 1.6rem;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 8px 24px var(--shadow);
+  transition: all var(--transition);
+}
+
+/* =======================================================
+🌈 HOVER EFFECTS
+======================================================= */
+#home-about:hover,
+#skills-timeline:hover,
+#projects:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px var(--shadow);
+}
+
+/* =======================================================
+📱 RESPONSIVE DESIGN
+======================================================= */
+@media (max-width: 992px) {
+  .page-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    width: 95%;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .right-column {
+    grid-template-rows: auto auto;
+    gap: 1rem;
+  }
+
+  #home-about,
+  #skills-timeline,
+  #projects {
+    min-height: auto;
+    padding: 1.2rem;
+  }
+}

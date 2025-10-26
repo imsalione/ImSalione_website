@@ -1,0 +1,223 @@
+/* =======================================================
+📊 GitHub Activity Card – Unified with Project Flip Cards
+======================================================= */
+
+/* ---------------------------------
+🎴 Base Card Structure
+--------------------------------- */
+.github-activity-card {
+  background: transparent;
+  perspective: 1000px;
+  height: 220px;
+  position: relative;
+  transform-style: preserve-3d;
+  animation: cardAppear 0.6s ease forwards;
+}
+
+.github-activity-card .card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  border-radius: 12px;
+  transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.github-activity-card:hover .card-inner {
+  transform: rotateY(180deg) rotateX(2deg) scale(1.02);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------------------------------
+🔹 Front & Back Faces
+--------------------------------- */
+.github-front,
+.github-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  overflow: hidden;
+  transform-origin: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------------------
+🔹 Front Side (Chart)
+--------------------------------- */
+.github-front {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+  transform: rotateY(0deg);
+}
+
+.github-front:hover {
+  border-color: var(--primary);
+  box-shadow: 0 10px 24px var(--shadow);
+}
+
+/* ---------------------------------
+🔹 Back Side (Badge + GitHub link)
+--------------------------------- */
+.github-back {
+  background: linear-gradient(145deg, var(--primary), var(--secondary));
+  color: #fff;
+  transform: rotateY(180deg);
+  border: 1px solid var(--border-color);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  filter: brightness(0.95);
+}
+
+.github-back .github-btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(3px);
+}
+.github-back .github-btn:hover {
+  background: #fff;
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+/* ---------------------------------
+📊 Chart Layout (Front Side)
+--------------------------------- */
+.github-front .gh-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.github-front .gh-header i {
+  color: var(--primary);
+  font-size: 1.2rem;
+}
+
+.github-front .gh-body {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+}
+
+.github-front canvas {
+  width: 100% !important;
+  height: 100% !important;
+  transition: opacity 0.4s ease;
+}
+
+.github-front canvas.fade-out {
+  opacity: 0;
+}
+
+/* ---------------------------------
+🔥 Live Badge
+--------------------------------- */
+.github-front .live-badge {
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.github-front .live-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------------------------------
+📱 Responsive
+--------------------------------- */
+@media (max-width: 768px) {
+  .github-activity-card {
+    height: 200px;
+  }
+  .github-front .gh-body {
+    height: 130px;
+  }
+  .github-front .gh-stats {
+    font-size: 0.8rem;
+  }
+}
+
+/* ---------------------------------
+🌈 Animations
+--------------------------------- */
+@keyframes cardAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(25px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =======================================================
+🎨 GitHub Chart Loader Spinner
+======================================================= */
+.github-activity-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-loader {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+  z-index: 5;
+}
+
+.chart-loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chart-loader .spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--text-secondary);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.chart-loader .loading-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

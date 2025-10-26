@@ -1,0 +1,22 @@
+# ==========================================================
+# 🤖 ImSalione Portfolio - robots.txt (2025)
+# ==========================================================
+
+User-agent: *
+Allow: /
+
+# Prevent crawling of system folders
+Disallow: /js/
+Disallow: /css/
+Disallow: /content/
+Disallow: /partials/
+Disallow: /assets/
+
+# Allow indexing of main pages only
+Allow: /index.html
+
+# Sitemap for search engines
+Sitemap: https://www.imsalione.ir/sitemap.xml
+
+# Crawl delay (optional, for large sites)
+Crawl-delay: 5

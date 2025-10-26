@@ -1,0 +1,157 @@
+/* =======================================================
+🎨 FAB Menu Styles - Vertical + Animated (Polished)
+======================================================= */
+
+/* ========== Container ========== */
+.fab-menu {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  z-index: 9999;
+}
+html[dir="rtl"] .fab-menu {
+  right: auto;
+  left: 2rem;
+}
+
+/* =======================================================
+MAIN BUTTON
+======================================================= */
+.fab-main {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 6px 18px var(--shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: none; /* Ensure no border or green glow */
+  outline: none;
+}
+
+/* 🔹 Hover effect: only smooth scaling (no green ring) */
+.fab-main:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 22px rgba(99, 102, 241, 0.35);
+}
+
+.fab-menu.open .fab-main {
+  transform: rotate(90deg) scale(1.05);
+}
+
+/* =======================================================
+SUBMENU CONTAINER
+======================================================= */
+.fab-submenu {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+  pointer-events: none;
+}
+.fab-menu.open .fab-submenu {
+  pointer-events: auto;
+}
+
+/* =======================================================
+OPTION BUTTONS
+======================================================= */
+.fab-option {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 3px 10px var(--shadow);
+  transform: translateY(10px);
+  opacity: 0;
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+  cursor: pointer;
+}
+
+/* 🔹 Hover effect: match active palette (primary → secondary) */
+.fab-option:hover {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Smooth staggered reveal */
+.fab-menu.open .fab-option {
+  transform: translateY(0);
+  opacity: 1;
+}
+.fab-option:nth-child(1) { transition-delay: 0.05s; }
+.fab-option:nth-child(2) { transition-delay: 0.1s; }
+.fab-option:nth-child(3) { transition-delay: 0.15s; }
+
+/* =======================================================
+PALETTE SUBMENU
+======================================================= */
+.fab-palette-wrapper {
+  position: relative;
+}
+
+.fab-palette {
+  position: absolute;
+  top: 0;
+  right: 60px; /* default for LTR */
+  display: flex;
+  gap: 0.4rem;
+  background: var(--bg-secondary);
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+html[dir="rtl"] .fab-palette {
+  right: auto;
+  left: 60px;
+}
+
+.fab-palette.open {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.color-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid var(--border-color);
+  transition: transform 0.25s ease;
+}
+.color-swatch:hover {
+  transform: scale(1.2);
+}
+
+/* Swatch previews for all palettes */
+.color-swatch[data-color="modern"]  { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+.color-swatch[data-color="warm"]    { background: linear-gradient(135deg, #f97316, #fb923c); }
+.color-swatch[data-color="cool"]    { background: linear-gradient(135deg, #3b82f6, #0ea5e9); }
+.color-swatch[data-color="default"] { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+.color-swatch[data-color="teal"]    { background: linear-gradient(135deg, #14b8a6, #0d9488); }
+.color-swatch[data-color="rose"]    { background: linear-gradient(135deg, #f43f5e, #e11d48); }
