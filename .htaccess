@@ -1,73 +1,93 @@
-# ==========================================================
-# 🌐 ImSalione Portfolio Configuration (.htaccess)
-# ==========================================================
+# ===============================
+# 🌐 ImSalione Website Configuration
+# ===============================
 
-# -------------------------------
-# ✅ Basic setup
-# -------------------------------
-Options -Indexes
-DirectoryIndex index.html
-
-# Force UTF-8 for all text files
+# Use UTF-8 encoding
 AddDefaultCharset UTF-8
 
-# -------------------------------
-# ✅ JSON & XML MIME types
-# -------------------------------
-AddType application/json .json
-AddType application/xml .xml
+# Enable rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
 
-# Ensure correct CORS for JSON (so JS can fetch it)
-<FilesMatch "\.(json|xml)$">
-  Header set Access-Control-Allow-Origin "*"
-  Header set Access-Control-Allow-Methods "GET, OPTIONS"
-  Header set Access-Control-Allow-Headers "Content-Type"
-</FilesMatch>
+    # Redirect www to non-www (optional)
+    RewriteCond %{HTTP_HOST} ^www\.imsalione\.ir$ [NC]
+    RewriteRule ^(.*)$ https://imsalione.ir/$1 [L,R=301]
 
-# -------------------------------
-# ✅ Browser Caching (recommended)
-# -------------------------------
-<IfModule mod_expires.c>
-  ExpiresActive On
-  ExpiresDefault "access plus 30 days"
-  ExpiresByType text/html "access plus 1 hour"
-  ExpiresByType text/css "access plus 7 days"
-  ExpiresByType application/javascript "access plus 7 days"
-  ExpiresByType image/jpeg "access plus 30 days"
-  ExpiresByType image/png "access plus 30 days"
-  ExpiresByType image/svg+xml "access plus 30 days"
-  ExpiresByType application/json "access plus 1 hour"
+    # Redirect HTTP to HTTPS
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Serve index.html as default
+    DirectoryIndex index.html
 </IfModule>
 
-# -------------------------------
-# ✅ Disable caching for development
-# (comment out in production)
-# -------------------------------
-# <FilesMatch "\.(html|css|js|json)$">
-#   Header set Cache-Control "no-cache, no-store, must-revalidate"
-#   Header set Pragma "no-cache"
-#   Header set Expires 0
-# </FilesMatch>
+# ===============================
+# 🧱 Security and Access Control
+# ===============================
 
-# -------------------------------
-# ✅ Security: deny access to system files
-# -------------------------------
-<FilesMatch "(\.env|\.git|composer\.json|composer\.lock)$">
-  Order allow,deny
-  Deny from all
+# Deny access to hidden files and folders (e.g. .git, .env)
+<FilesMatch "^\.">
+    Require all denied
 </FilesMatch>
 
-# -------------------------------
-# ✅ Redirect to HTTPS (optional)
-# -------------------------------
-# RewriteEngine On
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Deny access to config files
+<FilesMatch "(?i)(composer\.json|package\.json|gulpfile\.js|README\.md|LICENSE)">
+    Require all denied
+</FilesMatch>
 
-# -------------------------------
-# ✅ Pretty URLs (optional, for future backend)
-# -------------------------------
-# RewriteEngine On
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteRule ^(.*)$ index.html [QSA,L]
+# Deny access to PHP files in /api (for direct access)
+<DirectoryMatch "api">
+    <FilesMatch "\.php$">
+        Require all denied
+    </FilesMatch>
+</DirectoryMatch>
+
+# Allow access only through AJAX (optional advanced rule)
+<IfModule mod_setenvif.c>
+    SetEnvIfNoCase Referer "^https://(www\.)?imsalione\.ir" allow_from_site
+    <FilesMatch "github_contrib\.php$">
+        Order deny,allow
+        Deny from all
+        Allow from env=allow_from_site
+    </FilesMatch>
+</IfModule>
+
+# ===============================
+# 🔐 Security Headers
+# ===============================
+
+<IfModule mod_headers.c>
+    # Prevent MIME type sniffing
+    Header set X-Content-Type-Options "nosniff"
+
+    # Disable caching for API responses
+    <FilesMatch "\.php$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    </FilesMatch>
+
+    # Basic security headers
+    Header set Referrer-Policy "no-referrer-when-downgrade"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# ===============================
+# 🧭 Sitemap and Robots
+# ===============================
+Redirect 301 /sitemap.xml https://www.imsalione.ir/sitemap.xml
+Redirect 301 /robots.txt https://www.imsalione.ir/robots.txt
+
+# ===============================
+# 🧰 Compression and Caching
+# ===============================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/html "access plus 1 day"
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType image/* "access plus 1 month"
+</IfModule>
