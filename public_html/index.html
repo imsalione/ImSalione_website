@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saleh Abedinezhad - Data Analytics & Engineering</title>
+
+    <meta name="description" content="متخصص تحلیل داده و مهندسی داده. پروژه‌های من در زمینه پایتون، SQL و هوش تجاری را مشاهده کنید. Data Analytics & Engineering Specialist.">
+
+    <link rel="canonical" href="https://imsalione.ir/"> 
+
+    <link rel="alternate" hreflang="fa" href="https://imsalione.ir/" />
+    <link rel="alternate" hreflang="en" href="https://imsalione.ir/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://imsalione.ir/" />
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body data-theme="dark">
+    <div class="bg-animation">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <nav id="mobile-top-navbar" class="mobile-top-nav">
+        <div class="nav-container">
+            <div class="logo">Saleh Abedinezhad</div>
+        </div>
+    </nav>
+
+    <div class="floating-controls">
+        <button class="toggle-btn" id="backToTop" title="Back to Top">
+            <span class="icon"><i class="fas fa-arrow-up"></i></span>
+        </button>
+    </div>
+
+    <div class="mobile-bottom-nav">
+
+        <div class="nav-link-item">
+            <a href="#home" class="mobile-nav-link active" data-en="Home" data-fa="خانه" data-target-section="home">
+                <span class="icon"><i class="fas fa-home"></i></span>
+                <span class="label" data-en="Home" data-fa="خانه">Home</span>
+            </a>
+        </div>
+        
+        <div class="nav-link-item">
+            <a href="#about" class="mobile-nav-link" data-en="About" data-fa="درباره"   data-target-section="about">
+                <span class="icon"><i class="fas fa-user"></i></span>
+                <span class="label" data-en="About" data-fa="درباره">About</span>
+            </a>
+        </div>
+
+        <div class="nav-link-item">
+            <a href="#cv" class="mobile-nav-link" data-en="CV" data-fa="رزومه"  data-target-section="cv">
+                <span class="icon"><i class="fas fa-file-alt"></i></span>
+                <span class="label" data-en="CV" data-fa="رزومه">CV</span>
+            </a>
+        </div>
+
+        <div class="nav-link-item">
+            <a href="#contact" class="mobile-nav-link" data-en="Contact" data-fa="تماس" data-target-section="contact">
+                <span class="icon"><i class="fas fa-envelope"></i></span>
+                <span class="label" data-en="Contact" data-fa="تماس">Contact</span>
+            </a>
+        </div>
+
+        <div class="nav-link-item">
+            <button class="mobile-nav-toggle-btn" id="mobileSettingsToggle" title="Settings">
+                <span class="icon"><i class="fas fa-cog"></i></span>
+                <span class="label" data-en="Settings" data-fa="تنظیمات">Settings</span>
+            </button>
+        </div>
+    </div>
+    
+    <div class="mobile-settings-menu" id="mobileSettingsMenu">
+        <div class="menu-header">
+            <h4 data-en="Settings" data-fa="تنظیمات">Settings</h4>
+            <button id="closeSettingsMenu" class="close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="menu-item" id="mobileThemeToggle">
+            <span class="icon"><i class="fas fa-sun"></i> / <i class="fas fa-moon"></i></span>
+            <span class="text-content">
+                <span data-en="Toggle Theme: " data-fa="تغییر تم: ">Toggle Theme: </span>
+                <span id="mobileThemeText" data-en="Dark" data-fa="تاریک">Dark</span>
+            </span>
+        </div>
+        <div class="menu-item" id="langToggleMobile">
+            <span class="icon"><i class="fas fa-globe"></i></span>
+            <span class="text-content">
+                <span data-en="Change Language: " data-fa="تغییر زبان: ">Change Language: </span>
+                <span id="langTextMobile" class="flag-text">English (🇺🇸)</span>
+            </span>
+        </div>
+    </div>
+
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">Saleh Abedinezhad</div>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#home" data-en="Home" data-fa="خانه">Home</a></li>
+                    <li><a href="#about" data-en="About" data-fa="درباره">About</a></li>
+                    <li><a href="#cv" data-en="CV" data-fa="رزومه">CV</a></li>
+                    <li><a href="#contact" data-en="Contact" data-fa="تماس">Contact</a></li>
+                </ul>
+                <div class="controls">
+                    <button class="toggle-btn" id="themeToggle">
+                        <span id="themeIcon"><i class="fas fa-moon"></i></span>
+                        <span id="themeText" data-en="Dark" data-fa="تاریک">Dark</span>
+                    </button>
+                    <button class="toggle-btn" id="langToggle">
+                        <span id="langIcon" class="flag-icon">🇺🇸</span>
+                        <span id="langText" data-en="English" data-fa="فارسی">English</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="profile-picture" id="profilePictureThumbnail">
+                <img src="assets/profile.jpg" alt="Saleh Abedinezhad Profile Picture">
+            </div>
+
+            <h1 data-en="I'm Saleh" data-fa="من صالح هستم">I'm Saleh</h1>
+            <p class="subtitle" data-en="Data Analytics & Engineering Specialist" data-fa="متخصص تحلیل داده و مهندسی داده">Data Analytics & Engineering Specialist</p>
+            <p class="description" data-en="Transforming complex data into actionable insights through advanced analytics, intelligent dashboards, and scalable data pipelines." data-fa="تبدیل داده‌های پیچیده به بینش‌های عملی از طریق تحلیل پیشرفته، داشبوردهای هوشمند و خطوط لوله داده مقیاس‌پذیر.">
+                Transforming complex data into actionable insights through advanced analytics, 
+                intelligent dashboards, and scalable data pipelines.
+            </p>
+            <div class="cta-buttons">
+                <a href="#about" class="btn btn-primary" data-en="Learn More" data-fa="بیشتر بدانید">Learn More</a>
+                <a href="#contact" class="btn btn-secondary" data-en="Get in Touch" data-fa="تماس بگیرید">Get in Touch</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span></span>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-content">
+            <h2 class="section-title" data-en="About Me" data-fa="درباره من">About Me</h2>
+            <div class="about-content">
+                <p data-en="My professional journey began with a passion for structuring complex and unorganized data, evolving into a deep specialization in big data analytics and intelligent decision-support systems." data-fa="سفر حرفه‌ای من با علاقه به ساختاردهی داده‌های پیچیده و نامنظم آغاز شد و به تخصص عمیق در تحلیل کلان داده و سیستم‌های هوشمند پشتیبانی تصمیم تبدیل شد.">
+                    My professional journey began with a passion for structuring complex and unorganized data, 
+                    evolving into a deep specialization in big data analytics and intelligent decision-support systems.
+                </p>
+                <p data-en="In the early stages of my career, Microsoft Excel became my primary analytical platform—transformed from a simple spreadsheet tool into a robust environment for data modeling, visualization, and reporting. My advanced proficiency in PivotTables, Power Query, Power Pivot, and data modeling techniques enabled me to convert raw and fragmented datasets into dynamic and actionable insights." data-fa="در مراحل اولیه شغلی من، مایکروسافت اکسل به پلتفرم اصلی تحلیلی من تبدیل شد - از یک ابزار ساده صفحه گسترده به یک محیط قدرتمند برای مدل‌سازی، تجسم و گزارش‌دهی داده. تسلط پیشرفته من بر PivotTable، Power Query، Power Pivot، و تکنیک‌های مدل‌سازی داده، من را قادر ساخت تا مجموعه داده‌های خام و پراکنده را به بینش‌های پویا و عملی تبدیل کنم.">
+                    In the early stages of my career, Microsoft Excel became my primary analytical platform—transformed 
+                    from a simple spreadsheet tool into a robust environment for data modeling, visualization, and reporting. 
+                    My advanced proficiency in PivotTables, Power Query, Power Pivot, and data modeling techniques enabled 
+                    me to convert raw and fragmented datasets into dynamic and actionable insights.
+                </p>
+                <p data-en="One of my major achievements was the design and implementation of a Flat Data Warehouse, which centralized sales, performance, and financial data from multiple sources. This architecture, integrated with Excel and ERP systems, became the foundation for automated reporting and smart analytics within the organization." data-fa="یکی از دستاوردهای اصلی من طراحی و پیاده‌سازی یک انبار داده تخت بود که داده‌های فروش، عملکرد و مالی را از منابع متعدد متمرکز کرد. این معماری که با اکسل و سیستم‌های ERP یکپارچه شده بود، به پایه‌ای برای گزارش‌دهی خودکار و تحلیل هوشمند در سازمان تبدیل شد.">
+                    One of my major achievements was the design and implementation of a Flat Data Warehouse, which 
+                    centralized sales, performance, and financial data from multiple sources. This architecture, 
+                    integrated with Excel and ERP systems, became the foundation for automated reporting and smart 
+                    analytics within the organization.
+                </p>
+                <p data-en="Currently, I am focused on advancing my technical expertise in Python, Django, SQL, and Data Engineering, with a strong interest in building scalable and intelligent data pipelines for efficient data collection, transformation, and analysis." data-fa="در حال حاضر، من بر پیشرفت تخصص فنی خود در پایتون، جنگو، SQL و مهندسی داده تمرکز دارم، با علاقه قوی به ساخت خطوط لوله داده مقیاس‌پذیر و هوشمند برای جمع‌آوری، تبدیل و تحلیل کارآمد داده.">
+                    Currently, I am focused on advancing my technical expertise in Python, Django, SQL, and Data 
+                    Engineering, with a strong interest in building scalable and intelligent data pipelines for 
+                    efficient data collection, transformation, and analysis.
+                </p>
+                <p data-en="My long-term vision is to develop my personal platform, XWork—an innovative ecosystem designed to help individuals manage their professional identity and career growth. XWork aims to integrate AI and data analytics to empower users in making smarter, data-driven career decisions." data-fa="چشم‌انداز بلندمدت من توسعه پلتفرم شخصی XWork است - یک اکوسیستم نوآورانه طراحی شده برای کمک به افراد در مدیریت هویت حرفه‌ای و رشد شغلی خود. XWork با هدف یکپارچه‌سازی هوش مصنوعی و تحلیل داده برای توانمندسازی کاربران در تصمیم‌گیری‌های شغلی هوشمندانه و مبتنی بر داده طراحی شده است.">
+                    My long-term vision is to develop my personal platform, <strong>XWork</strong>—an innovative 
+                    ecosystem designed to help individuals manage their professional identity and career growth. 
+                    XWork aims to integrate AI and data analytics to empower users in making smarter, data-driven 
+                    career decisions.
+                </p>
+
+                <div class="skills-grid">
+                    <div class="skill-tag" data-skill="python">Python</div>
+                    <div class="skill-tag" data-skill="django">Django</div>
+                    <div class="skill-tag" data-skill="sql">SQL</div>
+                    <div class="skill-tag" data-skill="excel">Excel</div>
+                    <div class="skill-tag" data-skill="powerbi">Power BI</div>
+                    <div class="skill-tag" data-skill="dataengineering" data-en="Data Engineering" data-fa="مهندسی داده">Data Engineering</div>
+                    <div class="skill-tag" data-skill="machinelearning" data-en="Machine Learning" data-fa="یادگیری ماشین">Machine Learning</div>
+                    <div class="skill-tag" data-skill="datavisualization" data-en="Data Visualization" data-fa="تجسم داده">Data Visualization</div>
+                </div>
+                <div id="skillDescription" class="skill-description">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cv">
+        <div class="section-content">
+            <h2 class="section-title" data-en="Curriculum Vitae" data-fa="رزومه کاری و تحصیلی">Curriculum Vitae</h2>
+            
+            <div class="cv-toggle-buttons">
+                <button class="cv-toggle-btn active" data-target="education" data-en="Education" data-fa="تحصیلات">Education</button>
+                <button class="cv-toggle-btn" data-target="workhistory" data-en="Work History" data-fa="سوابق کاری">Work History</button>
+            </div>
+
+            <div class="cv-sections-wrapper">
+                <div class="cv-section" id="education-section">
+                    <h3 style="text-align: center; font-size: 1.5rem; color: var(--primary); margin-bottom: 2rem;" data-en="Educational Stages" data-fa="مراحل تحصیلی">Educational Stages</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date" data-en="2005 - 2007" data-fa="۲۰۰۵ - ۲۰۰۷">2005 - 2007</div>
+                                <div class="timeline-title" data-en="Introductory Computer Courses" data-fa="دوره‌های مقدماتی کامپیوتر">Introductory Computer Courses</div>
+                                <div class="timeline-subtitle" data-en="Hafeze Bartar School" data-fa="مدرسه حافظ برتر">Hafeze Bartar School</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date" data-en="2013 - 2015" data-fa="۲۰۱۳ - ۲۰۱۵">2013 - 2015</div>
+                                <div class="timeline-title" data-en="Computer Programming Associate" data-fa="کاردانی برنامه‌نویسی کامپیوتر">Computer Programming Associate</div>
+                                <div class="timeline-subtitle" data-en="University of Gostaresh Informatica Iran" data-fa="دانشگاه گسترش انفورماتیکا ایران">University of Gostaresh Informatica Iran</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date" data-en="2017" data-fa="۲۰۱۷">2017</div>
+                                <div class="timeline-title" data-en=".Net Programming Fundamental" data-fa="برنامه‌نویسی پایه دات نت">.Net Programming Fundamental</div>
+                                <div class="timeline-subtitle" data-en="Cando School" data-fa="مدرسه کندو">Cando School</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date" data-en="2017 - 2018" data-fa="۲۰۱۷ - ۲۰۱۸">2017 - 2018</div>
+                                <div class="timeline-title" data-en="Asp.Net MVC" data-fa="ای‌اس‌پی دات نت ام‌وی‌سی">Asp.Net MVC</div>
+                                <div class="timeline-subtitle" data-en="Cando School" data-fa="مدرسه کندو">Cando School</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date" data-en="2022 - 2023" data-fa="۲۰۲۲ - ۲۰۲۳">2022 - 2023</div>
+                                <div class="timeline-title" data-en="Bachelor of Software Engineering" data-fa="کارشناسی مهندسی نرم‌افزار">Bachelor of Software Engineering</div>
+                                <div class="timeline-subtitle" data-en="Islamic Azad University" data-fa="دانشگاه آزاد اسلامی">Islamic Azad University</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date" data-en="2022 - 2023" data-fa="۲۰۲۲ - ۲۰۲۳">2022 - 2023</div>
+                                <div class="timeline-title" data-en="Data Science Course" data-fa="دوره علم داده">Data Science Course</div>
+                                <div class="timeline-subtitle" data-en="Sharif University" data-fa="دانشگاه صنعتی شریف">Sharif University</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cv-section" id="workhistory-section">
+                    <h3 style="text-align: center; font-size: 1.5rem; color: var(--primary); margin-bottom: 2rem;" data-en="Work History" data-fa="سوابق کاری">Work History</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date" data-en="2009 - 2010" data-fa="۲۰۰۹ - ۲۰۱۰">2009 - 2010</div>
+                                <div class="timeline-title" data-en="Software Engineer" data-fa="مهندس نرم‌افزار">Software Engineer</div>
+                                <div class="timeline-subtitle" data-en="Dana Insurance" data-fa="بیمه دانا">Dana Insurance</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date" data-en="2011 - 2022" data-fa="۲۰۱۱ - ۲۰۲۲">2011 - 2022</div>
+                                <div class="timeline-title" data-en="Budget Analyst" data-fa="تحلیلگر بودجه">Budget Analyst</div>
+                                <div class="timeline-subtitle" data-en="Kanoon" data-fa="کانون">Kanoon</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date" data-en="2022 - 2025" data-fa="۲۰۲۲ - ۲۰۲۵">2022 - 2025</div>
+                                <div class="timeline-title" data-en="Data Engineer (Freelancing)" data-fa="مهندس داده (آزاد)">Data Engineer (Freelancing)</div>
+                                <div class="timeline-subtitle" data-en="Self-Employed" data-fa="مستقل">Self-Employed</div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="section-content">
+            <h2 class="section-title" data-en="Get In Touch" data-fa="با من در تماس باشید">Get In Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <a href="javascript:void(0)" id="emailContactLink" class="contact-link" aria-label="Email Saleh" target="_blank" rel="noopener noreferrer">
+                        <div class="contact-icon">📧</div>
+                        <h3 data-en="Email" data-fa="ایمیل">Email</h3>
+                        <p data-en="Click to contact via email" data-fa="برای تماس از طریق ایمیل کلیک               کنید">Click to contact via email</p>
+                    </a>
+                </div>
+                <div class="contact-card">
+                    <a href="https://www.linkedin.com/in/imsalione/" target="_blank" rel="noopener noreferrer" class="contact-link" aria-label="Email Saleh">
+                        <div class="contact-icon">💼</div>
+                        <h3>LinkedIn</h3>
+                        <p data-en="Connect professionally" data-fa="من رو در لینکدین دنبال کنید">Connect professionally</p>
+                    </a>
+                </div>
+                <div class="contact-card">
+                    <a href="https://github.com/imsalione" class="contact-link" aria-label="Email Saleh">
+                        <div class="contact-icon">🐙</div>
+                        <h3>GitHub</h3>
+                        <p data-en="View my projects" data-fa="پروژه‌های من رو ببینید">View my projects</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p data-en="© 2025 Saleh Abedinezhad. All rights reserved." data-fa="© ۲۰۲۵ صالح عابدی‌نژاد. تمامی حقوق محفوظ است.">© 2025 Saleh Abedinezhad. All rights reserved.</p>
+    </footer>
+
+    <div class="profile-modal" id="profileModal">
+        <div class="modal-content">
+            <img id="profileModalImage" src="assets/profile.jpg" alt="Saleh Abedinezhad Full Screen Profile Picture">
+            <p id="profileModalName" class="modal-name" data-en="Saleh Abedinezhad" data-fa="صالح عابدی‌نژاد">Saleh Abedinezhad</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
