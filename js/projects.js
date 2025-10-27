@@ -1,6 +1,6 @@
 /* =======================================================
-💼 Projects Module – Final Stable Version
-🧩 Handles hover, GitHub Card, and language sync
+💼 Projects Module – Final Fixed Version (2025)
+🧩 Handles hover, GitHub Card reload, and language sync
 ======================================================= */
 
 let githubCardInjected = false;
@@ -37,6 +37,7 @@ async function injectGithubCard() {
       return;
     }
 
+    // 🔄 Load GitHub card partial (HTML structure)
     const res = await fetch("partials/github-contrib.html", { cache: "no-store" });
     const html = await res.text();
     wrapper.insertAdjacentHTML("afterbegin", html);
@@ -49,6 +50,18 @@ async function injectGithubCard() {
       document.dispatchEvent(new CustomEvent("githubCardReady", { detail: { mounted: true } }));
       console.log("✅ GitHub Activity Card injected and ready.");
     }
+
+    /* ✅ Re-run github-contrib.js dynamically
+       to activate loader control + chart rendering */
+    const oldScript = document.querySelector("script[data-gh-script]");
+    if (oldScript) oldScript.remove();
+
+    const ghScript = document.createElement("script");
+    ghScript.src = "js/github-contrib.js?v=" + Date.now();
+    ghScript.defer = true;
+    ghScript.dataset.ghScript = "true";
+    document.body.appendChild(ghScript);
+
   } catch (err) {
     console.error("❌ Failed to inject GitHub Activity Card:", err);
   }

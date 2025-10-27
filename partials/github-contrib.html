@@ -1,32 +1,27 @@
 <!-- =======================================================
-🧩 GitHub Activity Card (with Loading State)
+🧩 GitHub Activity Card (Matched to Project Cards)
 ======================================================= -->
-<div class="project-card github-activity-card">
+<div class="project-card github-activity-card no-flip">
   <div class="card-inner">
-    <!-- Front Side -->
-    <div class="github-front">
+    <div class="card-front">
+      <!-- 🔹 Header -->
       <div class="gh-header">
-        <i class="fab fa-github"></i>
-        <div class="live-badge" title="Live Data from GitHub API">Live Data 🔥</div>
+        <div class="gh-header-left">
+          <span class="live-label">GITHUB LIVE</span>
+        </div>
+        <a class="github-icon" href="https://github.com/ImSalione" target="_blank" rel="noopener" aria-label="View on GitHub">
+          <i class="fab fa-github"></i>
+        </a>
       </div>
 
-      <!-- Chart Loading Spinner -->
-      <div class="chart-loader">
-        <div class="spinner"></div>
-        <span class="loading-text">Loading GitHub activity...</span>
-      </div>
-
-      <!-- Chart Canvas -->
-      <div class="gh-body">
+      <!-- 🔹 Chart & Loader -->
+      <div class="gh-chart-wrap">
+        <div class="chart-loader">
+          <div class="spinner"></div>
+          <span class="loading-text">Loading GitHub Data...</span>
+        </div>
         <canvas id="ghContribChart" height="160"></canvas>
       </div>
-    </div>
-
-    <!-- Back Side -->
-    <div class="github-back">
-      <a href="https://github.com/ImSalione" target="_blank" rel="noopener" class="github-btn">
-        <i class="fas fa-external-link-alt"></i> View on GitHub
-      </a>
     </div>
   </div>
 </div>
