@@ -1,5 +1,6 @@
 <!-- =======================================================
-🧩 GitHub Activity Card (Matched to Project Cards)
+🧩 GitHub Activity Card (Final Synced with Tooltip)
+Compatible with github-contrib.js & github-contrib.css
 ======================================================= -->
 <div class="project-card github-activity-card no-flip">
   <div class="card-inner">
@@ -9,17 +10,26 @@
         <div class="gh-header-left">
           <span class="live-label">GITHUB LIVE</span>
         </div>
-        <a class="github-icon" href="https://github.com/ImSalione" target="_blank" rel="noopener" aria-label="View on GitHub">
+        <a
+          class="github-icon"
+          href="https://github.com/ImSalione"
+          target="_blank"
+          rel="noopener"
+          aria-label="View on GitHub"
+        >
           <i class="fab fa-github"></i>
         </a>
       </div>
 
-      <!-- 🔹 Chart & Loader -->
+      <!-- 🔹 Chart Area -->
       <div class="gh-chart-wrap">
+        <!-- Loading Spinner -->
         <div class="chart-loader">
           <div class="spinner"></div>
           <span class="loading-text">Loading GitHub Data...</span>
         </div>
+
+        <!-- Canvas for Chart -->
         <canvas id="ghContribChart" height="160"></canvas>
       </div>
     </div>

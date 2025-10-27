@@ -1,8 +1,6 @@
 /* =======================================================
-📊 GitHub Contributions Card (Final Version)
-- Fixed loader visibility
-- Inline header (GitHub Live + Icon)
-- Full style parity with project cards (no flip)
+📊 GitHub Contributions Card (Final Version with Tooltip)
+Author: ImSalione
 ======================================================= */
 (function () {
   const USERNAME = "ImSalione";
@@ -13,13 +11,13 @@
   let isRendering = false;
   let themeObserverInit = false;
 
-  // Utility: get CSS var
+  // Utility: CSS variable reader
   const cssVar = (name, fallback = "") =>
     getComputedStyle(document.documentElement)
       .getPropertyValue(name)
       .trim() || fallback;
 
-  // Utility: color palette
+  // Theme color palette
   function themeColors() {
     return {
       primary: cssVar("--primary", "#6366f1"),
@@ -30,7 +28,7 @@
     };
   }
 
-  // Gradient generator
+  // Linear gradient for chart area
   function gradient(ctx, color) {
     const g = ctx.createLinearGradient(0, 0, 0, 180);
     g.addColorStop(0, color + "33");
@@ -38,70 +36,12 @@
     return g;
   }
 
-  // Safe date parser
   const parseDate = (str) => {
     const d = new Date(str);
     return isNaN(d.getTime()) ? null : d;
   };
 
-  // Inject CSS override for no-flip behavior (stronger selector)
-  function ensureNoFlipCSS() {
-    if (document.getElementById("gh-no-flip-css")) return;
-    const style = document.createElement("style");
-    style.id = "gh-no-flip-css";
-    style.textContent = `
-      .project-card.github-activity-card.no-flip:hover .card-inner { transform: none !important; }
-      .project-card.github-activity-card.no-flip .card-back { display: none !important; }
-      .project-card.github-activity-card.no-flip .card-front { backface-visibility: visible !important; }
-    `;
-    document.head.appendChild(style);
-  }
-
-  // Build HTML structure
-  function buildCardHTML() {
-    return `
-      <div class="project-card github-activity-card no-flip">
-        <div class="card-inner">
-          <div class="card-front">
-            <div class="header">
-              <div class="header-left">
-                <span class="live-label">GITHUB LIVE</span>
-                <span class="project-title">GitHub Activity</span>
-              </div>
-              <a class="github-icon" href="${PROFILE_URL}" target="_blank" rel="noopener">
-                <i class="fab fa-github"></i>
-              </a>
-            </div>
-            <div class="project-desc">Last 30 days of commits</div>
-            <div class="chart-wrap">
-              <div class="chart-loader"><span>Loading GitHub Data...</span></div>
-              <canvas id="ghContribChart" height="160"></canvas>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  // Inject card into projects grid
-  function injectCard() {
-    const wrapper = document.querySelector(".projects-wrapper");
-    if (!wrapper) return false;
-    if (wrapper.querySelector(".github-activity-card")) return true;
-
-    const temp = document.createElement("div");
-    temp.innerHTML = buildCardHTML();
-    const node = temp.firstElementChild;
-    wrapper.prepend(node);
-    ensureNoFlipCSS();
-
-    document.dispatchEvent(
-      new CustomEvent("githubCardReady", { detail: { el: node } })
-    );
-    return true;
-  }
-
-  // Render GitHub commits chart
+  // Main chart rendering
   async function renderChart() {
     if (isRendering) return;
     const canvas = document.getElementById("ghContribChart");
@@ -114,13 +54,13 @@
     try {
       const res = await fetch(API_URL, { cache: "no-store" });
       const data = await res.json();
-      if (!data || !Array.isArray(data.contributions)) throw new Error("Bad data");
+      if (!data || !Array.isArray(data.contributions)) throw new Error("Invalid data");
 
-      // Prepare dataset
       const flat = data.contributions.flat();
       const points = flat
         .map((d) => ({ x: parseDate(d.date), y: d.contributionCount }))
         .filter((d) => d.x);
+
       const last = points.slice(-30);
       const labels = last.map((d, i) =>
         i % 7 === 0
@@ -193,20 +133,68 @@
         },
       });
 
-      // Hide loader and show chart
+      // Fade-in chart and hide loader
       setTimeout(() => {
-        if (loader) loader.classList.add("hidden");
         canvas.classList.add("loaded");
+        if (loader) loader.classList.add("hidden");
       }, 400);
+
+      // 🧭 Custom Tooltip for "GITHUB LIVE"
+      const liveLabel = document.querySelector(".github-activity-card .live-label");
+      if (liveLabel) {
+        // Remove any previous tooltip
+        let customTooltip = document.querySelector(".gh-tooltip");
+        if (!customTooltip) {
+          customTooltip = document.createElement("div");
+          customTooltip.className = "gh-tooltip";
+          document.body.appendChild(customTooltip);
+        }
+
+        // Compute latest data
+        if (last && last.length > 0) {
+          const latest = last[last.length - 1];
+          const latestDate = latest.x.toISOString().split("T")[0];
+          const latestCount = latest.y;
+          const text = `Updated: ${latestDate} | ${latestCount} commit${latestCount !== 1 ? "s" : ""}`;
+
+          // Log to console
+          console.log(
+            `%c✅ GitHub Activity Updated`,
+            "color: #10b981; font-weight: bold;"
+          );
+          console.log(
+            `Last data date: %c${latestDate}%c | Commits: %c${latestCount}`,
+            "color: #6366f1; font-weight: bold;",
+            "color: inherit;",
+            "color: #10b981; font-weight: bold;"
+          );
+
+          // Set tooltip content
+          customTooltip.textContent = text;
+
+          // Show tooltip on hover
+          liveLabel.addEventListener("mouseenter", () => {
+            const rect = liveLabel.getBoundingClientRect();
+            customTooltip.style.top = `${rect.top - 40 + window.scrollY}px`;
+            customTooltip.style.left = `${rect.left + rect.width / 2 - customTooltip.offsetWidth / 2}px`;
+            customTooltip.classList.add("visible");
+          });
+
+          liveLabel.addEventListener("mouseleave", () => {
+            customTooltip.classList.remove("visible");
+          });
+        } else {
+          customTooltip.textContent = "No recent data yet";
+        }
+      }
     } catch (err) {
       console.error("❌ Error rendering GitHub chart:", err);
-      if (loader) loader.querySelector("span").textContent = "Failed to load data";
     } finally {
       isRendering = false;
     }
   }
 
-  // Re-render on theme change
+  // Observe theme change (to refresh chart colors)
   function watchTheme() {
     if (themeObserverInit) return;
     const obs = new MutationObserver((muts) => {
@@ -222,7 +210,7 @@
     themeObserverInit = true;
   }
 
-  // Wait for dependencies
+  // Wait for prerequisites
   async function waitFor(fn, { tries = 40, delay = 200 } = {}) {
     for (let i = 0; i < tries; i++) {
       if (fn()) return true;
@@ -231,7 +219,7 @@
     return false;
   }
 
-  // Init
+  // Init sequence
   async function start() {
     const ok = await waitFor(
       () =>
@@ -240,7 +228,6 @@
     );
     if (!ok) return;
 
-    injectCard();
     watchTheme();
     renderChart();
   }
