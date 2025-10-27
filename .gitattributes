@@ -1,0 +1,17 @@
+# ======================================
+# 🧾 ImSalione Website - Git Attributes
+# ======================================
+
+# Use LF for all text files
+* text=auto eol=lf
+
+# Keep PEM certificates and binary files as-is
+*.pem -text
+*.crt -text
+*.key -text
+*.jpg -text
+*.png -text
+*.ico -text
+
+# Windows batch files keep CRLF
+*.bat text eol=crlf
