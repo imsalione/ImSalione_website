@@ -1,0 +1,52 @@
+# =========================================
+# 🧱 ImSalione Website - Git Ignore Rules
+# =========================================
+
+# Environment / Secrets
+.env
+secure/
+config.php
+api/config.php
+*.bak
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs / Cache
+*.log
+*.cache
+*.tmp
+*.swp
+
+# Node / Build tools (if added later)
+node_modules/
+dist/
+build/
+
+# Python (if local server used)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Git / IDE specific
+.vscode/
+.idea/
+*.code-workspace
+.gitignore~
+
+# OneDrive metadata (Windows)
+*.lnk
+*.ini
+OneDrive*/
+
+# Backup or export files
+*.zip
+*.rar
+*.tar
+*.gz
+
+# Ignore local API test scripts
+api/test_*.php
