@@ -1,5 +1,5 @@
 /* =======================================================
-💼 PROJECTS SECTION (3D Flip Cards + GitHub Button on Back)
+💼 PROJECTS SECTION (3D Flip Cards – Swapped Layout)
 Final Professional Version - ImSalione 2025
 ======================================================= */
 
@@ -52,7 +52,6 @@ Final Professional Version - ImSalione 2025
 }
 
 .project-card:hover .card-inner {
-  transform: rotateY(180deg) rotateX(2deg) scale(1.02);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
 }
 
@@ -91,44 +90,15 @@ Final Professional Version - ImSalione 2025
 }
 
 /* ---------------------------------
-🔸 Back Side (Image + Button)
+🔸 Back Side (Image)
 --------------------------------- */
 .card-back {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transform: rotateY(180deg);
   border: 1px solid var(--border-color);
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   filter: brightness(0.9);
-}
-
-/* 🔘 GitHub Button - Neutral Base + Themed Hover */
-.card-back .github-btn {
-  display: block;
-  width: 100%;
-  text-align: center;
-  padding: 0.6rem 0;
-  background: #9ca3af;
-  color: #fff;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-decoration: none;
-  border: none;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
-  transition: all 0.3s ease;
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-}
-
-.card-back .github-btn:hover {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  letter-spacing: 0.5px;
-  transform: translateY(-1px);
 }
 
 /* subtle dark overlay to improve contrast */
@@ -140,13 +110,41 @@ Final Professional Version - ImSalione 2025
   z-index: 0;
 }
 
-.card-back .github-btn {
-  position: relative;
-  z-index: 1;
+/* ---------------------------------
+💼 Swapped Layout (Image on Front, Text on Back)
+--------------------------------- */
+.project-card.swapped .card-inner {
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Image (front-facing by default) */
+.project-card.swapped .card-back {
+  transform: rotateY(0deg);
+  backface-visibility: hidden;
+}
+
+/* Text (hidden by default, shows on flip) */
+.project-card.swapped .card-front {
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Hover → flip to show text */
+.project-card.swapped:hover .card-inner {
+  transform: rotateY(180deg) rotateX(0deg) scale(1.02);
+}
+
+/* Hide legacy GitHub button */
+.project-card.swapped .card-back .github-btn {
+  display: none;
 }
 
 /* ---------------------------------
-📝 Text Styles (Front Side)
+📝 Text Styles (Front Side - Back of Swapped Card)
 --------------------------------- */
 .card-front h3 {
   color: var(--primary);
@@ -159,8 +157,41 @@ Final Professional Version - ImSalione 2025
   color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.5;
-  margin-bottom: 0.8rem;
+  margin-top: 0.5rem;
   flex-grow: 1;
+}
+
+/* ---------------------------------
+🎯 Title Row & GitHub Icon
+--------------------------------- */
+.card-front .title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-front .title-row h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+.card-front .title-row .github-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.card-front .title-row .github-icon:hover {
+  color: var(--primary);
+  transform: translateY(-1px);
 }
 
 /* ---------------------------------
@@ -170,15 +201,19 @@ Final Professional Version - ImSalione 2025
   .projects-wrapper {
     grid-template-columns: 1fr;
   }
+
   .project-card {
     height: 200px;
   }
+
   .card-front h3 {
     font-size: 1rem;
   }
+
   .card-front p {
     font-size: 0.85rem;
   }
+
   .card-inner {
     transition: transform 0.8s ease;
   }

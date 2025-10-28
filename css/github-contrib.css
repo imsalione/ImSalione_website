@@ -1,28 +1,28 @@
 /* =======================================================
-✨ GitHub Activity Card (Fixed Size & Unified Style)
-Matches dimensions of regular project cards
+✨ GitHub Activity Card (Dynamic Themed Version)
+Fully synchronized with active color palette
 ======================================================= */
 
-/* Wrapper same as other project cards */
+/* Base card wrapper */
 .project-card.github-activity-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-  height: 220px; /* same as .project-card in projects.css */
+  box-shadow: 0 3px 10px var(--shadow);
+  height: 220px;
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
-/* Disable flip completely */
+/* Disable flip animation completely */
 .project-card.github-activity-card.no-flip .card-inner,
 .project-card.github-activity-card:hover .card-inner {
   transform: none !important;
   transition: none !important;
 }
 
-/* Front face layout */
+/* Card inner */
 .github-activity-card .card-front {
   width: 100%;
   height: 100%;
@@ -31,15 +31,16 @@ Matches dimensions of regular project cards
   justify-content: space-between;
   padding: 1.2rem;
   background: var(--bg-card);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Hover behavior (lift only) */
+/* Hover effect (soft elevation) */
 .project-card.github-activity-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 24px var(--shadow);
 }
 
-/* Header layout */
+/* Header */
 .gh-header {
   display: flex;
   align-items: center;
@@ -47,17 +48,18 @@ Matches dimensions of regular project cards
   margin-bottom: 6px;
 }
 
-/* Left side */
+/* Header left content */
 .gh-header-left {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Live label */
+/* Live label (accent color adaptive) */
 .live-label {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  color: var(--primary);
+  border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
   font-weight: 600;
   font-size: 0.7rem;
   letter-spacing: 0.05em;
@@ -68,6 +70,7 @@ Matches dimensions of regular project cards
   white-space: nowrap;
   position: relative;
   cursor: default;
+  transition: all 0.3s ease;
 }
 
 /* GitHub Icon */
@@ -81,7 +84,7 @@ Matches dimensions of regular project cards
   transform: scale(1.1);
 }
 
-/* Chart wrapper */
+/* Chart container */
 .gh-chart-wrap {
   position: relative;
   flex: 1;
@@ -99,7 +102,7 @@ Matches dimensions of regular project cards
   opacity: 1;
 }
 
-/* Loader */
+/* Loader container */
 .chart-loader {
   position: absolute;
   top: 50%;
@@ -117,7 +120,7 @@ Matches dimensions of regular project cards
   visibility: hidden;
 }
 
-/* Spinner animation */
+/* Spinner animation (theme synced) */
 .spinner {
   width: 30px;
   height: 30px;
@@ -132,26 +135,29 @@ Matches dimensions of regular project cards
   to { transform: rotate(360deg); }
 }
 
+/* Loader text (muted color) */
 .loading-text {
   font-size: 0.8rem;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
 }
 
-/* Tooltip style (for Chart.js) */
+/* Tooltip style for Chart.js */
 .chartjs-tooltip {
   background: var(--bg-secondary);
   color: var(--text-primary);
   font-size: 0.8rem;
   padding: 4px 8px;
   border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 15%, rgba(0, 0, 0, 0.25));
   pointer-events: none;
   opacity: 0.95;
+  border: 1px solid var(--border-color);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* =======================================================
-💬 Custom Tooltip for GitHub LIVE Label (Modern)
+💬 Custom Tooltip for GitHub LIVE Label (Modern Style)
 ======================================================= */
 .gh-tooltip {
   position: absolute;
@@ -160,14 +166,14 @@ Matches dimensions of regular project cards
   font-size: 0.8rem;
   padding: 6px 10px;
   border-radius: 6px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 20%, rgba(0,0,0,0.25));
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-6px);
+  transform: translateY(-6px) scale(0.97);
   transition: all 0.25s ease;
   z-index: 9999;
   white-space: nowrap;
-  border: 1px solid var(--border-color);
   backdrop-filter: blur(8px);
 }
 
@@ -181,33 +187,15 @@ Matches dimensions of regular project cards
   border-width: 6px 6px 0 6px;
   border-style: solid;
   border-color: var(--bg-secondary) transparent transparent transparent;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
 }
 
 .gh-tooltip.visible {
   opacity: 1;
-  transform: translateY(-10px);
+  transform: translateY(-10px) scale(1);
 }
 
-/* Dark & Light theme tweaks */
-[data-theme="dark"] .gh-tooltip {
-  background: rgba(30, 41, 59, 0.9);
-  color: #e2e8f0;
-  border-color: rgba(99, 102, 241, 0.3);
-}
-[data-theme="dark"] .gh-tooltip::after {
-  border-color: rgba(30, 41, 59, 0.9) transparent transparent transparent;
-}
-
-[data-theme="light"] .gh-tooltip {
-  background: rgba(255, 255, 255, 0.95);
-  color: #1e293b;
-}
-[data-theme="light"] .gh-tooltip::after {
-  border-color: rgba(255, 255, 255, 0.95) transparent transparent transparent;
-}
-
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
   .project-card.github-activity-card {
     height: 200px;

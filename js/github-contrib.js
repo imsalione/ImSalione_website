@@ -1,5 +1,5 @@
 /* =======================================================
-📊 GitHub Contributions Card (Final Version with Tooltip)
+📊 GitHub Contributions Card (Dynamic Line Color)
 Author: ImSalione
 ======================================================= */
 (function () {
@@ -11,13 +11,13 @@ Author: ImSalione
   let isRendering = false;
   let themeObserverInit = false;
 
-  // Utility: CSS variable reader
+  // Utility: read CSS variable
   const cssVar = (name, fallback = "") =>
     getComputedStyle(document.documentElement)
       .getPropertyValue(name)
       .trim() || fallback;
 
-  // Theme color palette
+  // Get current theme colors
   function themeColors() {
     return {
       primary: cssVar("--primary", "#6366f1"),
@@ -28,7 +28,7 @@ Author: ImSalione
     };
   }
 
-  // Linear gradient for chart area
+  // Gradient generator
   function gradient(ctx, color) {
     const g = ctx.createLinearGradient(0, 0, 0, 180);
     g.addColorStop(0, color + "33");
@@ -41,7 +41,24 @@ Author: ImSalione
     return isNaN(d.getTime()) ? null : d;
   };
 
-  // Main chart rendering
+  // 🟢 Update chart colors dynamically
+  function updateChartColors() {
+    if (!chart) return;
+    const ctx = chart.ctx;
+    const colors = themeColors();
+    const dataset = chart.data.datasets[0];
+
+    dataset.borderColor = colors.primary;
+    dataset.backgroundColor = gradient(ctx, colors.primary);
+
+    chart.options.scales.x.ticks.color = colors.textMuted;
+    chart.options.scales.y.ticks.color = colors.text;
+    chart.options.scales.y.grid.color = colors.grid;
+
+    chart.update("none"); // no re-animation, instant update
+  }
+
+  // Main render function
   async function renderChart() {
     if (isRendering) return;
     const canvas = document.getElementById("ghContribChart");
@@ -97,20 +114,11 @@ Author: ImSalione
           maintainAspectRatio: false,
           interaction: { mode: "nearest", intersect: true },
           animations: {
-            tension: {
-              duration: 600,
-              easing: "easeOutQuad",
-              from: 0.7,
-              to: 0.35,
-            },
+            tension: { duration: 600, easing: "easeOutQuad", from: 0.7, to: 0.35 },
           },
           scales: {
             x: {
-              ticks: {
-                color: colors.textMuted,
-                maxRotation: 0,
-                autoSkip: true,
-              },
+              ticks: { color: colors.textMuted, maxRotation: 0, autoSkip: true },
               grid: { display: false },
             },
             y: {
@@ -133,16 +141,15 @@ Author: ImSalione
         },
       });
 
-      // Fade-in chart and hide loader
+      // Fade-in chart
       setTimeout(() => {
         canvas.classList.add("loaded");
         if (loader) loader.classList.add("hidden");
       }, 400);
 
-      // 🧭 Custom Tooltip for "GITHUB LIVE"
+      // Tooltip setup for "GITHUB LIVE"
       const liveLabel = document.querySelector(".github-activity-card .live-label");
       if (liveLabel) {
-        // Remove any previous tooltip
         let customTooltip = document.querySelector(".gh-tooltip");
         if (!customTooltip) {
           customTooltip = document.createElement("div");
@@ -150,39 +157,22 @@ Author: ImSalione
           document.body.appendChild(customTooltip);
         }
 
-        // Compute latest data
         if (last && last.length > 0) {
           const latest = last[last.length - 1];
           const latestDate = latest.x.toISOString().split("T")[0];
           const latestCount = latest.y;
           const text = `Updated: ${latestDate} | ${latestCount} commit${latestCount !== 1 ? "s" : ""}`;
 
-          // Log to console
-          console.log(
-            `%c✅ GitHub Activity Updated`,
-            "color: #10b981; font-weight: bold;"
-          );
-          console.log(
-            `Last data date: %c${latestDate}%c | Commits: %c${latestCount}`,
-            "color: #6366f1; font-weight: bold;",
-            "color: inherit;",
-            "color: #10b981; font-weight: bold;"
-          );
+          console.log(`✅ GitHub Activity Updated: ${latestDate} (${latestCount} commits)`);
 
-          // Set tooltip content
           customTooltip.textContent = text;
-
-          // Show tooltip on hover
           liveLabel.addEventListener("mouseenter", () => {
             const rect = liveLabel.getBoundingClientRect();
             customTooltip.style.top = `${rect.top - 40 + window.scrollY}px`;
             customTooltip.style.left = `${rect.left + rect.width / 2 - customTooltip.offsetWidth / 2}px`;
             customTooltip.classList.add("visible");
           });
-
-          liveLabel.addEventListener("mouseleave", () => {
-            customTooltip.classList.remove("visible");
-          });
+          liveLabel.addEventListener("mouseleave", () => customTooltip.classList.remove("visible"));
         } else {
           customTooltip.textContent = "No recent data yet";
         }
@@ -194,19 +184,23 @@ Author: ImSalione
     }
   }
 
-  // Observe theme change (to refresh chart colors)
+  // 🟣 Watch theme and palette changes
   function watchTheme() {
     if (themeObserverInit) return;
     const obs = new MutationObserver((muts) => {
       for (const m of muts) {
         if (m.type === "attributes" && m.attributeName === "data-theme") {
-          if (chart) chart.destroy();
-          chart = null;
-          renderChart();
+          updateChartColors();
         }
       }
     });
     obs.observe(document.documentElement, { attributes: true });
+
+    // custom event from FAB palette switcher
+    document.addEventListener("paletteChanged", () => {
+      updateChartColors();
+    });
+
     themeObserverInit = true;
   }
 
@@ -219,7 +213,6 @@ Author: ImSalione
     return false;
   }
 
-  // Init sequence
   async function start() {
     const ok = await waitFor(
       () =>

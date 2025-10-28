@@ -8,6 +8,7 @@
  * - Executes initPortfolio only once after partialsAllLoaded
  * - Keeps all theme, language, and palette systems functional
  * - Full compatibility with projects.js & github-contrib.js
+ * - Swapped project cards: image on front, text on back
  */
 
 let currentLang = localStorage.getItem("lang") || "en";
@@ -224,34 +225,50 @@ function renderTimeline(items) {
   });
 }
 
+/* =======================================================
+💼 RENDER PROJECTS (Swapped Image/Text + GitHub Icon)
+======================================================= */
 function renderProjects(projects) {
   const container = document.querySelector(".projects-wrapper");
   if (!container) return;
 
-  // ✅ حذف فقط کارت‌های غیر گیتهاب
+  // ✅ Remove only non-GitHub cards
   [...container.querySelectorAll(".project-card")].forEach(card => {
     if (!card.classList.contains("github-activity-card")) card.remove();
   });
 
-  // 🧩 افزودن پروژه‌های جدید
+  // 🧩 Add project cards (swapped)
   projects.forEach(p => {
     const card = document.createElement("div");
-    card.classList.add("project-card");
+    card.classList.add("project-card", "swapped");
+
     card.innerHTML = `
       <div class="card-inner">
-        <div class="card-front">
-          <h3>${p.title || ""}</h3>
-          <p>${p.desc || ""}</p>
-        </div>
+        <!-- 🖼️ FRONT SIDE (Image) -->
         <div class="card-back" style="background-image: url('${p.image || ""}')">
-          ${p.link ? `<a href="${p.link}" target="_blank" rel="noopener" class="github-btn">View on GitHub</a>` : ""}
+        </div>
+
+        <!-- 📝 BACK SIDE (Text + GitHub Icon) -->
+        <div class="card-front">
+          <div class="title-row">
+            <h3>${p.title || ""}</h3>
+            ${
+              p.link
+                ? `<a href="${p.link}" target="_blank" rel="noopener" class="github-icon" title="View on GitHub">
+                     <i class="fab fa-github"></i>
+                   </a>`
+                : ""
+            }
+          </div>
+          <p>${p.desc || ""}</p>
         </div>
       </div>
     `;
+
     container.appendChild(card);
   });
 
-  // 📢 اطلاع برای projects.js تا کارت گیتهاب را مجدد بررسی کند
+  // 📢 Notify other scripts
   document.dispatchEvent(new Event("projectsRendered"));
 }
 
@@ -286,7 +303,6 @@ function bindSkillEvents(skillsGrid, descBox) {
 /* =======================================================
 🚀 KICKOFF
 ======================================================= */
-// فقط بعد از لود کامل همه‌ی پارشال‌ها اجرا شود
 document.addEventListener("partialsAllLoaded", async () => {
   try {
     await initPortfolio();

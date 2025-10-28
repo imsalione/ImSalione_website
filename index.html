@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <!-- =======================================================
-🌐 ImSalione Portfolio – Index Page (Enhanced GitHub Chart Version)
-Loads partials (home, skills, projects) and integrates animated GitHub chart.
+🌐 ImSalione Portfolio – Index Page (Swapped Projects Version)
 ======================================================= -->
 <head>
   <meta charset="UTF-8" />
@@ -85,17 +84,18 @@ Loads partials (home, skills, projects) and integrates animated GitHub chart.
   <!-- Chart.js must load BEFORE github-contrib.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
+  <!-- 🧩 Load Projects before Loader -->
+  <script src="js/projects.js"></script>
+
   <!-- Loader (loads partials dynamically) -->
   <script src="js/loader.js"></script>
 
   <!-- Feature Modules -->
   <script src="js/skills.js"></script>
   <script src="js/github-contrib.js"></script>
-  <script src="js/projects.js"></script>
 
   <!-- FAB Module -->
   <script src="js/fab.js" defer></script>
-
 
   <!-- =======================================================
   🧠 FAB Initialization + Event Binding
