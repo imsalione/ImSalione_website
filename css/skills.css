@@ -31,9 +31,11 @@ html[dir="rtl"] .skills-timeline-grid {
   position: relative;
   padding: 1rem 0;
   overflow-y: auto;
+  scrollbar-width: none;
   height: 100%;
   width: 90%;
 }
+#timeline::-webkit-scrollbar { display: none; }
 
 .timeline::before {
   content: "";

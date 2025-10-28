@@ -11,7 +11,7 @@ Fully synchronized with active color palette
   box-shadow: 0 3px 10px var(--shadow);
   height: 220px;
   position: relative;
-  overflow: hidden;
+  overflow-y: hidden;
   transition: all 0.3s ease;
 }
 
