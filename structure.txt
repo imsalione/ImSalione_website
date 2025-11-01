@@ -1,6 +1,9 @@
 Folder PATH listing
 Volume serial number is 3A10-CC11
 C:.
+|   .env
+|   .gitattributes
+|   .gitignore
 |   .htaccess
 |   index.html
 |   robots.txt
@@ -8,6 +11,7 @@ C:.
 |   structure.txt
 |   
 +---api
+|       cacert.pem
 |       github_contrib.php
 |       
 +---assets
@@ -47,12 +51,23 @@ C:.
 |       skills.js
 |       utils.js
 |       
-\---partials
-        awards.html
-        contacts.html
-        fab.html
-        github-contrib.html
-        home.html
-        projects.html
-        skills.html
-        
++---partials
+|       awards.html
+|       contacts.html
+|       fab.html
+|       github-contrib.html
+|       home.html
+|       projects.html
+|       skills.html
+|       
+\---public_html
+    |   .htaccess
+    |   index.html
+    |   robots.txt
+    |   script.js
+    |   sitemap.xml
+    |   style.css
+    |   
+    \---assets
+            profile.jpg
+            

@@ -67,5 +67,11 @@
       "link": "https://github.com/imsalione/Diabetes",
       "image": "assets/images/project-cards/diabetes-prediction.png"
     }
-  ]
+  ],
+
+  "about_title": "درباره من",
+  "skills_title": "مهارت‌ها",
+  "education_title": "سوابق تحصیلی",
+  "work_title": "سوابق کاری",
+  "projects_title": "پروژه‌های من"
 }

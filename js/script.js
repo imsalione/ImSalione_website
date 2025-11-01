@@ -310,3 +310,52 @@ document.addEventListener("partialsAllLoaded", async () => {
     console.error("❌ Portfolio initialization error:", err);
   }
 });
+
+/* =======================================================
+🌐 Section Titles Localization
+======================================================= */
+async function applySectionTitle(id, jsonKey) {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  const textEl = el.querySelector(".section-title-text");
+  const html = document.documentElement;
+  const lang = (html.getAttribute("lang") || "en").toLowerCase();
+  const jsonPath = lang.startsWith("fa") ? "content/fa.json" : "content/en.json";
+
+  try {
+    const res = await fetch(jsonPath, { cache: "no-store" });
+    const data = await res.json();
+    const localized = data[jsonKey] || jsonKey;
+    if (textEl) textEl.textContent = localized;
+  } catch (err) {
+    console.error(`⚠️ Failed to load localized title for ${jsonKey}:`, err);
+  }
+}
+
+/* =======================================================
+🧩 Auto Apply Section Titles after partial load
+======================================================= */
+document.addEventListener("partialsLoaded", e => {
+  const id = e.detail?.id;
+  if (!id) return;
+
+  switch (id) {
+    case "home-about":
+      applySectionTitle("about-title", "about_title");
+      break;
+    case "skills-timeline":
+      applySectionTitle("skills-title", "skills_title");
+      break;
+    case "projects":
+      applySectionTitle("projects-title", "projects_title");
+      break;
+  }
+});
+
+// 🔄 Reapply when language changes
+document.addEventListener("languageChanged", () => {
+  applySectionTitle("about-title", "about_title");
+  applySectionTitle("skills-title", "skills_title");
+  applySectionTitle("projects-title", "projects_title");
+});

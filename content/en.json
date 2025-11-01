@@ -67,5 +67,12 @@
       "link": "https://github.com/imsalione/Diabetes",
       "image": "assets/images/project-cards/diabetes-prediction.png"
     }
-  ]
+  ],
+
+"section_titles_meta": "Section Titles",
+  "about_title": "About Me",
+  "skills_title": "Skills",
+  "education_title": "Education",
+  "work_title": "Work History",
+  "projects_title": "My Projects"
 }

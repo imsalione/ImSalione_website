@@ -136,3 +136,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   syncFrontGhostImages();
 });
+
+/* =======================================================
+🌐 Localized Projects Title Loader
+✨ Reads from en.json / fa.json and updates dynamically
+======================================================= */
+async function applyProjectsTitleLocale() {
+  const titleEl = document.getElementById("projects-title");
+  if (!titleEl) return;
+
+  const textEl = titleEl.querySelector(".section-title-text");
+  const html = document.documentElement;
+  const lang = (html.getAttribute("lang") || "en").toLowerCase();
+  const jsonPath = lang.startsWith("fa") ? "content/fa.json" : "content/en.json"; // ✅ مسیر اصلاح شد
+
+  try {
+    const res = await fetch(jsonPath, { cache: "no-store" });
+    const data = await res.json();
+    const localized = data.projects_title || (lang.startsWith("fa") ? "پروژه‌های من" : "My Projects");
+    if (textEl) textEl.textContent = localized;
+  } catch (err) {
+    console.error("⚠️ Failed to load localized title:", err);
+  }
+}
+
+
+// Initial load
+document.addEventListener("DOMContentLoaded", applyProjectsTitleLocale);
+
+// Update when language changes
+document.addEventListener("languageChanged", applyProjectsTitleLocale);
+
+// Update when project partial reloads
+document.addEventListener("partialsLoaded", e => {
+  if (e.detail && e.detail.id === "projects") {
+    applyProjectsTitleLocale();
+  }
+});
