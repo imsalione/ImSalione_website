@@ -12,8 +12,6 @@
   align-items: center;
   gap: 0.8rem;
   position: relative;
-  margin-bottom: 1.8rem;
-  padding-bottom: 0.6rem;
   font-weight: 800;
   letter-spacing: 0.4px;
   font-size: clamp(1.3rem, 1.6vw, 1.6rem);

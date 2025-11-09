@@ -20,55 +20,6 @@ Final Professional Version - ImSalione 2025
 }
 
 /* ---------------------------------
-🏷️ Section Title (Modern Bilingual)
---------------------------------- */
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 0.6rem;
-  letter-spacing: 0.2px;
-  user-select: none;
-}
-
-.section-title i {
-  font-size: 1.1rem;
-  color: var(--primary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.section-title-text {
-  background-image: linear-gradient(90deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-/* subtle divider line */
-.section-title::after {
-  content: "";
-  flex: 1;
-  height: 2px;
-  margin-left: 0.6rem;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--primary), transparent 70%);
-  opacity: 0.5;
-}
-
-/* Hover micro animation */
-.section-title:hover i {
-  transform: translateY(-1px);
-  transition: transform 0.25s ease;
-}
-
-/* ---------------------------------
 🧩 Grid Layout
 --------------------------------- */
 .projects-wrapper {

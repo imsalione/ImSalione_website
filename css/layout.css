@@ -1,15 +1,16 @@
 /* =======================================================
-ImSalione Portfolio - Page Layout (Optimized 2025)
-Defines structural grid, placement, and responsive flow.
+🧱 ImSalione Portfolio - Page Layout (Clean & Modern)
+📁 File: css/layout.css
+Defines structural grid, placement, and responsive behavior.
 ======================================================= */
 
-/* =======================================================
-PAGE WRAPPER (Main Grid Container)
-======================================================= */
+/* ---------------------------------
+🌍 Main Page Wrapper (Two-Column Layout)
+--------------------------------- */
 /**
- * Main two-column layout:
+ * Layout structure:
  * Left column → Home/About section
- * Right column → Skills and Projects
+ * Right column → Skills + Projects stacked vertically
  */
 .page-wrapper {
   display: grid;
@@ -22,25 +23,20 @@ PAGE WRAPPER (Main Grid Container)
   align-items: stretch;
   justify-content: center;
   box-sizing: border-box;
-  overflow: hidden;
   border-radius: var(--radius);
   background: var(--bg-primary);
+  overflow: hidden; /* prevent full-page scroll */
 }
 
-/* Reverse grid order for RTL languages */
+/* Reverse order for RTL languages */
 html[dir="rtl"] .page-wrapper {
   grid-template-columns: 30% 70%;
   direction: rtl;
 }
 
-/* =======================================================
+/* ---------------------------------
 🏠 LEFT COLUMN (Home / About Section)
-======================================================= */
-/**
- * Structure of #home-about:
- * - Uses flex for vertical stacking
- * - Fills full height of the left column
- */
+--------------------------------- */
 #home-about {
   display: flex;
   flex-direction: column;
@@ -48,18 +44,13 @@ html[dir="rtl"] .page-wrapper {
   align-items: center;
   height: 100%;
   padding: 1rem;
-  overflow: hidden; /* Prevent double scroll; inner box handles scroll */
+  overflow: hidden; /* inner elements manage their own scroll */
   box-sizing: border-box;
 }
 
-/* =======================================================
+/* ---------------------------------
 🧠 RIGHT COLUMN (Skills + Projects)
-======================================================= */
-/**
- * Right column is divided into two stacked sections:
- * - Top → Skills
- * - Bottom → Projects
- */
+--------------------------------- */
 .right-column {
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -69,28 +60,35 @@ html[dir="rtl"] .page-wrapper {
   box-sizing: border-box;
 }
 
-/* Skills Section Structure */
+/* ---------------------------------
+🧩 Skills Section Container
+--------------------------------- */
 #skills-timeline {
-  overflow: hidden;
   padding: 1.6rem;
   box-sizing: border-box;
   height: 100%;
+  overflow: hidden; /* no scroll for outer container */
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
 }
 
-/* Projects Section Structure */
+/* ---------------------------------
+💼 Projects Section Container
+--------------------------------- */
 #projects {
-  overflow: hidden;
   padding: 1.6rem;
   box-sizing: border-box;
   height: 100%;
+  overflow: hidden;
+  background: var(--bg-secondary);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-color);
 }
 
-/* =======================================================
-📱 RESPONSIVE DESIGN
-======================================================= */
-/**
- * Stack all sections vertically on smaller screens.
- */
+/* ---------------------------------
+📱 RESPONSIVE DESIGN (Mobile & Tablet)
+--------------------------------- */
 @media (max-width: 992px) {
   .page-wrapper {
     grid-template-columns: 1fr;
@@ -110,5 +108,6 @@ html[dir="rtl"] .page-wrapper {
   #projects {
     min-height: auto;
     padding: 1.2rem;
+    border-radius: var(--radius-sm);
   }
 }
