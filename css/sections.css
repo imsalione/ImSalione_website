@@ -48,34 +48,11 @@
 }
 
 /* ---------------------------------
-💫 Underline Accent (Glowing Line)
---------------------------------- */
-.section-title::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 2px;
-  width: 100%;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--primary), transparent 70%);
-  box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
-  opacity: 0.7;
-  transform: scaleX(0.9);
-  transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-/* ---------------------------------
 🪄 Hover Effects (Subtle Lift & Glow)
 --------------------------------- */
 .section-title:hover i {
   transform: translateY(-1.5px);
   filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));
-}
-
-.section-title:hover::after {
-  transform: scaleX(1);
-  opacity: 1;
 }
 
 /* ---------------------------------

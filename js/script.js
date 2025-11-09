@@ -9,6 +9,7 @@
  * - Keeps all theme, language, and palette systems functional
  * - Full compatibility with projects.js & github-contrib.js
  * - Swapped project cards: image on front, text on back
+ * - Added dynamic section titles (About, Skills, Projects)
  */
 
 let currentLang = localStorage.getItem("lang") || "en";
@@ -49,6 +50,7 @@ async function updateLanguage(lang) {
   currentLang = lang;
   localStorage.setItem("lang", lang);
   document.documentElement.setAttribute("dir", lang === "fa" ? "rtl" : "ltr");
+  document.documentElement.setAttribute("lang", lang);
 
   // Cross-fade visual reset
   const wrapper = document.querySelector(".page-wrapper");
@@ -61,6 +63,11 @@ async function updateLanguage(lang) {
   updateTheme(currentTheme);
   updatePaletteMenuLabels();
   await loadContent(lang);
+
+  // ✅ Refresh section titles dynamically
+  applySectionTitle("about-title", "about_title");
+  applySectionTitle("skills-title", "skills_title");
+  applySectionTitle("projects-title", "projects_title");
 }
 
 /* =======================================================
@@ -164,13 +171,13 @@ function renderContent(data) {
   const title = document.querySelector("#home-about h1");
   const subtitle = document.querySelector("#home-about .subtitle");
   const desc = document.querySelector("#home-about .description");
-  const aboutTitle = document.querySelector("#home-about .section-title");
+  const aboutTitle = document.querySelector("#home-about .section-title-text");
   const bioBox = document.querySelector("#home-about .bio-box");
 
   if (title) title.textContent = data.home?.title || "";
   if (subtitle) subtitle.textContent = data.home?.subtitle || "";
   if (desc) desc.textContent = data.home?.description || "";
-  if (aboutTitle) aboutTitle.textContent = data.about?.title || "";
+  if (aboutTitle) aboutTitle.textContent = data.about_title || data.about?.title || "";
 
   if (bioBox) {
     bioBox.innerHTML = "";
@@ -245,8 +252,7 @@ function renderProjects(projects) {
     card.innerHTML = `
       <div class="card-inner">
         <!-- 🖼️ FRONT SIDE (Image) -->
-        <div class="card-back" style="background-image: url('${p.image || ""}')">
-        </div>
+        <div class="card-back" style="background-image: url('${p.image || ""}')"></div>
 
         <!-- 📝 BACK SIDE (Text + GitHub Icon) -->
         <div class="card-front">
@@ -301,18 +307,7 @@ function bindSkillEvents(skillsGrid, descBox) {
 }
 
 /* =======================================================
-🚀 KICKOFF
-======================================================= */
-document.addEventListener("partialsAllLoaded", async () => {
-  try {
-    await initPortfolio();
-  } catch (err) {
-    console.error("❌ Portfolio initialization error:", err);
-  }
-});
-
-/* =======================================================
-🌐 Section Titles Localization
+🌐 SECTION TITLES LOCALIZATION
 ======================================================= */
 async function applySectionTitle(id, jsonKey) {
   const el = document.getElementById(id);
@@ -334,7 +329,7 @@ async function applySectionTitle(id, jsonKey) {
 }
 
 /* =======================================================
-🧩 Auto Apply Section Titles after partial load
+🧩 Auto Apply Titles after Partial Load
 ======================================================= */
 document.addEventListener("partialsLoaded", e => {
   const id = e.detail?.id;
@@ -358,4 +353,15 @@ document.addEventListener("languageChanged", () => {
   applySectionTitle("about-title", "about_title");
   applySectionTitle("skills-title", "skills_title");
   applySectionTitle("projects-title", "projects_title");
+});
+
+/* =======================================================
+🚀 KICKOFF
+======================================================= */
+document.addEventListener("partialsAllLoaded", async () => {
+  try {
+    await initPortfolio();
+  } catch (err) {
+    console.error("❌ Portfolio initialization error:", err);
+  }
 });
