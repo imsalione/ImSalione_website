@@ -1,78 +1,344 @@
 {
-  "home": {
-    "title": "I'm Saleh",
-    "subtitle": "Data Analyst and Data Engineer",
-    "description": "Turning data into decisions through analytics, automation, and intelligent systems."
-  },
-  "about": {
-    "title": "About Me",
-    "paragraphs": [
-      "My professional journey began with a passion for structuring complex and unorganized data, which evolved into deep expertise in data analytics and intelligent decision-support systems.",
-      "In the early stages of my career, Microsoft Excel became my main analytical platform — transforming from a simple spreadsheet tool into a powerful environment for modeling, visualization, and reporting. My advanced command of PivotTables, Power Query, Power Pivot, and data modeling techniques enabled me to turn raw, scattered data into actionable insights.",
-      "One of my key achievements was designing and implementing a flat data warehouse that centralized sales, performance, and financial data from multiple sources. This architecture, integrated with Excel and ERP systems, became the foundation for automated reporting and smart analytics within the organization.",
-      "Currently, I focus on advancing my technical expertise in Python, Django, SQL, and data engineering — with a strong interest in building scalable, intelligent data pipelines for efficient collection, transformation, and analysis.",
-      "My long-term vision is to develop a personal platform called XWork — an innovative ecosystem designed to help individuals manage their professional identity and career growth. XWork aims to integrate AI and data analytics to empower users with smarter, data-driven career decisions."
+  "intro": {
+    "profile_image": "assets/profile.jpg",
+    "full_name": "Saleh Abedinezhad",
+    "title": "Programmer · Data Analyst | Software Solutions Architect",
+    "contacts": {
+      "email": "salehabedinezhad@gmail.com",
+      "phone": "+98 919 898 0661",
+      "github": "https://github.com/imsalione",
+      "linkedin": "https://www.linkedin.com/in/imsalione",
+      "instagram": "https://www.instagram.com/imsalione"
+    },
+    "about": [
+      "My professional journey began with a passion for structuring complex and unorganized data, evolving into a deep specialization in big data analytics and intelligent decision-support systems.",
+      "In the early stages of my career, Microsoft Excel became my primary analytical platform—transformed from a simple spreadsheet tool into a robust environment for data modeling, visualization, and reporting. My advanced proficiency in PivotTables, Power Query, Power Pivot, and data modeling techniques enabled me to convert raw and fragmented datasets into dynamic and actionable insights.",
+      "One of my major achievements was the design and implementation of a Flat Data Warehouse, which centralized sales, performance, and financial data from multiple sources. This architecture, integrated with Excel and ERP systems, became the foundation for automated reporting and smart analytics within the organization.",
+      "Currently, I am focused on advancing my technical expertise in Python, Django, SQL, and Data Engineering, with a strong interest in building scalable and intelligent data pipelines for efficient data collection, transformation, and analysis.",
+      "My long-term vision is to develop my personal platform, XWork—an innovative ecosystem designed to help individuals manage their professional identity and career growth. XWork aims to integrate AI and data analytics to empower users in making smarter, data-driven career decisions."
     ]
   },
-  "skills": [
-    { "name": "Python", "desc": "Python for data pipelines, analytics, and automation" },
-    { "name": "Django", "desc": "Django for scalable web applications and APIs" },
-    { "name": "SQL", "desc": "SQL for data modeling and query optimization" },
-    { "name": "Excel", "desc": "Excel for advanced modeling and reporting" },
-    { "name": "Power BI", "desc": "Power BI for interactive dashboards and KPIs" },
-    { "name": "Data Engineering", "desc": "Collecting, transforming, and orchestrating data" },
-    { "name": "Machine Learning", "desc": "Predictive and classification models" },
-    { "name": "Data Visualization", "desc": "Presenting data in a clear and understandable way" }
-  ],
+
   "timeline": [
-    { "date": "2022 – Present", "title": "Freelance Data Engineer", "subtitle": "Independent Projects" },
-    { "date": "2022 – 2023", "title": "Data Science Program", "subtitle": "Sharif University of Technology" },
-    { "date": "2011 – 2022", "title": "Budget and Planning Analyst", "subtitle": "National Organization of Educational Testing" },
-    { "date": "2013 – 2015", "title": "Associate in Computer Programming", "subtitle": "Gostaresh Informatics University" }
-  ],
-  "projects": [
     {
-      "title": "XWork",
-      "desc": "A multilingual professional networking platform for creating and showcasing career profiles with activity timelines, skills, and AI-powered insights. XWork helps users document their career growth and leverage AI to generate smart resumes and cover letters.",
-      "link": "https://github.com/imsalione/xwork",
-      "image": "assets/images/project-cards/xwork.png"
+      "id": "event_1",
+      "title": "Introductory Computer Skills Course",
+      "subtitle": "Hafeze-Bartar School",
+      "date": "2006",
+      "type": "education",
+      "description": "First steps in learning computer fundamentals",
+      "skills_acquired": ["Computer Basics", "MS Office"],
+      "skills_cumulative": ["Computer Basics", "MS Office"]
     },
     {
-      "title": "MiniRates",
-      "desc": "A modern Python desktop application for real-time monitoring of currency, gold, and coin prices. The app integrates multiple data sources simultaneously, visualizes market trends, and includes light/dark themes with analytical trend displays.",
-      "link": "https://github.com/imsalione/Price_Checker",
-      "image": "assets/images/project-cards/minirates.png"
+      "id": "event_2",
+      "title": "Planning and Budget Analyst",
+      "subtitle": "Budget Expert and Data Analyst",
+      "date": "2008",
+      "type": "work",
+      "description": "Beginning professional career with focus on budget analysis",
+      "skills_acquired": ["Excel Advanced", "Data Modeling", "Financial Analysis"],
+      "skills_cumulative": [
+        "Computer Basics",
+        "MS Office",
+        "Excel Advanced",
+        "Data Modeling",
+        "Financial Analysis"
+      ]
     },
     {
-      "title": "Data Pipeline Automation",
-      "desc": "An automated ETL system designed for organizations to collect, clean, merge, and process data from multiple data sources. The project includes a dynamic reporting module, duplicate detection, and structured outputs for managerial decision-making.",
-      "link": "#",
-      "image": "assets/images/project-cards/etl.png"
+      "id": "event_3",
+      "title": "Data Analyst",
+      "subtitle": "National & Provincial Projects",
+      "date": "2014 - 2019",
+      "type": "work",
+      "description": "Large-scale data analysis projects and data warehouses",
+      "skills_acquired": ["SQL", "Power Query", "Power Pivot", "ETL", "Data Visualization"],
+      "skills_cumulative": [
+        "Computer Basics",
+        "MS Office",
+        "Excel Advanced",
+        "Data Modeling",
+        "Financial Analysis",
+        "SQL",
+        "Power Query",
+        "Power Pivot",
+        "ETL",
+        "Data Visualization"
+      ]
     },
     {
-      "title": "Python in Persian",
-      "desc": "An interactive educational platform for learning Python in Persian, focusing on hands-on training within Jupyter Notebook. The project simplifies programming concepts for Persian speakers through practical exercises, data analysis, and real-world projects.",
-      "link": "#",
-      "image": "assets/images/project-cards/python-course.png"
+      "id": "event_4",
+      "title": "Python Instructor",
+      "subtitle": "Islamic Azad University",
+      "date": "2019",
+      "type": "education",
+      "description": "Teaching Python programming fundamentals",
+      "skills_acquired": ["Python", "Teaching", "Pandas", "NumPy"],
+      "skills_cumulative": [
+        "Computer Basics",
+        "MS Office",
+        "Excel Advanced",
+        "Data Modeling",
+        "Financial Analysis",
+        "SQL",
+        "Power Query",
+        "Power Pivot",
+        "ETL",
+        "Data Visualization",
+        "Python",
+        "Teaching",
+        "Pandas",
+        "NumPy"
+      ]
     },
     {
-      "title": "Sales & Financial Dashboard",
-      "desc": "An interactive Excel dashboard for analyzing sales and financial performance using ERP-sourced data. This project includes data modeling, key performance indicators (KPIs), and visual reports to support strategic decision-making in organizations.",
-      "link": "https://github.com/imsalione/faostat-assignment",
-      "image": "assets/images/project-cards/excel-dashboard.png"
+      "id": "event_5",
+      "title": "Freelance Python Developer",
+      "subtitle": "Various Projects",
+      "date": "2020 - Present",
+      "type": "work",
+      "description": "Developing custom solutions and automation tools",
+      "skills_acquired": ["Django", "Web Development", "API Design", "Git & GitHub"],
+      "skills_cumulative": [
+        "Computer Basics",
+        "MS Office",
+        "Excel Advanced",
+        "Data Modeling",
+        "Financial Analysis",
+        "SQL",
+        "Power Query",
+        "Power Pivot",
+        "ETL",
+        "Data Visualization",
+        "Python",
+        "Teaching",
+        "Pandas",
+        "NumPy",
+        "Django",
+        "Web Development",
+        "API Design",
+        "Git & GitHub"
+      ]
     },
     {
-      "title": "Diabetes Prediction",
-      "desc": "A machine learning project from Sharif University’s Data Science program aimed at predicting the likelihood of diabetes based on patient data. Using classification models and health-related features, a predictive algorithm was developed to estimate.",
-      "link": "https://github.com/imsalione/Diabetes",
-      "image": "assets/images/project-cards/diabetes-prediction.png"
+      "id": "event_6",
+      "title": "Developer & Founder of XWork",
+      "subtitle": "Professional Networking Platform",
+      "date": "2023 - Present",
+      "type": "project",
+      "description": "Building an innovative platform for professional identity management",
+      "skills_acquired": ["HTML & CSS", "JavaScript", "Machine Learning", "UI/UX Design", "Product Development"],
+      "skills_cumulative": [
+        "Computer Basics",
+        "MS Office",
+        "Excel Advanced",
+        "Data Modeling",
+        "Financial Analysis",
+        "SQL",
+        "Power Query",
+        "Power Pivot",
+        "ETL",
+        "Data Visualization",
+        "Python",
+        "Teaching",
+        "Pandas",
+        "NumPy",
+        "Django",
+        "Web Development",
+        "API Design",
+        "Git & GitHub",
+        "HTML & CSS",
+        "JavaScript",
+        "Machine Learning",
+        "UI/UX Design",
+        "Product Development"
+      ]
     }
   ],
 
-"section_titles_meta": "Section Titles",
-  "about_title": "About Me",
-  "skills_title": "Skills",
-  "education_title": "Education",
-  "work_title": "Work History",
-  "projects_title": "My Projects"
+  "skills": {
+    "Computer Basics": {
+      "name": "Computer Basics",
+      "category": "Foundation",
+      "level": "Expert",
+      "desc": "Fundamental computer operations and digital literacy",
+      "icon": "💻"
+    },
+    "MS Office": {
+      "name": "MS Office",
+      "category": "Foundation",
+      "level": "Expert",
+      "desc": "Microsoft Office suite for document processing",
+      "icon": "📊"
+    },
+    "Excel Advanced": {
+      "name": "Excel Advanced",
+      "category": "Data Analysis",
+      "level": "Expert",
+      "desc": "Advanced Excel features including PivotTables and data modeling",
+      "icon": "📈"
+    },
+    "Data Modeling": {
+      "name": "Data Modeling",
+      "category": "Data Analysis",
+      "level": "Expert",
+      "desc": "Designing efficient data structures for analytical systems",
+      "icon": "🗂️"
+    },
+    "Financial Analysis": {
+      "name": "Financial Analysis",
+      "category": "Business",
+      "level": "Advanced",
+      "desc": "Budget planning and financial reporting",
+      "icon": "💰"
+    },
+    "SQL": {
+      "name": "SQL",
+      "category": "Database",
+      "level": "Expert",
+      "desc": "Database design and complex analytical queries",
+      "icon": "🗄️"
+    },
+    "Power Query": {
+      "name": "Power Query",
+      "category": "Data Analysis",
+      "level": "Expert",
+      "desc": "Data transformation and ETL processes",
+      "icon": "⚡"
+    },
+    "Power Pivot": {
+      "name": "Power Pivot",
+      "category": "Data Analysis",
+      "level": "Expert",
+      "desc": "Advanced data modeling and DAX calculations",
+      "icon": "🔄"
+    },
+    "ETL": {
+      "name": "ETL",
+      "category": "Data Engineering",
+      "level": "Advanced",
+      "desc": "Extract, Transform, Load processes",
+      "icon": "🔧"
+    },
+    "Data Visualization": {
+      "name": "Data Visualization",
+      "category": "Data Analysis",
+      "level": "Expert",
+      "desc": "Creating insightful visualizations",
+      "icon": "📊"
+    },
+    "Python": {
+      "name": "Python",
+      "category": "Programming",
+      "level": "Expert",
+      "desc": "Python for data analysis and web development",
+      "icon": "🐍"
+    },
+    "Teaching": {
+      "name": "Teaching",
+      "category": "Soft Skills",
+      "level": "Advanced",
+      "desc": "Educational experience in programming",
+      "icon": "👨‍🏫"
+    },
+    "Pandas": {
+      "name": "Pandas",
+      "category": "Data Analysis",
+      "level": "Expert",
+      "desc": "Data manipulation using Pandas library",
+      "icon": "🐼"
+    },
+    "NumPy": {
+      "name": "NumPy",
+      "category": "Data Analysis",
+      "level": "Advanced",
+      "desc": "Numerical computing and array operations",
+      "icon": "🔢"
+    },
+    "Django": {
+      "name": "Django",
+      "category": "Web Development",
+      "level": "Expert",
+      "desc": "Building scalable web applications",
+      "icon": "🌐"
+    },
+    "Web Development": {
+      "name": "Web Development",
+      "category": "Programming",
+      "level": "Advanced",
+      "desc": "Full-stack web development",
+      "icon": "🌍"
+    },
+    "API Design": {
+      "name": "API Design",
+      "category": "Software Architecture",
+      "level": "Advanced",
+      "desc": "RESTful API design and implementation",
+      "icon": "🔌"
+    },
+    "Git & GitHub": {
+      "name": "Git & GitHub",
+      "category": "Development Tools",
+      "level": "Expert",
+      "desc": "Version control and collaborative development",
+      "icon": "🔀"
+    },
+    "HTML & CSS": {
+      "name": "HTML & CSS",
+      "category": "Web Development",
+      "level": "Expert",
+      "desc": "Designing modern UI with clean layouts",
+      "icon": "🎨"
+    },
+    "JavaScript": {
+      "name": "JavaScript",
+      "category": "Web Development",
+      "level": "Advanced",
+      "desc": "Creating dynamic front-end interactions",
+      "icon": "⚡"
+    },
+    "Machine Learning": {
+      "name": "Machine Learning",
+      "category": "AI & ML",
+      "level": "Advanced",
+      "desc": "Modeling and analysis using ML algorithms",
+      "icon": "🤖"
+    },
+    "UI/UX Design": {
+      "name": "UI/UX Design",
+      "category": "Design",
+      "level": "Advanced",
+      "desc": "User interface and experience design",
+      "icon": "🎯"
+    },
+    "Product Development": {
+      "name": "Product Development",
+      "category": "Business",
+      "level": "Advanced",
+      "desc": "End-to-end product development",
+      "icon": "🚀"
+    }
+  },
+  
+  "projects": [
+    {
+      "title": "XWork",
+      "desc": "A web platform for professional profiles, timelines, and job opportunities.",
+      "link": "https://qvork.com"
+    },
+    {
+      "title": "Price Checker",
+      "desc": "Desktop app for real-time tracking of currency and gold rates.",
+      "link": "https://github.com/imsalione/Price_Checker"
+    },
+    {
+      "title": "ETL Dashboard",
+      "desc": "Data collection and analysis system for organizational reporting."
+    },
+    {
+      "title": "Diabetes Prediction",
+      "desc": "Machine learning project predicting diabetes based on health data."
+    }
+  ]
 }

@@ -1,0 +1,451 @@
+/* =======================================================
+ 🎨 Common Components & Utilities
+ File: css/common.css
+ Purpose: Reusable components, utility classes, shared styles
+ Author: Saleh Abedinezhad
+ 
+ Enhanced Features:
+ - True glassmorphism with high transparency
+ - Improved depth perception with layered shadows
+ - Smooth animations and transitions
+ - Accessibility-focused interactions
+======================================================= */
+
+/* =======================================================
+   🧊 GLASSMORPHISM PANEL (Reusable Component)
+======================================================= */
+.glass-panel {
+  /* Core Glass Effect with High Transparency */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+
+  /* Appearance */
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+
+  /* Layered Shadow for Depth */
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--border-highlight);
+
+  padding: 1rem;
+  overflow: hidden;
+
+  position: relative;
+  z-index: 1;
+
+  /* Smooth Transitions */
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    background var(--transition),
+    border-color var(--transition);
+}
+
+/* Hover Enhancement with Elevated Shadow */
+.glass-panel:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 50px var(--shadow-color),
+    0 0 30px rgba(99, 102, 241, 0.15),
+    0 0 0 1px var(--border-highlight),
+    inset 0 1px 0 var(--border-highlight);
+  border-color: var(--border-highlight);
+}
+
+/* Top Shine Effect - Subtle Gradient */
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 45%;
+  background: linear-gradient(
+    180deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity var(--transition);
+}
+
+.glass-panel:hover::before {
+  opacity: 1;
+}
+
+/* Edge Glow Effect - Animated on Hover */
+.glass-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    var(--glass-edge),
+    transparent 90%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+
+.glass-panel:hover::after {
+  opacity: 1;
+}
+
+
+/* =======================================================
+   🏷 SECTION TITLES
+======================================================= */
+.section-title {
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+  text-align: center;
+  position: relative;
+  
+  /* Subtle text shadow for depth */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+
+/* =======================================================
+   🎯 UTILITY CLASSES
+======================================================= */
+
+/* Scroll Hidden - Remove Scrollbar Visually */
+.scroll-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth Scroll Behavior */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* Prevent Text Selection */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Text Truncation */
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Multi-line Truncation */
+.truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Fade In Animation */
+.fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide In From Left */
+.slide-in-left {
+  animation: slideInLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide In From Right */
+.slide-in-right {
+  animation: slideInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+
+/* =======================================================
+   🔘 BUTTON BASE STYLES
+======================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Primary Button with Glassmorphism */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #ffffff;
+  box-shadow: 
+    0 4px 12px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 16px rgba(99, 102, 241, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Secondary Button with Glass Effect */
+.btn-secondary {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-highlight);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+
+/* =======================================================
+   💳 CARD BASE STYLES
+======================================================= */
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.2rem;
+  box-shadow: 
+    0 4px 16px var(--shadow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 40%;
+  background: linear-gradient(
+    180deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 24px var(--shadow-color),
+    0 0 20px rgba(99, 102, 241, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  border-color: var(--border-highlight);
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =======================================================
+   🎨 BADGE STYLES
+======================================================= */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.7rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all var(--transition);
+}
+
+.badge:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.badge-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.badge-primary:hover {
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+
+/* =======================================================
+   📱 MOBILE OPTIMIZATIONS
+======================================================= */
+@media (max-width: 768px) {
+  .glass-panel {
+    border-radius: 14px;
+    padding: 1rem;
+    box-shadow:
+      0 4px 24px var(--shadow-color),
+      inset 0 1px 0 var(--border-highlight);
+  }
+
+  .glass-panel:hover {
+    transform: translateY(-1px);
+  }
+
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .card {
+    padding: 1rem;
+    border-radius: 14px;
+  }
+  
+  .section-title {
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+  }
+}
+
+
+/* =======================================================
+   🎯 ACCESSIBILITY ENHANCEMENTS
+======================================================= */
+.btn:focus-visible,
+.card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .glass-panel,
+  .btn,
+  .card,
+  .badge {
+    transition: none !important;
+  }
+  
+  .fade-in,
+  .slide-in-left,
+  .slide-in-right {
+    animation: none !important;
+  }
+}
+
+
+/* =======================================================
+   END OF FILE
+======================================================= */

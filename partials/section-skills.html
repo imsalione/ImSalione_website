@@ -1,0 +1,76 @@
+<div class="skills-wrapper">
+  <h2 class="section-title"></h2>
+  
+  <!-- Progress Indicator - نمایش تعداد مهارت‌های کسب شده -->
+  <div class="skills-progress-bar">
+    <div class="progress-fill"></div>
+    <div class="progress-text">
+      <span class="current-skills">0</span>
+      <span class="separator">/</span>
+      <span class="total-skills">0</span>
+      <span class="label" data-fa="مهارت" data-en="Skills">Skills</span>
+    </div>
+  </div>
+
+  <!-- Timeline Context - نمایش رویداد فعال -->
+  <div class="timeline-context">
+    <div class="context-icon">🎯</div>
+    <div class="context-text">
+      <span class="context-label" data-fa="رویداد فعال:" data-en="Current Event:">Current Event:</span>
+      <span class="context-event">—</span>
+    </div>
+  </div>
+
+  <!-- Skills Grid - نمایش مهارت‌های کسب شده تا این لحظه -->
+  <div class="skills-grid" id="skills-grid">
+    <!-- Skills will be dynamically added here -->
+    <div class="empty-state">
+      <div class="empty-icon">🌱</div>
+      <p class="empty-text" data-fa="سفر یادگیری من اینجا شروع می‌شود..." data-en="My learning journey starts here...">
+        My learning journey starts here...
+      </p>
+    </div>
+  </div>
+
+  <!-- Skills Legend - راهنمای دسته‌بندی -->
+  <div class="skills-legend">
+    <div class="legend-item">
+      <span class="legend-dot" style="background: var(--category-programming)"></span>
+      <span class="legend-label" data-fa="برنامه‌نویسی" data-en="Programming">Programming</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background: var(--category-data)"></span>
+      <span class="legend-label" data-fa="تحلیل داده" data-en="Data Analysis">Data Analysis</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background: var(--category-web)"></span>
+      <span class="legend-label" data-fa="وب" data-en="Web Dev">Web Dev</span>
+    </div>
+    <div class="legend-item">
+      <span class="legend-dot" style="background: var(--category-other)"></span>
+      <span class="legend-label" data-fa="سایر" data-en="Other">Other</span>
+    </div>
+  </div>
+
+  <!-- Selected Skill Detail Modal -->
+  <div class="skill-detail-modal hidden" id="skill-detail-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close">×</button>
+      <div class="modal-header">
+        <span class="modal-icon">💡</span>
+        <h3 class="modal-title">Skill Name</h3>
+      </div>
+      <div class="modal-body">
+        <div class="modal-category">
+          <span class="category-badge">Category</span>
+        </div>
+        <div class="modal-level">
+          <span class="level-label" data-fa="سطح:" data-en="Level:">Level:</span>
+          <span class="level-value">Expert</span>
+        </div>
+        <p class="modal-description">Skill description goes here...</p>
+      </div>
+    </div>
+  </div>
+</div>

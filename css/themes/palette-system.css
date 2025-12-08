@@ -1,0 +1,323 @@
+/* =======================================================
+ 🎨 Color Palette System - Theme Style Variables
+ File: css/palette-system.css
+ Author: Saleh Abedinezhad (ImSalione)
+ 
+ Purpose: Define color palettes that work with glassmorphism
+ Usage: Apply via data-theme-style attribute
+======================================================= */
+
+/* =======================================================
+   🎨 DEFAULT PALETTE (Purple-Blue)
+======================================================= */
+:root,
+[data-theme-style="default"],
+html[data-theme-style="default"],
+body[data-theme-style="default"] {
+  --primary: #6366f1;
+  --secondary: #8b5cf6;
+  --accent: #ec4899;
+}
+
+
+/* =======================================================
+   🌊 OCEAN PALETTE (Blue Cyan)
+======================================================= */
+[data-theme-style="ocean"],
+html[data-theme-style="ocean"],
+body[data-theme-style="ocean"] {
+  --primary: #0ea5e9;
+  --secondary: #06b6d4;
+  --accent: #0891b2;
+}
+
+
+/* =======================================================
+   🌲 FOREST PALETTE (Green)
+======================================================= */
+[data-theme-style="forest"],
+html[data-theme-style="forest"],
+body[data-theme-style="forest"] {
+  --primary: #10b981;
+  --secondary: #14b8a6;
+  --accent: #059669;
+}
+
+
+/* =======================================================
+   🌅 SUNSET PALETTE (Orange Red)
+======================================================= */
+[data-theme-style="sunset"],
+html[data-theme-style="sunset"],
+body[data-theme-style="sunset"] {
+  --primary: #f59e0b;
+  --secondary: #ef4444;
+  --accent: #dc2626;
+}
+
+
+/* =======================================================
+   🌹 ROSE PALETTE (Pink)
+======================================================= */
+[data-theme-style="rose"],
+html[data-theme-style="rose"],
+body[data-theme-style="rose"] {
+  --primary: #ec4899;
+  --secondary: #f43f5e;
+  --accent: #e11d48;
+}
+
+
+/* =======================================================
+   💜 VIOLET PALETTE (Purple)
+======================================================= */
+[data-theme-style="violet"],
+html[data-theme-style="violet"],
+body[data-theme-style="violet"] {
+  --primary: #8b5cf6;
+  --secondary: #a855f7;
+  --accent: #7c3aed;
+}
+
+
+/* =======================================================
+   ⚫ MONO PALETTE (Grayscale)
+======================================================= */
+[data-theme-style="mono"],
+html[data-theme-style="mono"],
+body[data-theme-style="mono"] {
+  --primary: #6b7280;
+  --secondary: #4b5563;
+  --accent: #374151;
+}
+
+
+/* =======================================================
+   ⚡ NEON PALETTE (Purple Cyan)
+======================================================= */
+[data-theme-style="neon"],
+html[data-theme-style="neon"],
+body[data-theme-style="neon"] {
+  --primary: #a855f7;
+  --secondary: #06b6d4;
+  --accent: #8b5cf6;
+}
+
+
+/* =======================================================
+   🎯 THEME-AWARE BORDER HIGHLIGHTS
+======================================================= */
+:root {
+  --border-highlight: rgba(var(--primary-rgb, 99, 102, 241), 0.4);
+  --glass-edge: rgba(var(--primary-rgb, 99, 102, 241), 0.3);
+}
+
+/* Convert hex to RGB for each palette */
+[data-theme-style="ocean"] {
+  --primary-rgb: 14, 165, 233;
+}
+
+[data-theme-style="forest"] {
+  --primary-rgb: 16, 185, 129;
+}
+
+[data-theme-style="sunset"] {
+  --primary-rgb: 245, 158, 11;
+}
+
+[data-theme-style="rose"] {
+  --primary-rgb: 236, 72, 153;
+}
+
+[data-theme-style="violet"] {
+  --primary-rgb: 139, 92, 246;
+}
+
+[data-theme-style="mono"] {
+  --primary-rgb: 107, 114, 128;
+}
+
+[data-theme-style="neon"] {
+  --primary-rgb: 168, 85, 247;
+}
+
+
+/* =======================================================
+   ✨ SMOOTH TRANSITION FOR PALETTE CHANGES
+======================================================= */
+html.theme-transitioning,
+html.theme-transitioning *,
+body.theme-transitioning,
+body.theme-transitioning * {
+  transition: 
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease !important;
+}
+
+
+/* =======================================================
+   🎨 PALETTE-AWARE GRADIENT BACKGROUNDS
+======================================================= */
+
+/* Timeline Date Badge */
+.timeline-item small,
+[data-theme-style] .timeline-item small {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+}
+
+/* Project Link Button */
+.project-link,
+[data-theme-style] .project-link {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+}
+
+/* FAB Main Button Active */
+#fabMain.fab-active,
+[data-theme-style] #fabMain.fab-active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+}
+
+/* FAB Option Active */
+.fab-option.fab-option-active,
+[data-theme-style] .fab-option.fab-option-active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+}
+
+/* Section Title Gradient */
+.section-title,
+[data-theme-style] .section-title {
+  background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Progress Bar Fill */
+.progress-fill,
+[data-theme-style] .progress-fill {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--primary-rgb, 99, 102, 241), 0.3) 0%,
+    rgba(var(--secondary-rgb, 139, 92, 246), 0.3) 50%,
+    rgba(var(--accent-rgb, 236, 72, 153), 0.3) 100%
+  ) !important;
+}
+
+/* Current Skills Counter */
+.current-skills,
+[data-theme-style] .current-skills {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Timeline Nav Button Hover */
+.timeline-nav button:hover,
+[data-theme-style] .timeline-nav button:hover {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+}
+
+/* Timeline Indicator Active */
+.timeline-indicator span.active,
+[data-theme-style] .timeline-indicator span.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+}
+
+/* About Title Underline */
+.about-title::after,
+[data-theme-style] .about-title::after {
+  background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+}
+
+/* About Modal Title */
+.about-modal-title,
+[data-theme-style] .about-modal-title {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Scrollbar Thumb */
+::-webkit-scrollbar-thumb,
+[data-theme-style] ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary), var(--secondary)) !important;
+}
+
+/* FAB Glow Effect */
+#fabMain::after,
+[data-theme-style] #fabMain::after {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+/* Primary Button */
+.btn-primary,
+[data-theme-style] .btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+}
+
+/* Badge Primary */
+.badge-primary,
+[data-theme-style] .badge-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+}
+
+
+/* =======================================================
+   🎯 PRIMARY COLOR APPLICATIONS
+======================================================= */
+
+/* Text Primary Color */
+.profile-title::before,
+.project-title,
+.skill-name:hover,
+.timeline-item.center h3,
+[data-theme-style] .profile-title::before,
+[data-theme-style] .project-title,
+[data-theme-style] .skill-name:hover,
+[data-theme-style] .timeline-item.center h3 {
+  color: var(--primary) !important;
+}
+
+/* Border Primary Color */
+.timeline-item.center > div,
+.skill-card:hover,
+.intro-header-box:hover,
+.about-box:hover,
+[data-theme-style] .timeline-item.center > div,
+[data-theme-style] .skill-card:hover,
+[data-theme-style] .intro-header-box:hover,
+[data-theme-style] .about-box:hover {
+  border-color: var(--primary) !important;
+}
+
+/* Box Shadow with Primary */
+.timeline-item.center > div,
+.skill-card:hover,
+[data-theme-style] .timeline-item.center > div,
+[data-theme-style] .skill-card:hover {
+  box-shadow:
+    0 12px 40px var(--shadow-color),
+    0 0 30px rgba(var(--primary-rgb, 99, 102, 241), 0.3),
+    0 0 0 1px var(--border-highlight),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+
+/* =======================================================
+   🔧 UTILITY: FORCE PALETTE UPDATE
+======================================================= */
+[data-theme-style] * {
+  /* This ensures all elements inherit the palette */
+  --current-primary: var(--primary);
+  --current-secondary: var(--secondary);
+  --current-accent: var(--accent);
+}
+
+
+/* =======================================================
+   END OF FILE
+======================================================= */

@@ -1,35 +1,213 @@
 <!-- =======================================================
-⚙️ Floating Action Settings Button (Vertical Animated Version)
+ ⚙️ FAB Menu - Enhanced Glassmorphism Partial
+ File: partials/fab.html
+ Author: Saleh Abedinezhad (ImSalione)
+ 
+ Features:
+ - Theme toggle (dark/light)
+ - Language toggle (FA/EN)
+ - Color palette selector
+ - Enhanced glassmorphism styling
 ======================================================= -->
-<div class="fab-menu" id="fabMenu">
-  <!-- Main central button -->
-  <button class="fab-main" id="fabMain" title="Settings">
-    <i class="fas fa-gear"></i>
+
+<div id="fabMenu" role="menu" aria-label="Settings Menu">
+  <!-- Main FAB Button -->
+  <button
+    id="fabMain"
+    class="fab-button"
+    aria-label="Open Settings"
+    aria-expanded="false"
+    aria-haspopup="menu"
+  >
+    <i class="fas fa-cog" aria-hidden="true"></i>
   </button>
 
-  <!-- Vertical submenu -->
-  <div class="fab-submenu" id="fabSubmenu">
-    <button class="fab-option" id="langToggle" title="Language">
-      <i class="fas fa-globe"></i>
-    </button>
-    <button class="fab-option" id="themeToggle" title="Theme">
-      <i class="fas fa-moon"></i>
+  <!-- Submenu Options -->
+  <div id="fabSubmenu" class="fab-submenu" role="menu">
+    <!-- Palette Toggle -->
+    <button
+      id="paletteToggle"
+      class="fab-option"
+      aria-label="Change Color Palette"
+      aria-haspopup="menu"
+      title="Color Palette"
+      tabindex="0"
+    >
+      <i class="fas fa-palette" aria-hidden="true"></i>
     </button>
 
-    <!-- Palette with nested submenu -->
-    <div class="fab-palette-wrapper">
-      <button class="fab-option" id="paletteToggle" title="Palette">
-        <i class="fas fa-palette"></i>
-      </button>
+    <!-- Theme Toggle -->
+    <button
+      id="themeToggle"
+      class="fab-option"
+      aria-label="Toggle Dark/Light Theme"
+      title="Toggle Theme"
+      tabindex="0"
+    >
+      <i class="fas fa-moon" aria-hidden="true"></i>
+    </button>
 
-      <!-- Palette color options -->
-      <div class="fab-palette" id="fabPalette">
-        <div class="color-swatch" data-color="default" title="Default"></div>
-        <div class="color-swatch" data-color="warm"    title="Warm"></div>
-        <div class="color-swatch" data-color="cool"    title="Cool"></div>
-        <div class="color-swatch" data-color="teal"    title="Teal"></div>
-        <div class="color-swatch" data-color="rose"    title="Rose"></div>
-      </div>
-    </div>
+    <!-- Language Toggle -->
+    <button
+      id="langToggle"
+      class="fab-option"
+      aria-label="Change Language"
+      title="Change Language"
+      tabindex="0"
+    >
+      <span class="fab-option-text">EN</span>
+    </button>
+  </div>
+
+  <!-- Palette Submenu -->
+  <div
+    id="fabPalette"
+    class="fab-palette-menu"
+    role="menu"
+    aria-label="Color Palettes"
+  >
+    <!-- Default Palette -->
+    <button
+      class="color-swatch"
+      data-color="default"
+      aria-label="Default Palette"
+      title="Default"
+      role="menuitemradio"
+      aria-checked="true"
+      tabindex="0"
+      style="background: linear-gradient(135deg, #6366f1, #8b5cf6)"
+    ></button>
+
+    <!-- Ocean Palette -->
+    <button
+      class="color-swatch"
+      data-color="ocean"
+      aria-label="Ocean Palette"
+      title="Ocean"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="0"
+      style="background: linear-gradient(135deg, #0ea5e9, #06b6d4)"
+    ></button>
+
+    <!-- Forest Palette -->
+    <button
+      class="color-swatch"
+      data-color="forest"
+      aria-label="Forest Palette"
+      title="Forest"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="0"
+      style="background: linear-gradient(135deg, #10b981, #14b8a6)"
+    ></button>
+
+    <!-- Sunset Palette -->
+    <button
+      class="color-swatch"
+      data-color="sunset"
+      aria-label="Sunset Palette"
+      title="Sunset"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="0"
+      style="background: linear-gradient(135deg, #f59e0b, #ef4444)"
+    ></button>
+
+    <!-- Rose Palette -->
+    <button
+      class="color-swatch"
+      data-color="rose"
+      aria-label="Rose Palette"
+      title="Rose"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="0"
+      style="background: linear-gradient(135deg, #ec4899, #f43f5e)"
+    ></button>
+
+    <!-- Violet Palette -->
+    <button
+      class="color-swatch"
+      data-color="violet"
+      aria-label="Violet Palette"
+      title="Violet"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="0"
+      style="background: linear-gradient(135deg, #8b5cf6, #a855f7)"
+    ></button>
+
+    <!-- Mono Palette -->
+    <button
+      class="color-swatch"
+      data-color="mono"
+      aria-label="Monochrome Palette"
+      title="Mono"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="0"
+      style="background: linear-gradient(135deg, #6b7280, #4b5563)"
+    ></button>
+
+    <!-- Neon Palette -->
+    <button
+      class="color-swatch"
+      data-color="neon"
+      aria-label="Neon Palette"
+      title="Neon"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="0"
+      style="background: linear-gradient(135deg, #a855f7, #06b6d4)"
+    ></button>
   </div>
 </div>
+
+<!-- Keyboard Navigation Script -->
+<script>
+  // Enhanced keyboard navigation for FAB menu
+  (function setupFabKeyboardNav() {
+    'use strict';
+
+    const fabMenu = document.getElementById('fabMenu');
+    if (!fabMenu) return;
+
+    const focusableElements = fabMenu.querySelectorAll(
+      'button[tabindex="0"], .color-swatch[tabindex="0"]'
+    );
+
+    let currentIndex = -1;
+
+    // Handle arrow key navigation
+    fabMenu.addEventListener('keydown', (e) => {
+      if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        return;
+      }
+
+      e.preventDefault();
+
+      const elements = Array.from(focusableElements);
+      
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        currentIndex = (currentIndex + 1) % elements.length;
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        currentIndex = (currentIndex - 1 + elements.length) % elements.length;
+      }
+
+      elements[currentIndex]?.focus();
+    });
+
+    // Handle Enter/Space on color swatches
+    fabMenu.querySelectorAll('.color-swatch').forEach((swatch) => {
+      swatch.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          swatch.click();
+        }
+      });
+    });
+
+    console.log('✅ [FAB] Keyboard navigation ready');
+  })();
+</script>

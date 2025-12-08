@@ -1,0 +1,167 @@
+/**
+ * ========================================================
+ * ☀️ Light Theme - Enhanced High Transparency Glass Mode
+ * ========================================================
+ * @file: css/themes/light.css
+ * @description: Light theme with crystal clear glassmorphism
+ * @author: Saleh Abedinezhad
+ * 
+ * Features:
+ * - Crystal clear glass with minimal tint
+ * - Strong borders for edge definition
+ * - Subtle shadows for depth perception
+ * - Optimized for readability in bright environments
+ * ========================================================
+ */
+
+[data-theme="light"] {
+    /* ===== Core Color Palette ===== */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #e2e8f0;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --color-link: #3b82f6;
+    --primary: #3b82f6;
+    --secondary: #2563eb;
+    --accent: #0ea5e9;
+
+    /* ===== Glassmorphism Variables ===== */
+    /* High transparency for crystal clear glass effect */
+    --bg-card: rgba(255, 255, 255, 0.35);
+    --bg-card-level: rgba(255, 255, 255, 0.45);
+    
+    /* Stronger borders for edge definition on clear glass */
+    --border-color: rgba(30, 41, 59, 0.15);
+    --border-highlight: rgba(59, 130, 246, 0.4);
+    
+    /* Enhanced blur and effects */
+    --blur: 24px;
+    --shadow-color: rgba(31, 38, 135, 0.15);
+    
+    /* Glass shine and edge effects */
+    --glass-shine: rgba(255, 255, 255, 0.5);
+    --glass-edge: rgba(59, 130, 246, 0.25);
+    
+    /* Scrollbar styling */
+    --scrollbar-thumb: rgba(100, 116, 139, 0.4);
+    --scrollbar-thumb-hover: rgba(100, 116, 139, 0.65);
+}
+
+/* ===== Enhanced Scrollbar for Light Theme ===== */
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        180deg,
+        var(--scrollbar-thumb),
+        rgba(59, 130, 246, 0.3)
+    );
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+        180deg,
+        var(--scrollbar-thumb-hover),
+        rgba(59, 130, 246, 0.5)
+    );
+}
+
+/* ===== Additional Light Theme Enhancements ===== */
+[data-theme="light"] .glass-panel {
+    box-shadow:
+        0 8px 32px rgba(31, 38, 135, 0.12),
+        0 0 0 1px rgba(255, 255, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .glass-panel:hover {
+    box-shadow:
+        0 18px 50px rgba(31, 38, 135, 0.18),
+        0 0 30px rgba(59, 130, 246, 0.15),
+        0 0 0 1px rgba(59, 130, 246, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* ===== Section-Specific Glass Effects ===== */
+[data-theme="light"] .intro-header-box,
+[data-theme="light"] .about-box {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow:
+        0 8px 32px rgba(31, 38, 135, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="light"] .project-card {
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow:
+        0 8px 24px rgba(31, 38, 135, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="light"] .skill-card {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(30, 41, 59, 0.12);
+}
+
+[data-theme="light"] .timeline-item > div {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow:
+        0 8px 24px rgba(31, 38, 135, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* ===== Enhanced Center Timeline Card ===== */
+[data-theme="light"] .timeline-item.center > div {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: var(--primary);
+    box-shadow:
+        0 12px 40px rgba(31, 38, 135, 0.2),
+        0 0 30px rgba(59, 130, 246, 0.2),
+        0 0 0 1px rgba(59, 130, 246, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* ===== Modal Enhancements ===== */
+[data-theme="light"] .about-modal {
+    background: rgba(248, 250, 252, 0.6);
+}
+
+[data-theme="light"] .about-modal-content,
+[data-theme="light"] .modal-content {
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(30, 41, 59, 0.2);
+    box-shadow:
+        0 24px 80px rgba(31, 38, 135, 0.25),
+        0 0 60px rgba(59, 130, 246, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* ===== Navigation and Controls ===== */
+[data-theme="light"] .timeline-nav,
+[data-theme="light"] .timeline-indicator,
+[data-theme="light"] .skills-progress-bar,
+[data-theme="light"] .timeline-context,
+[data-theme="light"] .skills-legend {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(30, 41, 59, 0.15);
+}
+
+/* ===== Enhanced Hover States for Light Theme ===== */
+[data-theme="light"] .intro-header-box:hover,
+[data-theme="light"] .about-box:hover {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+[data-theme="light"] .project-card:hover {
+    background: rgba(255, 255, 255, 0.45);
+    border-color: rgba(59, 130, 246, 0.35);
+}
+
+[data-theme="light"] .skill-card:hover {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: var(--primary);
+}
+
+/* =======================================================
+   END OF FILE
+======================================================= */

@@ -1,0 +1,784 @@
+/* =======================================================
+ 📅 Timeline Section - Vertical Slot Machine
+ File: css/sections/section-timeline.css
+ Purpose: Interactive timeline slider with slot machine effect
+ Author: Saleh Abedinezhad
+ 
+ Enhanced Features:
+ - True glassmorphism with high transparency
+ - Smooth slot machine transitions
+ - Special styling for past/future cards
+ - Theme-aware glass effects
+======================================================= */
+
+/* =======================================================
+   📦 TIMELINE WRAPPER
+======================================================= */
+.timeline-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 0.5rem;
+}
+
+.timeline-wrapper > .section-title {
+  position: relative;
+  z-index: 15;
+  margin-bottom: 0.8rem;
+  flex-shrink: 0;
+}
+
+
+/* =======================================================
+   🎰 TIMELINE VIEWPORT (Slot Machine Frame)
+======================================================= */
+.timeline-list {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  /* Mask Effect for Top/Bottom Fade */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 15%,
+    black 85%,
+    transparent 100%
+  );
+}
+
+/* Frame Borders - Top and Bottom Highlight */
+.timeline-list::before,
+.timeline-list::after {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary),
+    var(--secondary),
+    transparent
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+.timeline-list::before {
+  top: 30%;
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.4);
+}
+
+.timeline-list::after {
+  bottom: 30%;
+  box-shadow: 0 -2px 12px rgba(99, 102, 241, 0.4);
+}
+
+
+/* =======================================================
+   🎴 TIMELINE ITEM (Slot Card)
+======================================================= */
+.timeline-item {
+  position: absolute;
+  width: 90%;
+  max-width: 100%;
+  
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center center;
+  
+  /* Default: Scaled Down & Semi-Transparent */
+  transform: scale(0.75) translateY(0);
+  opacity: 0.3;
+  filter: blur(2px);
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
+}
+
+/* Center Card - Active/Featured */
+.timeline-item.center {
+  transform: scale(0.95) translateY(0);
+  opacity: 1;
+  filter: blur(0);
+  pointer-events: auto;
+  z-index: 5;
+  user-select: text;
+}
+
+/* Cards Above Center */
+.timeline-item.above-1 {
+  transform: scale(0.8) translateY(-100%);
+  opacity: 0.5;
+  filter: blur(1px);
+  z-index: 4;
+}
+
+.timeline-item.above-2 {
+  transform: scale(0.7) translateY(-200%);
+  opacity: 0.3;
+  filter: blur(2px);
+  z-index: 3;
+}
+
+.timeline-item.above-3 {
+  transform: scale(0.65) translateY(-300%);
+  opacity: 0.15;
+  filter: blur(3px);
+  z-index: 2;
+}
+
+/* Cards Below Center */
+.timeline-item.below-1 {
+  transform: scale(0.8) translateY(100%);
+  opacity: 0.5;
+  filter: blur(1px);
+  z-index: 4;
+}
+
+.timeline-item.below-2 {
+  transform: scale(0.7) translateY(200%);
+  opacity: 0.3;
+  filter: blur(2px);
+  z-index: 3;
+}
+
+.timeline-item.below-3 {
+  transform: scale(0.65) translateY(300%);
+  opacity: 0.15;
+  filter: blur(3px);
+  z-index: 2;
+}
+
+/* Hidden Cards (Far Away) */
+.timeline-item.hidden {
+  transform: scale(0.6) translateY(400%);
+  opacity: 0;
+  filter: blur(5px);
+  z-index: 0;
+}
+
+
+/* =======================================================
+   🎴 TIMELINE CARD CONTAINER - Enhanced Glass
+======================================================= */
+.timeline-item > div {
+  width: 100%;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.2rem 1.4rem;
+  box-sizing: border-box;
+  
+  /* Layered Shadow */
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--border-highlight);
+  
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Glass Shine Effect */
+.timeline-item > div::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 40%;
+  background: linear-gradient(
+    180deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Center Card Enhancement */
+.timeline-item.center > div {
+  border-color: var(--primary);
+  box-shadow:
+    0 18px 50px var(--shadow-color),
+    0 0 30px rgba(99, 102, 241, 0.3),
+    0 0 0 1px var(--border-highlight),
+    inset 0 1px 0 var(--border-highlight);
+}
+
+.timeline-item.center > div::before {
+  opacity: 1;
+}
+
+/* Shimmer Effect on Center Card */
+.timeline-item.center > div::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  animation: shimmer 3s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0; transform: translateX(-100%); }
+  50% { opacity: 1; transform: translateX(100%); }
+}
+
+/* Top Accent Line */
+.timeline-item.center > div::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary),
+    var(--secondary),
+    transparent
+  );
+  opacity: 0.8;
+  z-index: 0;
+}
+
+
+/* =======================================================
+   🌅 PAST CARD (Special Styling)
+======================================================= */
+.timeline-item.past-card > div {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.08),
+    rgba(99, 102, 241, 0.1)
+  );
+  backdrop-filter: blur(var(--blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
+  border: 1px dashed var(--secondary);
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-item.past-card > div::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.02) 10px,
+    rgba(255, 255, 255, 0.02) 20px
+  );
+  animation: pastMove 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes pastMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-28px, 28px); }
+}
+
+.timeline-item.past-card h3 {
+  background: linear-gradient(135deg, var(--secondary), var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.85;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-item.past-card small {
+  background: linear-gradient(135deg, var(--accent), var(--secondary));
+  animation: pastPulse 2s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes pastPulse {
+  0%, 100% { opacity: 0.6; transform: scale(0.98); }
+  50% { opacity: 0.9; transform: scale(1.02); }
+}
+
+.timeline-item.past-card p {
+  opacity: 0.7;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =======================================================
+   🔮 FUTURE CARD (Special Styling)
+======================================================= */
+.timeline-item.future-card > div {
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1),
+    rgba(168, 85, 247, 0.08)
+  );
+  backdrop-filter: blur(var(--blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
+  border: 1px dashed var(--primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-item.future-card > div::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.02) 10px,
+    rgba(255, 255, 255, 0.02) 20px
+  );
+  animation: futureMove 20s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes futureMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(28px, 28px); }
+}
+
+.timeline-item.future-card h3 {
+  background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.9;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-item.future-card small {
+  background: linear-gradient(135deg, var(--secondary), var(--accent));
+  animation: futurePulse 2s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes futurePulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+.timeline-item.future-card p {
+  opacity: 0.75;
+  font-style: italic;
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =======================================================
+   🏷️ CARD CONTENT
+======================================================= */
+.timeline-item h3 {
+  color: var(--text-primary);
+  font-size: clamp(1rem, 2vmin, 1.15rem);
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 0.5rem 0;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-item.center h3 {
+  background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.timeline-item small {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.8rem;
+  margin-bottom: 0.7rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #ffffff;
+  font-size: clamp(0.7rem, 1.4vmin, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: 8px;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-item small::before {
+  content: "📅";
+  font-size: 0.85em;
+}
+
+.timeline-item.center small {
+  transform: scale(1.05);
+  box-shadow: 
+    0 4px 12px rgba(99, 102, 241, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.timeline-item p {
+  color: var(--text-secondary);
+  font-size: clamp(0.85rem, 1.7vmin, 0.95rem);
+  line-height: 1.65;
+  margin: 0;
+  opacity: 0.9;
+  transition: color 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-item.center p {
+  color: var(--text-primary);
+  opacity: 1;
+}
+
+
+/* =======================================================
+   🎮 NAVIGATION CONTROLS - Enhanced Glass
+======================================================= */
+.timeline-nav {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  display: flex;
+  gap: 1rem;
+  z-index: 12;
+  
+  padding: 0.6rem 1rem;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  
+  box-shadow: 
+    0 4px 16px var(--shadow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.timeline-nav button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  
+  /* Glass Effect */
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  cursor: pointer;
+  
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  box-shadow: 0 2px 8px var(--shadow-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-nav button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  opacity: 0;
+  border-radius: inherit;
+  transition: opacity 0.3s ease;
+}
+
+.timeline-nav button:hover {
+  border-color: transparent;
+  color: #ffffff;
+  transform: scale(1.1);
+  box-shadow: 
+    0 4px 16px rgba(99, 102, 241, 0.4),
+    0 0 20px rgba(99, 102, 241, 0.2);
+}
+
+.timeline-nav button:hover::before {
+  opacity: 1;
+}
+
+.timeline-nav button span {
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-nav button:active {
+  transform: scale(0.95);
+}
+
+.timeline-nav button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+/* =======================================================
+   📊 POSITION INDICATOR (Dots) - Enhanced Glass
+======================================================= */
+.timeline-indicator {
+  position: absolute;
+  top: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  display: flex;
+  gap: 0.5rem;
+  z-index: 12;
+  
+  padding: 0.4rem 0.8rem;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  
+  border: 1px solid var(--border-color);
+  border-radius: 50px;
+  
+  box-shadow: 
+    0 4px 16px var(--shadow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.timeline-indicator span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-indicator span.active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  width: 24px;
+  border-radius: 4px;
+  box-shadow: 
+    0 2px 8px rgba(99, 102, 241, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.timeline-indicator span:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.4);
+  transform: scale(1.2);
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - TABLET
+======================================================= */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .timeline-item {
+    width: 80%;
+  }
+
+  .timeline-item > div {
+    padding: 1.1rem 1.2rem;
+    border-radius: 14px;
+  }
+
+  .timeline-item.center {
+    transform: scale(0.92) translateY(0);
+  }
+
+  .timeline-nav {
+    padding: 0.5rem 0.9rem;
+  }
+
+  .timeline-nav button {
+    width: 38px;
+    height: 38px;
+    font-size: 1.1rem;
+  }
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - MOBILE
+======================================================= */
+@media (max-width: 768px) {
+  :root {
+    --blur: 16px;
+  }
+  
+  .timeline-wrapper {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .timeline-list {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .timeline-item {
+    width: 85%;
+  }
+
+  .timeline-item > div {
+    padding: 1rem 1.1rem;
+    border-radius: 12px;
+  }
+
+  .timeline-item.center {
+    transform: scale(0.92) translateY(0);
+  }
+
+  .timeline-nav {
+    bottom: 1rem;
+    padding: 0.5rem 0.8rem;
+    gap: 0.8rem;
+  }
+
+  .timeline-nav button {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+
+  .timeline-indicator {
+    top: 3.2rem;
+    padding: 0.35rem 0.7rem;
+    gap: 0.4rem;
+  }
+
+  .timeline-indicator span {
+    width: 6px;
+    height: 6px;
+  }
+
+  .timeline-indicator span.active {
+    width: 20px;
+  }
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - EXTRA SMALL
+======================================================= */
+@media (max-width: 600px) {
+  .timeline-item {
+    width: 88%;
+  }
+
+  .timeline-item > div {
+    padding: 0.95rem 1rem;
+    border-radius: 10px;
+  }
+
+  .timeline-item.center {
+    transform: scale(0.9) translateY(0);
+  }
+
+  .timeline-nav {
+    bottom: 0.8rem;
+  }
+
+  .timeline-nav button {
+    width: 34px;
+    height: 34px;
+  }
+
+  .timeline-indicator {
+    top: 3rem;
+  }
+}
+
+
+/* =======================================================
+   🎯 ACCESSIBILITY & PERFORMANCE
+======================================================= */
+
+/* Focus States */
+.timeline-nav button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.timeline-indicator span:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-item,
+  .timeline-item > div,
+  .timeline-nav button,
+  .timeline-indicator span {
+    transition-duration: 0.01ms !important;
+  }
+  
+  .timeline-item.center > div::after,
+  .timeline-item.past-card > div::before,
+  .timeline-item.future-card > div::before {
+    animation: none !important;
+  }
+}
+
+
+/* =======================================================
+   END OF FILE
+======================================================= */

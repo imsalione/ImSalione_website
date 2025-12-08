@@ -1,180 +1,256 @@
 /* =======================================================
-🎨 ImSalione Portfolio - Base Styles (Final 2025)
-Core Theme, Typography, and Global Structure
+ 🎨 ImSalione Portfolio - Base Foundation Layer
+ File: css/base.css
+ Purpose: 
+   • Font imports and direction-aware setup
+   • Non-color global variables (radius, blur, transitions)
+   • Global reset
+   • Physical scrollbar structure (colors handled in themes)
+   • HTML/Body base setup
+   • Enhanced glassmorphism foundation
+ Author: Saleh Abedinezhad
 ======================================================= */
 
-/* =======================================================
-🧩 FONT SYSTEM (Bilingual)
-======================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Vazirmatn:wght@400;500;600&display=swap');
+/* ===============================
+   📦 Font Imports
+================================ */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700&display=swap');
 
+
+/* ===============================
+   🔡 Direction-aware Font Setup
+================================ */
+html[dir="ltr"],
 body[dir="ltr"] {
-  font-family: 'Poppins', 'Segoe UI', Tahoma, sans-serif;
-  letter-spacing: 0.2px;
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
+html[dir="rtl"],
 body[dir="rtl"] {
-  font-family: 'Vazirmatn', 'Segoe UI', Tahoma, sans-serif;
-  letter-spacing: 0;
+  font-family: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   direction: rtl;
 }
 
-/* =======================================================
-🎨 COLOR VARIABLES
-======================================================= */
-:root {
-  --primary: #6366f1;
-  --secondary: #8b5cf6;
-  --accent: #06b6d4;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --error: #ef4444;
-  --radius: 16px;
-  --blur: 12px;
-  --transition: 0.35s ease;
-}
 
-/* =======================================================
-🌗 THEMES (Dark & Light)
-======================================================= */
-[data-theme="dark"] {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-card: rgba(30, 41, 59, 0.65);
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --border-color: rgba(99, 102, 241, 0.25);
-  --shadow: rgba(99, 102, 241, 0.3);
-}
-
-[data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #e2e8f0;
-  --bg-card: rgba(255, 255, 255, 0.95);
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --border-color: rgba(99, 102, 241, 0.2);
-  --shadow: rgba(99, 102, 241, 0.15);
-}
-
-/* =======================================================
-⚙️ GLOBAL RESET & BODY STRUCTURE
-======================================================= */
-* {
+/* ===============================
+   🔄 Global Reset
+================================ */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+
+/* ===============================
+   🎛 Root Variables (Non-Color)
+================================ */
+:root {
+  /* Geometric Properties */
+  --radius: 20px;
+  --blur: 24px;
+  
+  /* Timing Functions */
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Enhanced Glassmorphism Properties */
+  --glass-saturation: 180%;
+  --glass-brightness: 105%;
+}
+
+
+/* ===============================
+   🌍 HTML & Body Base Structure
+================================ */
+html,
+body {
   width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
-  color: var(--text-primary);
-  scroll-behavior: smooth;
-  overflow: hidden;
-  transition: background var(--transition), color var(--transition);
+  min-height: 100%;
+  background-image: url("../assets/images/bg.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed; 
 }
 
-/* =======================================================
-🧠 TYPOGRAPHY
-======================================================= */
-h1, h2, h3, h4 {
-  color: var(--text-primary);
-  line-height: 1.3;
-  font-weight: 600;
-}
-h1 { font-size: clamp(1.8rem, 3vw, 2.8rem); }
-h2 { font-size: clamp(1.4rem, 2.5vw, 2rem); margin-bottom: 0.75rem; }
-h3 { font-size: 1.2rem; font-weight: 500; }
-p {
-  color: var(--text-secondary);
-  line-height: 1.8;
-  font-size: 0.95rem;
-}
-
-/* =======================================================
-🔗 LINKS & BUTTONS
-======================================================= */
-a {
-  color: var(--primary);
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-a:hover { color: var(--accent); }
-
-button {
-  cursor: pointer;
-  font-family: inherit;
-  border: none;
-  outline: none;
-  transition: all 0.3s ease;
-}
-button:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* =======================================================
-📦 SECTIONS BASE STYLE
-======================================================= */
-section {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  -webkit-backdrop-filter: blur(var(--blur));
-  backdrop-filter: blur(var(--blur));
-  box-shadow: 0 8px 24px var(--shadow);
-  transition: all var(--transition);
+body {
+  overflow-x: hidden;
   overflow-y: auto;
-  scrollbar-width: none;
-}
-section::-webkit-scrollbar {
-  display: none;
-}
-section:hover {
-  box-shadow: 0 15px 30px var(--shadow);
-}
-
-/* =======================================================
-🎨 PALETTE PANEL
-======================================================= */
-.palette-panel {
-  position: fixed;
-  bottom: 5.6rem;
-  right: 1.6rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 0.8rem 1rem;
-  box-shadow: 0 6px 20px var(--shadow);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(10px);
-  transition: all 0.3s ease;
-}
-.palette-panel.active {
-  opacity: 1;
-  pointer-events: all;
-  transform: translateY(0);
-}
-html[dir="rtl"] .palette-panel {
-  right: auto;
-  left: 1.6rem;
+  
+  /* Font Smoothing */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  
+  /* Text Rendering Optimization */
+  text-rendering: optimizeLegibility;
+  
+  position: relative;
 }
 
+
+/* ===============================
+   📜 Scrollbar Structure (Webkit)
+   Note: Colors defined in theme files
+================================ */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background var(--transition);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border-width: 1px;
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+}
+
+
+/* ===============================
+   🎨 Enhanced Backdrop Filter Support
+================================ */
+@supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+  .glass-panel,
+  .intro-header-box,
+  .about-box,
+  .project-card,
+  .skill-card,
+  .timeline-item > div,
+  .about-modal-content,
+  .modal-content {
+    backdrop-filter: blur(var(--blur)) saturate(var(--glass-saturation)) brightness(var(--glass-brightness));
+    -webkit-backdrop-filter: blur(var(--blur)) saturate(var(--glass-saturation)) brightness(var(--glass-brightness));
+  }
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not ((backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px))) {
+  .glass-panel,
+  .intro-header-box,
+  .about-box,
+  .project-card,
+  .skill-card,
+  .timeline-item > div {
+    background: var(--bg-card) !important;
+    opacity: 0.95;
+  }
+}
+
+
+/* ===============================
+   ✨ Performance Optimizations
+================================ */
+.glass-panel,
+.intro-header-box,
+.about-box,
+.project-card,
+.skill-card,
+.timeline-item > div,
+.about-modal-content,
+.modal-content {
+  /* GPU Acceleration */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  
+  /* Isolation for better compositing */
+  isolation: isolate;
+}
+
+/* Remove will-change after animation completes */
+.glass-panel:not(:hover),
+.project-card:not(:hover),
+.skill-card:not(:hover) {
+  will-change: auto;
+}
+
+
+/* ===============================
+   📱 Mobile Base Optimizations
+================================ */
+@media (max-width: 768px) {
+  :root {
+    --radius: 14px;
+    --blur: 16px;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  /* Reduce backdrop filter intensity for performance */
+  @supports (backdrop-filter: blur(10px)) or (-webkit-backdrop-filter: blur(10px)) {
+    .glass-panel,
+    .intro-header-box,
+    .about-box,
+    .project-card,
+    .skill-card,
+    .timeline-item > div {
+      backdrop-filter: blur(12px) saturate(150%);
+      -webkit-backdrop-filter: blur(12px) saturate(150%);
+    }
+  }
+}
+
+
+/* ===============================
+   🖥️ High-DPI Display Optimization
+================================ */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body {
+    -webkit-font-smoothing: subpixel-antialiased;
+  }
+}
+
+
+/* ===============================
+   🌙 Reduced Motion Preference
+================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ===============================
+   🎯 Focus Visible Styles
+================================ */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline-offset: 4px;
+}
+
+
 /* =======================================================
-🌈 THEME TRANSITION OVERLAY (Cross-fade)
+   END OF FILE
 ======================================================= */
-.theme-transition-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--gradient);
-  z-index: 99999;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-.theme-transition-overlay.active {
-  opacity: 1;
-}

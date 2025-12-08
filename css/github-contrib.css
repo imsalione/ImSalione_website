@@ -1,108 +1,161 @@
 /* =======================================================
-✨ GitHub Activity Card (Dynamic Themed Version)
-Fully synchronized with active color palette
+ ✨ GitHub Activity Card Component
+ File: css/github-contrib.css
+ Purpose: GitHub contribution chart card with live data
+ Author: Saleh Abedinezhad
 ======================================================= */
 
-/* Base card wrapper */
+/* =======================================================
+   📦 BASE CARD STRUCTURE
+======================================================= */
 .project-card.github-activity-card {
   background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  box-shadow: 0 3px 10px var(--shadow);
-  height: 220px;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px var(--shadow-color);
+  min-height: 220px;
   position: relative;
-  overflow-y: hidden;
-  transition: all 0.3s ease;
+  overflow: hidden;
+  transition: all var(--transition);
 }
 
-/* Disable flip animation completely */
+.project-card.github-activity-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 32px var(--shadow-color);
+  border-color: var(--border-highlight);
+}
+
+/* Disable Flip Animation */
 .project-card.github-activity-card.no-flip .card-inner,
 .project-card.github-activity-card:hover .card-inner {
   transform: none !important;
   transition: none !important;
 }
 
-/* Card inner */
-.github-activity-card .card-front {
-  width: 100%;
+
+/* =======================================================
+   📋 CARD CONTENT
+======================================================= */
+.github-activity-card .card-inner {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 1.2rem;
-  background: var(--bg-card);
-  transition: background 0.3s ease, color 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
-/* Hover effect (soft elevation) */
-.project-card.github-activity-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 24px var(--shadow);
+.github-activity-card .card-front {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 0.6rem;
+  position: relative;
+  z-index: 1;
+  background: transparent;
 }
 
-/* Header */
+
+/* =======================================================
+   🎯 HEADER SECTION
+======================================================= */
 .gh-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
 }
 
-/* Header left content */
 .gh-header-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.4rem;
 }
 
-/* Live label (accent color adaptive) */
+
+/* =======================================================
+   🔴 LIVE LABEL BADGE
+======================================================= */
 .live-label {
-  background: color-mix(in srgb, var(--primary) 18%, transparent);
-  color: var(--primary);
-  border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
-  font-weight: 600;
-  font-size: 0.7rem;
-  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
   text-transform: uppercase;
-  padding: 3px 7px;
-  border-radius: 6px;
-  user-select: none;
-  white-space: nowrap;
-  position: relative;
+  letter-spacing: 0.04em;
+  border-radius: 8px;
   cursor: default;
-  transition: all 0.3s ease;
+  user-select: none;
+  box-shadow: 0 3px 8px rgba(99, 102, 241, 0.3);
+  white-space: nowrap;
+  animation: livePulse 2s ease-in-out infinite;
 }
 
-/* GitHub Icon */
+@keyframes livePulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.9; 
+    transform: scale(1.02);
+  }
+}
+
+
+/* =======================================================
+   🐙 GITHUB ICON
+======================================================= */
 .github-icon {
   font-size: 1.3rem;
   color: var(--text-primary);
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-.github-icon:hover {
-  color: var(--primary);
-  transform: scale(1.1);
+  transition: all var(--transition);
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-/* Chart container */
+.github-icon:hover {
+  color: var(--primary);
+  transform: scale(1.1) rotate(10deg);
+}
+
+
+/* =======================================================
+   📊 CHART CONTAINER
+======================================================= */
 .gh-chart-wrap {
   position: relative;
   flex: 1;
-  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  min-height: 0;
 }
 
-/* Chart canvas */
 .gh-chart-wrap canvas {
   width: 100% !important;
-  height: 150px !important;
+  height: 100% !important;
+  max-height: 140px;
   opacity: 0;
   transition: opacity 0.6s ease;
 }
+
 .gh-chart-wrap canvas.loaded {
   opacity: 1;
 }
 
-/* Loader container */
+
+/* =======================================================
+   ⏳ LOADING SPINNER
+======================================================= */
 .chart-loader {
   position: absolute;
   top: 50%;
@@ -111,101 +164,122 @@ Fully synchronized with active color palette
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 0.4rem;
   z-index: 5;
   transition: opacity 0.3s ease;
 }
+
 .chart-loader.hidden {
   opacity: 0;
   visibility: hidden;
 }
 
-/* Spinner animation (theme synced) */
 .spinner {
-  width: 30px;
-  height: 30px;
-  border: 3px solid var(--border-color);
-  border-top: 3px solid var(--primary);
+  width: 28px;
+  height: 28px;
+  border: 2.5px solid var(--border-color);
+  border-top: 2.5px solid var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 6px;
 }
+
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 
-/* Loader text (muted color) */
 .loading-text {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
+  font-weight: 500;
 }
 
-/* Tooltip style for Chart.js */
+
+/* =======================================================
+   💬 CUSTOM TOOLTIP
+======================================================= */
+.gh-tooltip {
+  position: fixed;
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--border-highlight);
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  color: var(--text-primary);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-50%) translateY(-5px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 9999;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.gh-tooltip.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+
+/* =======================================================
+   🎨 CHART.JS TOOLTIP STYLING
+======================================================= */
 .chartjs-tooltip {
   background: var(--bg-secondary);
   color: var(--text-primary);
   font-size: 0.8rem;
   padding: 4px 8px;
   border-radius: 6px;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--primary) 15%, rgba(0, 0, 0, 0.25));
+  box-shadow: 0 2px 8px var(--shadow-color);
   pointer-events: none;
   opacity: 0.95;
   border: 1px solid var(--border-color);
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background var(--transition), color var(--transition);
 }
+
 
 /* =======================================================
-💬 Custom Tooltip for GitHub LIVE Label (Modern Style)
+   📱 RESPONSIVE DESIGN
 ======================================================= */
-.gh-tooltip {
-  position: absolute;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  font-size: 0.8rem;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 16px color-mix(in srgb, var(--primary) 20%, rgba(0,0,0,0.25));
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(-6px) scale(0.97);
-  transition: all 0.25s ease;
-  z-index: 9999;
-  white-space: nowrap;
-  backdrop-filter: blur(8px);
-}
-
-/* Tooltip arrow */
-.gh-tooltip::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 6px 6px 0 6px;
-  border-style: solid;
-  border-color: var(--bg-secondary) transparent transparent transparent;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
-}
-
-.gh-tooltip.visible {
-  opacity: 1;
-  transform: translateY(-10px) scale(1);
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
   .project-card.github-activity-card {
-    height: 200px;
+    min-height: 200px;
   }
+
   .gh-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    gap: 0.4rem;
   }
-  .gh-desc {
-    font-size: 0.85rem;
+
+  .live-label {
+    font-size: 0.6rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .github-icon {
+    font-size: 1.2rem;
+  }
+
+  .gh-chart-wrap canvas {
+    max-height: 120px;
+  }
+
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border-width: 2px;
+  }
+
+  .loading-text {
+    font-size: 0.7rem;
   }
 }
+
+
+/* =======================================================
+   END OF FILE
+======================================================= */

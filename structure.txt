@@ -1,73 +1,58 @@
-Folder PATH listing
-Volume serial number is 3A10-CC11
-C:.
-|   .env
-|   .gitattributes
-|   .gitignore
-|   .htaccess
-|   index.html
-|   robots.txt
-|   sitemap.xml
-|   structure.txt
-|   
-+---api
-|       cacert.pem
-|       github_contrib.php
-|       
-+---assets
-|   |   profile.jpg
-|   |   
-|   +---icons
-|   \---images
-|       \---project-cards
-|               diabetes-prediction.png
-|               etl.png
-|               excel-dashboard.png
-|               minirates.png
-|               python-course.png
-|               xwork.png
-|               
-+---content
-|       en.json
-|       fa.json
-|       
-+---css
-|       animations.css
-|       base.css
-|       color-theme.css
-|       fab.css
-|       github-contrib.css
-|       home.css
-|       layout.css
-|       projects.css
-|       skills.css
-|       
-+---js
-|       fab.js
-|       github-contrib.js
-|       loader.js
-|       projects.js
-|       script.js
-|       skills.js
-|       utils.js
-|       
-+---partials
-|       awards.html
-|       contacts.html
-|       fab.html
-|       github-contrib.html
-|       home.html
-|       projects.html
-|       skills.html
-|       
-\---public_html
-    |   .htaccess
-    |   index.html
-    |   robots.txt
-    |   script.js
-    |   sitemap.xml
-    |   style.css
-    |   
-    \---assets
-            profile.jpg
-            
+ImSalione/
+│
+├── index.html                ← صفحه اصلی (فراخوانی partialها + FAB)
+│
+├── content/
+│   ├── fa.json               ← داده فارسی
+│   └── en.json               ← داده انگلیسی
+│
+├── css/
+│   ├── base.css              ← رنگ‌ها، بک‌گراند، glass-panel
+│   ├── layout.css            ← گرید و ریسپانسیو
+│   ├── common.css            ← استایل‌های عمومی (عنوان، فونت، دکمه‌ها)
+│   ├── fab.css               ← استایل دکمه شناور FAB
+│   └── sections/
+│       ├── section-intro.css
+│       ├── section-timeline.css
+│       ├── section-skills.css
+│       └── section-projects.css
+│
+├── js/
+│   ├── config.js
+│   ├── utils.js
+│   ├── main.js
+│   │
+│   ├── core/
+│   │   ├── router.js
+│   │   └── dom-manager.js
+│   │
+│   ├── sections/
+│   │   ├── section-intro.js
+│   │   ├── section-timeline.js
+│   │   ├── section-skills.js
+│   │   └── section-projects.js
+│   │
+│   ├── fab.js
+│   ├── github-contrib.js
+│   └── eventHub.js
+│
+├── partials/
+│   ├── section-intro.html
+│   ├── section-timeline.html
+│   ├── section-skills.html
+│   └── section-projects.html
+│   └── fab.html
+│
+├── assets/
+│   ├── profile.jpg
+│   ├── icons/
+│   └── images/
+│       ├── bg.svg
+│       └── project-cards/
+│
+├── api/
+│   └── github_contrib.php
+│
+├── .htaccess
+├── robots.txt
+└── sitemap.xml

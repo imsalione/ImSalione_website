@@ -1,0 +1,824 @@
+/* =======================================================
+ 📄 Intro Section - Profile & About Me
+ File: css/sections/section-intro.css
+ Purpose: Personal introduction, profile card, contact links
+ Author: Saleh Abedinezhad
+ 
+ Enhanced Features:
+ - True glassmorphism with high transparency
+ - Layered shadows for depth perception
+ - Smooth hover interactions
+ - Theme-aware glass effects
+======================================================= */
+
+/* =======================================================
+   📦 MAIN INTRO CONTAINER
+======================================================= */
+.intro-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+              visibility 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.intro-section.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+/* =======================================================
+   🎴 PROFILE HEADER CARD - Enhanced Glass
+======================================================= */
+.intro-header-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1rem 1.2rem;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  position: relative;
+  
+  /* Layered Shadow for Depth */
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--border-highlight);
+  
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.intro-header-box:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-highlight);
+  box-shadow:
+    0 18px 50px var(--shadow-color),
+    0 0 30px rgba(99, 102, 241, 0.15),
+    0 0 0 1px var(--border-highlight),
+    inset 0 1px 0 var(--border-highlight);
+}
+
+/* Glass Shine Effect */
+.intro-header-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 45%;
+  background: linear-gradient(
+    180deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.intro-header-box:hover::before {
+  opacity: 1;
+}
+
+/* Edge Glow Effect */
+.intro-header-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    var(--glass-edge),
+    transparent 90%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.intro-header-box:hover::after {
+  opacity: 1;
+}
+
+/* Direction Support */
+html[dir="ltr"] .intro-header-box {
+  flex-direction: row;
+}
+
+html[dir="rtl"] .intro-header-box {
+  flex-direction: row-reverse;
+}
+
+
+/* =======================================================
+   🖼️ PROFILE IMAGE
+======================================================= */
+.intro-img-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  width: clamp(75px, 12vmin, 100px);
+  height: clamp(75px, 12vmin, 100px);
+  border-radius: 14px;
+  overflow: hidden;
+  z-index: 1;
+  
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.2),
+    rgba(168, 85, 247, 0.2)
+  );
+  
+  box-shadow:
+    0 4px 16px rgba(99, 102, 241, 0.25),
+    0 0 0 2px rgba(255, 255, 255, 0.08);
+  
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animated Border on Hover */
+.intro-img-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.intro-img-wrapper:hover::before {
+  opacity: 1;
+}
+
+.intro-img-wrapper img.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.intro-img-wrapper:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 6px 20px rgba(99, 102, 241, 0.35),
+    0 0 0 2px rgba(255, 255, 255, 0.12);
+}
+
+.intro-img-wrapper:hover img {
+  transform: scale(1.08);
+}
+
+
+/* =======================================================
+   📝 TEXT CONTENT
+======================================================= */
+.intro-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-name {
+  font-size: clamp(1rem, 3vmin, 1.35rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin: 0;
+  transition: transform 0.3s ease;
+}
+
+.profile-name:hover {
+  transform: translateX(3px);
+}
+
+html[dir="rtl"] .profile-name:hover {
+  transform: translateX(-3px);
+}
+
+.profile-title {
+  font-size: clamp(0.8rem, 1.8vmin, 0.95rem);
+  font-weight: 500;
+  color: var(--text-secondary);
+  opacity: 0.9;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.profile-title::before {
+  content: "◆";
+  display: inline-block;
+  margin-inline-end: 0.35rem;
+  font-size: 0.6em;
+  color: var(--primary);
+  opacity: 0.6;
+}
+
+
+/* =======================================================
+   🔗 CONTACT LINKS
+======================================================= */
+.contact-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 0.3rem 0;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-links a {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  
+  /* Glass Effect */
+  background: var(--bg-card);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid var(--border-color);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary);
+  font-size: 1rem;
+  
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  box-shadow:
+    0 2px 8px var(--shadow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.contact-links a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  opacity: 0;
+  border-radius: inherit;
+  transition: opacity 0.3s ease;
+}
+
+.contact-links a:hover {
+  transform: translateY(-3px) scale(1.08);
+  color: #ffffff;
+  box-shadow: 
+    0 6px 16px rgba(99, 102, 241, 0.35),
+    0 0 20px rgba(99, 102, 241, 0.2);
+}
+
+.contact-links a:hover::before {
+  opacity: 1;
+}
+
+.contact-links a i,
+.contact-links a img {
+  z-index: 2;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+
+.contact-links a:hover i,
+.contact-links a:hover img {
+  transform: scale(1.1);
+}
+
+/* Icon Image Styling */
+.contact-links a img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+
+
+/* =======================================================
+   📘 ABOUT BOX - Enhanced Glass
+======================================================= */
+.about-box {
+  width: 100%;
+  flex: 1;
+  min-height: 140px;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  box-sizing: border-box;
+  
+  /* Layered Shadow */
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--border-highlight);
+  
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.about-box:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-highlight);
+  box-shadow:
+    0 18px 50px var(--shadow-color),
+    0 0 30px rgba(99, 102, 241, 0.15),
+    0 0 0 1px var(--border-highlight),
+    inset 0 1px 0 var(--border-highlight);
+}
+
+/* Glass Shine Effect */
+.about-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 45%;
+  background: linear-gradient(
+    180deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.about-box:hover::before {
+  opacity: 1;
+}
+
+/* Edge Glow Effect */
+.about-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    var(--glass-edge),
+    transparent 90%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.about-box:hover::after {
+  opacity: 1;
+}
+
+.about-title {
+  font-size: clamp(0.95rem, 2vmin, 1.1rem);
+  margin-bottom: 0.7rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-bottom: 0.4rem;
+  z-index: 1;
+}
+
+.about-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 1px;
+  transition: width 0.3s ease;
+}
+
+html[dir="rtl"] .about-title::after {
+  left: auto;
+  right: 0;
+}
+
+.about-box:hover .about-title::after {
+  width: 55px;
+}
+
+.about-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: var(--text-primary);
+  font-size: clamp(0.82rem, 1.6vmin, 0.92rem);
+  line-height: 1.65;
+  padding-right: 0.5rem;
+  scroll-behavior: smooth;
+  position: relative;
+  z-index: 1;
+}
+
+html[dir="rtl"] .about-content {
+  padding-right: 0;
+  padding-left: 0.5rem;
+}
+
+.about-content p {
+  margin-bottom: 0.6rem;
+}
+
+.about-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Custom Scrollbar */
+.about-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.about-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 3px;
+}
+
+.about-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary), var(--secondary));
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+.about-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--secondary), var(--accent));
+}
+
+
+/* =======================================================
+   📌 ABOUT MODAL - Enhanced Glass
+======================================================= */
+.about-modal {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.6);
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+  z-index: 9999;
+}
+
+.about-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.about-modal-content {
+  width: min(90%, 720px);
+  max-height: 85vh;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
+  border: 1px solid var(--border-highlight);
+  border-radius: 24px;
+  
+  /* Layered Shadow */
+  box-shadow: 
+    0 24px 80px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(99, 102, 241, 0.25),
+    0 0 0 1px var(--border-highlight),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  
+  padding: 1.8rem;
+  
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.35s ease;
+  
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.about-modal.active .about-modal-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Glass Shine Effect for Modal */
+.about-modal-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 40%;
+  background: linear-gradient(
+    180deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.about-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+html[dir="rtl"] .about-close-btn {
+  right: auto;
+  left: 16px;
+}
+
+.about-close-btn:hover {
+  background: rgba(255, 0, 0, 0.15);
+  border-color: rgba(255, 0, 0, 0.3);
+  transform: rotate(90deg);
+}
+
+.about-modal-title {
+  font-size: clamp(1.2rem, 3vmin, 1.5rem);
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  padding-right: 2.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  z-index: 1;
+}
+
+html[dir="rtl"] .about-modal-title {
+  padding-right: 0;
+  padding-left: 2.5rem;
+}
+
+.about-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.6rem;
+  font-size: clamp(0.9rem, 2vmin, 1.05rem);
+  color: var(--text-secondary);
+  line-height: 1.75;
+  position: relative;
+  z-index: 1;
+}
+
+html[dir="rtl"] .about-modal-body {
+  padding-right: 0;
+  padding-left: 0.6rem;
+}
+
+.about-modal-body p {
+  margin-bottom: 0.8rem;
+}
+
+.about-modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+.about-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.about-modal-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 3px;
+}
+
+.about-modal-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--primary), var(--secondary));
+  border-radius: 3px;
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - TABLET
+======================================================= */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .intro-section {
+    gap: 0.9rem;
+  }
+
+  .intro-header-box {
+    padding: 0.95rem 1.1rem;
+  }
+
+  .intro-img-wrapper {
+    width: clamp(72px, 11vmin, 95px);
+    height: clamp(72px, 11vmin, 95px);
+  }
+
+  .about-box {
+    min-height: 150px;
+  }
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - MOBILE
+======================================================= */
+@media (max-width: 768px) {
+  :root {
+    --blur: 16px;
+  }
+  
+  .intro-section {
+    gap: 0.8rem;
+  }
+
+  .intro-header-box {
+    flex-direction: column !important;
+    align-items: center;
+    text-align: center;
+    gap: 0.9rem;
+    padding: 1.1rem;
+  }
+
+  .intro-img-wrapper {
+    width: clamp(95px, 22vmin, 135px);
+    height: clamp(95px, 22vmin, 135px);
+  }
+
+  .intro-text-wrapper {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .profile-name {
+    font-size: clamp(1.3rem, 5vmin, 1.8rem);
+  }
+
+  .profile-name:hover {
+    transform: translateX(0);
+  }
+
+  .profile-title {
+    font-size: clamp(0.85rem, 3.2vmin, 1rem);
+  }
+
+  .contact-links a {
+    width: 44px;
+    height: 44px;
+  }
+
+  .about-box {
+    min-height: 170px;
+    padding: 1rem;
+  }
+
+  .about-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  html[dir="rtl"] .about-title::after {
+    right: auto;
+    left: 50%;
+  }
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - EXTRA SMALL
+======================================================= */
+@media (max-width: 600px) {
+  .intro-header-box {
+    padding: 0.9rem;
+    gap: 0.8rem;
+    border-radius: 14px;
+  }
+
+  .intro-img-wrapper {
+    width: clamp(90px, 24vmin, 125px);
+    height: clamp(90px, 24vmin, 125px);
+    border-radius: 12px;
+  }
+
+  .contact-links a {
+    width: 42px;
+    height: 42px;
+  }
+
+  .about-box {
+    padding: 0.9rem;
+    border-radius: 14px;
+  }
+
+  .about-content {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .about-modal-content {
+    padding: 1.5rem;
+    border-radius: 16px;
+  }
+}
+
+
+/* =======================================================
+   🖥️ RESPONSIVE - LARGE DESKTOP
+======================================================= */
+@media (min-width: 1400px) {
+  .intro-section {
+    gap: 1.2rem;
+  }
+
+  .intro-header-box {
+    padding: 1.2rem 1.4rem;
+  }
+
+  .intro-img-wrapper {
+    width: 110px;
+    height: 110px;
+  }
+
+  .about-box {
+    padding: 1.3rem;
+  }
+}
+
+
+/* =======================================================
+   END OF FILE
+======================================================= */

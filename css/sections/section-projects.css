@@ -1,0 +1,551 @@
+/* =======================================================
+ 🚀 Projects Section - Horizontal Scrolling Gallery
+ File: css/sections/section-projects.css
+ Purpose: Horizontal project cards with GitHub activity integration
+ Author: Saleh Abedinezhad
+ 
+ Enhanced Features:
+ - True glassmorphism with high transparency
+ - Smooth horizontal scroll with fade hints
+ - Animated card entrances
+ - Theme-aware glass effects
+======================================================= */
+
+/* =======================================================
+   📦 PROJECTS WRAPPER
+======================================================= */
+.projects-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  gap: 0.6rem;
+}
+
+.projects-wrapper > .section-title {
+  position: relative;
+  z-index: 15;
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 0;
+  padding: 0 0 0.4rem 0;
+}
+
+
+/* =======================================================
+   🎴 PROJECTS GRID (Horizontal Scroll)
+======================================================= */
+.projects-grid {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 0.5rem 0.3rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  align-items: stretch;
+  min-height: 0;
+  position: relative;
+}
+
+/* Custom Horizontal Scrollbar */
+.projects-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.projects-grid::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 3px;
+  margin: 0 1rem;
+}
+
+.projects-grid::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border-radius: 3px;
+  transition: background var(--transition);
+}
+
+.projects-grid::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, var(--secondary), var(--primary));
+}
+
+
+/* =======================================================
+   🎴 PROJECT CARD - Enhanced Glass
+======================================================= */
+.project-card {
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  
+  /* Layered Shadow */
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--border-highlight);
+  
+  /* Sizing */
+  min-width: 280px;
+  max-width: 320px;
+  height: 100%;
+  flex-shrink: 0;
+  
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  
+  transition: 
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition);
+}
+
+/* Entrance Animation */
+.project-card {
+  animation: cardSlideIn 0.5s ease forwards;
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.project-card:nth-child(1) { animation-delay: 0.05s; }
+.project-card:nth-child(2) { animation-delay: 0.1s; }
+.project-card:nth-child(3) { animation-delay: 0.15s; }
+.project-card:nth-child(4) { animation-delay: 0.2s; }
+.project-card:nth-child(5) { animation-delay: 0.25s; }
+.project-card:nth-child(n+6) { animation-delay: 0.3s; }
+
+@keyframes cardSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+/* Hover Effect */
+.project-card:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow:
+    0 18px 50px var(--shadow-color),
+    0 0 30px rgba(99, 102, 241, 0.15),
+    0 0 0 1px var(--border-highlight),
+    inset 0 1px 0 var(--border-highlight);
+  border-color: var(--border-highlight);
+}
+
+/* Glass Shine Effect */
+.project-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 40%;
+  background: linear-gradient(
+    180deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+/* Edge Glow Effect */
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    var(--glass-edge),
+    transparent 90%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.project-card:hover::after {
+  opacity: 1;
+}
+
+
+/* =======================================================
+   📄 PROJECT CONTENT
+======================================================= */
+.project-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 0.6rem;
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+}
+
+.project-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.3;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-title {
+  transform: translateX(2px);
+}
+
+html[dir="rtl"] .project-card:hover .project-title {
+  transform: translateX(-2px);
+}
+
+.project-desc {
+  flex: 1;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.project-desc::-webkit-scrollbar {
+  width: 4px;
+}
+
+.project-desc::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 2px;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all var(--transition);
+  align-self: flex-start;
+  box-shadow: 
+    0 4px 12px rgba(99, 102, 241, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.project-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.project-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 16px rgba(99, 102, 241, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.project-link:hover::after {
+  opacity: 1;
+}
+
+.project-link::before {
+  content: "→";
+  font-size: 1rem;
+  transition: transform var(--transition);
+  position: relative;
+  z-index: 1;
+}
+
+.project-link span {
+  position: relative;
+  z-index: 1;
+}
+
+.project-link:hover::before {
+  transform: translateX(3px);
+}
+
+/* RTL Support */
+html[dir="rtl"] .project-link::before {
+  content: "←";
+}
+
+html[dir="rtl"] .project-link:hover::before {
+  transform: translateX(-3px);
+}
+
+
+/* =======================================================
+   🎨 SCROLL FADE HINTS
+======================================================= */
+.projects-grid::before,
+.projects-grid::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 6px;
+  width: 40px;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+
+.projects-grid::before {
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    var(--bg-primary) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+}
+
+.projects-grid::after {
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--bg-primary) 100%
+  );
+}
+
+/* Show Left Fade When Scrolled */
+.projects-grid.scrolled-left::before {
+  opacity: 0.8;
+}
+
+/* Hide Right Fade at End */
+.projects-grid.scrolled-right::after {
+  opacity: 0;
+}
+
+/* RTL Support for Fade Effects */
+html[dir="rtl"] .projects-grid::before {
+  left: auto;
+  right: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--bg-primary) 100%
+  );
+}
+
+html[dir="rtl"] .projects-grid::after {
+  right: auto;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    var(--bg-primary) 0%,
+    transparent 100%
+  );
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - TABLET
+======================================================= */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .projects-wrapper {
+    padding: 1rem;
+    gap: 0.8rem;
+  }
+
+  .projects-wrapper > .section-title {
+    font-size: 1.6rem;
+  }
+
+  .projects-grid {
+    gap: 1.2rem;
+    padding: 0.6rem 0.4rem;
+  }
+
+  .project-card {
+    min-width: 300px;
+    max-width: 340px;
+  }
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - MOBILE
+======================================================= */
+@media (max-width: 768px) {
+  :root {
+    --blur: 16px;
+  }
+  
+  .projects-wrapper {
+    padding: 0.8rem;
+    gap: 0.6rem;
+  }
+
+  .projects-wrapper > .section-title {
+    font-size: 1.4rem;
+  }
+
+  .projects-grid {
+    gap: 0.8rem;
+    padding: 0.5rem 0.3rem;
+  }
+
+  .project-card {
+    min-width: 260px;
+    max-width: 280px;
+  }
+
+  .project-content {
+    padding: 0.9rem;
+    gap: 0.5rem;
+  }
+
+  .project-title {
+    font-size: 1rem;
+  }
+
+  .project-desc {
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .project-link {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.9rem;
+  }
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - EXTRA SMALL
+======================================================= */
+@media (max-width: 600px) {
+  .project-card {
+    min-width: 240px;
+    max-width: 260px;
+  }
+
+  .project-content {
+    padding: 0.8rem;
+  }
+
+  .project-title {
+    font-size: 0.95rem;
+  }
+
+  .project-desc {
+    font-size: 0.75rem;
+  }
+
+  .project-link {
+    font-size: 0.7rem;
+    padding: 0.45rem 0.8rem;
+  }
+}
+
+
+/* =======================================================
+   🖥️ RESPONSIVE - LARGE DESKTOP
+======================================================= */
+@media (min-width: 1400px) {
+  .projects-wrapper {
+    padding: 0.2rem;
+  }
+
+  .projects-wrapper > .section-title {
+    font-size: 1.6rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .projects-grid {
+    gap: 1.4rem;
+    padding: 0.6rem 0.4rem;
+  }
+
+  .project-card {
+    min-width: 320px;
+    max-width: 360px;
+  }
+}
+
+
+/* =======================================================
+   🎯 ACCESSIBILITY & PERFORMANCE
+======================================================= */
+
+/* Focus States */
+.project-card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.project-link:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .project-link::before {
+    transition: none !important;
+  }
+}
+
+
+/* =======================================================
+   END OF FILE
+======================================================= */

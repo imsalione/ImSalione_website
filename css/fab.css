@@ -1,157 +1,608 @@
 /* =======================================================
-🎨 FAB Menu Styles - Vertical + Animated (Polished)
+ ⚙️ FAB Menu - Enhanced Glassmorphism Style
+ File: css/fab.css
+ Author: Saleh Abedinezhad (ImSalione)
+ 
+ Enhanced Features:
+ - True glassmorphism with high transparency
+ - Smooth animations and transitions
+ - Theme-aware styling
+ - Accessibility support
 ======================================================= */
 
-/* ========== Container ========== */
-.fab-menu {
+/* =======================================================
+   🎯 FAB CONTAINER
+======================================================= */
+#fabMenu {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
+  z-index: 10000;
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
-  z-index: 9999;
+  gap: 0.75rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-html[dir="rtl"] .fab-menu {
+
+html[dir="rtl"] #fabMenu {
   right: auto;
   left: 2rem;
 }
 
+
 /* =======================================================
-MAIN BUTTON
+   🔘 MAIN FAB BUTTON - Enhanced Glass
 ======================================================= */
-.fab-main {
+#fabMain {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: #fff;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
+  border: 1px solid var(--border-color);
+  
+  /* Layered Shadow */
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--border-highlight);
+  
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
-  cursor: pointer;
-  box-shadow: 0 6px 18px var(--shadow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  border: none; /* Ensure no border or green glow */
-  outline: none;
+  
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* 🔹 Hover effect: only smooth scaling (no green ring) */
-.fab-main:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 22px rgba(99, 102, 241, 0.35);
-}
-
-.fab-menu.open .fab-main {
-  transform: rotate(90deg) scale(1.05);
-}
-
-/* =======================================================
-SUBMENU CONTAINER
-======================================================= */
-.fab-submenu {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.6rem;
-  margin-bottom: 0.6rem;
+/* Shine Effect */
+#fabMain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
   pointer-events: none;
 }
-.fab-menu.open .fab-submenu {
+
+#fabMain:hover::before {
+  opacity: 1;
+}
+
+/* Glow Effect */
+#fabMain::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  opacity: 0;
+  z-index: -1;
+  filter: blur(12px);
+  transition: opacity 0.3s ease;
+}
+
+#fabMain:hover::after {
+  opacity: 0.4;
+}
+
+/* Hover State */
+#fabMain:hover {
+  transform: translateY(-2px) scale(1.05);
+  border-color: var(--border-highlight);
+  box-shadow:
+    0 18px 50px var(--shadow-color),
+    0 0 30px rgba(99, 102, 241, 0.25),
+    0 0 0 1px var(--border-highlight),
+    inset 0 1px 0 var(--border-highlight);
+}
+
+/* Active State */
+#fabMain.fab-active {
+  transform: rotate(45deg) scale(1.05);
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-color: transparent;
+  color: #ffffff;
+}
+
+#fabMain.fab-active::before {
+  opacity: 0;
+}
+
+/* Icon */
+#fabMain i {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+#fabMain.fab-active i {
+  color: #ffffff;
+}
+
+
+/* =======================================================
+   📋 SUBMENU - Enhanced Glass
+======================================================= */
+#fabSubmenu {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.8);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+#fabMenu.open #fabSubmenu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
   pointer-events: auto;
 }
 
+
 /* =======================================================
-OPTION BUTTONS
+   🎨 FAB OPTIONS - Enhanced Glass
 ======================================================= */
 .fab-option {
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  
+  /* Enhanced Glassmorphism */
   background: var(--bg-card);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  
   border: 1px solid var(--border-color);
-  color: var(--primary);
+  
+  box-shadow:
+    0 4px 16px var(--shadow-color),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-  box-shadow: 0 3px 10px var(--shadow);
-  transform: translateY(10px);
-  opacity: 0;
-  transition:
-    transform 0.35s ease,
-    opacity 0.35s ease,
-    background 0.25s ease,
-    color 0.25s ease;
-  cursor: pointer;
+  
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-/* 🔹 Hover effect: match active palette (primary → secondary) */
-.fab-option:hover {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  color: #fff;
-  transform: scale(1.1);
+/* Shine Effect */
+.fab-option::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
-/* Smooth staggered reveal */
-.fab-menu.open .fab-option {
-  transform: translateY(0);
+.fab-option:hover::before {
   opacity: 1;
 }
-.fab-option:nth-child(1) { transition-delay: 0.05s; }
-.fab-option:nth-child(2) { transition-delay: 0.1s; }
-.fab-option:nth-child(3) { transition-delay: 0.15s; }
+
+/* Hover State */
+.fab-option:hover {
+  transform: translateY(-2px) scale(1.1);
+  border-color: var(--border-highlight);
+  box-shadow:
+    0 6px 20px var(--shadow-color),
+    0 0 20px rgba(99, 102, 241, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Active State */
+.fab-option.fab-option-active {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-color: transparent;
+  transform: scale(0.95);
+}
+
+.fab-option.fab-option-active i,
+.fab-option.fab-option-active .fab-option-text {
+  color: #ffffff;
+}
+
+/* Icon & Text */
+.fab-option i {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.fab-option .fab-option-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
 
 /* =======================================================
-PALETTE SUBMENU
+   🎨 PALETTE SUBMENU - Enhanced Glass
 ======================================================= */
-.fab-palette-wrapper {
-  position: relative;
-}
-
-.fab-palette {
+#fabPalette {
   position: absolute;
-  top: 0;
-  right: 60px; /* default for LTR */
-  display: flex;
-  gap: 0.4rem;
-  background: var(--bg-secondary);
-  padding: 0.4rem 0.6rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  right: calc(100% + 0.75rem);
+  bottom: 0;
+  
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  padding: 0.75rem;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--border-highlight);
+  
   opacity: 0;
-  transform: scale(0.8);
+  visibility: hidden;
+  transform: translateX(10px) scale(0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
-  transition: all 0.25s ease;
+  z-index: -1;
 }
-html[dir="rtl"] .fab-palette {
+
+html[dir="rtl"] #fabPalette {
   right: auto;
-  left: 60px;
+  left: calc(100% + 0.75rem);
+  transform: translateX(-10px) scale(0.8);
 }
 
-.fab-palette.open {
+#fabPalette.open {
   opacity: 1;
-  transform: scale(1);
+  visibility: visible;
+  transform: translateX(0) scale(1);
   pointer-events: auto;
+  z-index: 1;
 }
 
+html[dir="rtl"] #fabPalette.open {
+  transform: translateX(0) scale(1);
+}
+
+/* Shine Effect */
+#fabPalette::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+
+/* =======================================================
+   🎨 COLOR SWATCHES - Enhanced
+======================================================= */
 .color-swatch {
-  width: 20px;
-  height: 20px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid var(--border-color);
-  transition: transform 0.25s ease;
-}
-.color-swatch:hover {
-  transform: scale(1.2);
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Swatch previews for all palettes */
-.color-swatch[data-color="modern"]  { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
-.color-swatch[data-color="warm"]    { background: linear-gradient(135deg, #f97316, #fb923c); }
-.color-swatch[data-color="cool"]    { background: linear-gradient(135deg, #3b82f6, #0ea5e9); }
-.color-swatch[data-color="default"] { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
-.color-swatch[data-color="teal"]    { background: linear-gradient(135deg, #14b8a6, #0d9488); }
-.color-swatch[data-color="rose"]    { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+/* Glow Effect */
+.color-swatch::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: inherit;
+  opacity: 0;
+  z-index: -1;
+  filter: blur(8px);
+  transition: opacity 0.3s ease;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.color-swatch:hover::after {
+  opacity: 0.5;
+}
+
+/* Active Swatch */
+.color-swatch.fab-swatch-active {
+  border-color: #ffffff;
+  border-width: 3px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 0 20px currentColor,
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.color-swatch.fab-swatch-active::after {
+  opacity: 0.6;
+}
+
+/* Check mark for active swatch */
+.color-swatch.fab-swatch-active::before {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+
+/* =======================================================
+   ✨ INTRO ANIMATION
+======================================================= */
+.fab-intro-pulse {
+  animation: fabPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fabPulse {
+  0% {
+    transform: scale(1);
+    box-shadow:
+      0 4px 16px var(--shadow-color),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow:
+      0 8px 24px rgba(99, 102, 241, 0.4),
+      0 0 30px rgba(99, 102, 241, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 4px 16px var(--shadow-color),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+}
+
+
+/* =======================================================
+   🔔 NOTIFICATION TOAST - Enhanced Glass (Next to FAB)
+======================================================= */
+.fab-notification {
+  position: absolute;
+  right: calc(100% + 0.75rem);
+  bottom: 0;
+  
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  min-width: 200px;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 20px rgba(99, 102, 241, 0.15),
+    inset 0 1px 0 var(--border-highlight);
+  
+  z-index: 10001;
+  
+  opacity: 0;
+  transform: translateX(10px) scale(0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+html[dir="rtl"] .fab-notification {
+  right: auto;
+  left: calc(100% + 0.75rem);
+  transform: translateX(-10px) scale(0.8);
+}
+
+.fab-notification.fab-notification-show {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+html[dir="rtl"] .fab-notification.fab-notification-show {
+  transform: translateX(0) scale(1);
+}
+
+/* Shine Effect */
+.fab-notification::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.fab-notification-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.fab-notification-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+}
+
+
+/* =======================================================
+   📱 RESPONSIVE - MOBILE
+======================================================= */
+@media (max-width: 768px) {
+  #fabMenu {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+
+  html[dir="rtl"] #fabMenu {
+    left: 1.5rem;
+  }
+
+  #fabMain {
+    width: 52px;
+    height: 52px;
+  }
+
+  .fab-option {
+    width: 44px;
+    height: 44px;
+  }
+
+  #fabPalette {
+    right: calc(100% + 0.5rem);
+    padding: 0.6rem;
+    gap: 0.4rem;
+  }
+
+  html[dir="rtl"] #fabPalette {
+    left: calc(100% + 0.5rem);
+  }
+
+  .color-swatch {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* Notification در موبایل بالای FAB */
+  .fab-notification {
+    right: auto;
+    left: 50%;
+    bottom: calc(100% + 0.75rem);
+    transform: translateX(-50%) translateY(10px) scale(0.8);
+    min-width: auto;
+    max-width: 250px;
+  }
+
+  html[dir="rtl"] .fab-notification {
+    left: 50%;
+    right: auto;
+  }
+
+  .fab-notification.fab-notification-show {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+
+/* =======================================================
+   🎯 ACCESSIBILITY
+======================================================= */
+
+/* Focus States */
+#fabMain:focus-visible,
+.fab-option:focus-visible,
+.color-swatch:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Keyboard Navigation */
+.fab-option[tabindex="0"]:focus {
+  border-color: var(--primary);
+  box-shadow:
+    0 6px 20px var(--shadow-color),
+    0 0 0 2px var(--primary);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  #fabMain,
+  .fab-option,
+  .color-swatch,
+  #fabPalette,
+  #fabSubmenu,
+  .fab-notification {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+
+/* =======================================================
+   🎨 THEME TRANSITION
+======================================================= */
+html.theme-transitioning * {
+  transition: background-color 0.35s ease,
+              border-color 0.35s ease,
+              color 0.35s ease !important;
+}
+
+
+/* =======================================================
+   END OF FILE
+======================================================= */

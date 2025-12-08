@@ -1,140 +1,137 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
 <!-- =======================================================
-🌐 ImSalione Portfolio – Index Page (Swapped Projects Version)
+🌐 ImSalione Portfolio (2025 Modular Version)
+Author: Saleh Abedinezhad
+=======================================================
+Structure:
+- Responsive glass-grid layout (Intro, Timeline, Skills, Projects)
+- Dynamic JSON content loading
+- FAB controller for theme & language
+- NEW: Progressive Skill Tree synchronized with Timeline
 ======================================================= -->
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description"
-        content="Portfolio of Saleh Abedinezhad – Data Analytics & Engineering Specialist.">
+  <meta name="description" content="ImSalione | Portfolio of Saleh Abedinezhad – Data Engineering & AI Projects" />
   <meta name="author" content="Saleh Abedinezhad" />
-  <title>Saleh Abedinezhad – Data Analytics & Engineering</title>
+  <title>ImSalione | Portfolio</title>
 
-  <!-- =======================================================
-  🧩 NORMALIZATION & ICONS
-  ======================================================= -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- 🧩 Normalize & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous">
 
-  <!-- =======================================================
-  🎨 CORE STYLES
-  ======================================================= -->
+  <!-- Foundation -->
   <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/color-theme.css">
+
+  <!-- Themes (only one active) -->
+  <link rel="stylesheet" href="css/themes/dark.css">
+  <!-- OR -->
+  <link rel="stylesheet" href="css/themes/light.css">
+  <!-- Palette-colors -->
+  <link rel="stylesheet" href="css/themes/palette-system.css">
+
+  <!-- Layout & Components -->
   <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/sections.css">
-
-  <!-- =======================================================
-  📄 PAGE-SPECIFIC STYLES
-  ======================================================= -->
-  <link rel="stylesheet" href="css/home.css">
-  <link rel="stylesheet" href="css/skills.css">
-  <link rel="stylesheet" href="css/projects.css">
-
-  <!-- =======================================================
-  ⚙️ FAB MODULE STYLES
-  ======================================================= -->
+  <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/fab.css">
-
-  <!-- =======================================================
-  📊 GitHub Contributions Styles
-  ======================================================= -->
   <link rel="stylesheet" href="css/github-contrib.css">
+
+  <!-- Sections -->
+  <link rel="stylesheet" href="css/sections/section-intro.css">
+  <link rel="stylesheet" href="css/sections/section-timeline.css">
+  <link rel="stylesheet" href="css/sections/section-skills.css">
+  <link rel="stylesheet" href="css/sections/section-projects.css">
+
 </head>
 
-<body data-theme="dark" data-theme-style="modern">
-  <noscript>
-    <div style="padding:1rem;margin:1rem;border:1px solid #f59e0b;border-radius:8px;background:#fff3cd;color:#7c5b00;">
-      JavaScript is required to load this page content.
-    </div>
-  </noscript>
+<body data-theme="dark" data-theme-style="default">
 
   <!-- =======================================================
-  🧭 MAIN PAGE STRUCTURE
-  loader.js dynamically injects partials into these containers.
+  🧱 MAIN GRID
   ======================================================= -->
-  <main class="page-wrapper">
-    <!-- Left Column (Home + About) -->
-    <section id="home-about"></section>
+  <main class="page-grid">
 
-    <!-- Right Column (Skills + Projects) -->
-    <div class="right-column">
-      <section id="skills-timeline"></section>
-      <section id="projects"></section>
-    </div>
+    <!-- 🧑 Intro -->
+    <section id="section-intro" class="glass-panel"></section>
+
+    <!-- ⏳ Timeline + Skills -->
+    <section id="section-timeline-skills" class="glass-panel">
+      <div class="timeline-container"></div>
+      <div class="skills-container"></div>
+    </section>
+
+    <!-- 💼 Projects -->
+    <section id="section-projects" class="glass-panel"></section>
+
   </main>
 
   <!-- =======================================================
-  ⚙️ FAB MOUNT POINT
+  ⚙️ FAB CONTAINER
   ======================================================= -->
-  <div id="fab-container"></div>
+  <div id="fab-container">
+    <div id="fab-placeholder"></div>
+  </div>
 
   <!-- =======================================================
-  💡 SCRIPTS
+  📜 JAVASCRIPT FILES (ORDER MATTERS!)
   ======================================================= -->
 
-  <!-- Core Utilities -->
+  <!-- 1. Core -->
+  <script src="js/config.js"></script>
+  <script src="js/eventHub.js"></script>
   <script src="js/utils.js"></script>
-  <script src="js/script.js"></script>
-
-  <!-- Chart.js must load BEFORE github-contrib.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-  <!-- 🧩 Load Projects before Loader -->
-  <script src="js/projects.js"></script>
-
-  <!-- Loader (loads partials dynamically) -->
-  <script src="js/loader.js"></script>
-
-  <!-- Feature Modules -->
-  <script src="js/skills.js"></script>
+  
+  <!-- 2. Core Modules -->
+  <script src="js/core/router.js"></script>
+  <script src="js/core/dom-manager.js"></script>
+  
+  <!-- 3. Main Controller -->
+  <script src="js/main.js"></script>
+  
+  <!-- 4. Components -->
+  <script src="js/fab.js"></script>
   <script src="js/github-contrib.js"></script>
+  
+  <!-- 5. Sections -->
+  <script src="js/sections/section-intro.js"></script>
+  <script src="js/sections/section-timeline.js"></script>
+  <script src="js/sections/section-skills.js"></script>
+  <script src="js/sections/section-projects.js"></script>
 
-  <!-- FAB Module -->
-  <script src="js/fab.js" defer></script>
-
-  <!-- =======================================================
-  🧠 FAB Initialization + Event Binding
-  ======================================================= -->
+  <!-- 6️⃣ Load FAB (dynamic for static hosting) -->
   <script>
-    // Load FAB partial
-    fetch("partials/fab.html")
-      .then(r => r.text())
-      .then(html => {
-        const mount = document.getElementById("fab-container");
-        mount.innerHTML = html;
+    (function loadFAB() {
+      fetch("partials/fab.html")
+        .then(r => r.text())
+        .then(html => {
+          const placeholder = document.getElementById("fab-placeholder");
+          if (placeholder) {
+            placeholder.innerHTML = html;
+            if (typeof initFabMenu === "function") {
+              initFabMenu();
+              console.log("✅ FAB initialized");
+            }
+          }
+        })
+        .catch(err => {
+          console.warn("⚠️ FAB could not be loaded:", err);
+        });
+    })();
+  </script>
 
-        // Initialize FAB module after injection
-        if (typeof initFabMenu === "function") initFabMenu();
-      })
-      .catch(err => console.error("❌ FAB partial load error:", err));
-
-    // Toggle Theme (Dark/Light)
-    document.addEventListener("fabThemeToggle", () => {
-      if (typeof updateTheme === "function") {
-        const current = document.body.getAttribute("data-theme") || "dark";
-        updateTheme(current === "dark" ? "light" : "dark");
-      }
+  <!-- 7️⃣ Error Handler -->
+  <script>
+    window.addEventListener('error', (e) => {
+      console.error('🔴 Runtime Error:', e.error);
+      console.error('File:', e.filename);
+      console.error('Line:', e.lineno, 'Column:', e.colno);
     });
 
-    // Toggle Language (EN/FA)
-    document.addEventListener("fabLangToggle", () => {
-      if (typeof updateLanguage === "function") {
-        const dir = document.documentElement.getAttribute("dir") || "ltr";
-        updateLanguage(dir === "ltr" ? "fa" : "en");
-      }
-    });
-
-    // Toggle Palette Menu
-    document.addEventListener("fabPaletteToggle", () => {
-      const panel = document.querySelector(".palette-panel");
-      if (panel) panel.classList.toggle("active");
+    window.addEventListener('unhandledrejection', (e) => {
+      console.error('🔴 Unhandled Promise Rejection:', e.reason);
     });
   </script>
+
 </body>
 </html>
