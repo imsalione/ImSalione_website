@@ -9,6 +9,7 @@
  - Layered shadows for depth perception
  - Smooth hover interactions
  - Theme-aware glass effects
+ - Dynamic icon colors matching palette
 ======================================================= */
 
 /* =======================================================
@@ -250,7 +251,7 @@ html[dir="rtl"] .profile-name:hover {
 
 
 /* =======================================================
-   🔗 CONTACT LINKS
+   🔗 CONTACT LINKS - Enhanced with Dynamic Colors
 ======================================================= */
 .contact-links {
   display: flex;
@@ -269,7 +270,7 @@ html[dir="rtl"] .profile-name:hover {
   height: 42px;
   border-radius: 50%;
   
-  /* Glass Effect */
+  /* Glass Effect - Same as FAB */
   background: var(--bg-card);
   backdrop-filter: blur(12px) saturate(150%);
   -webkit-backdrop-filter: blur(12px) saturate(150%);
@@ -278,8 +279,14 @@ html[dir="rtl"] .profile-name:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  
+  /* Dynamic color from theme palette */
   color: var(--primary);
-  font-size: 1rem;
+  
+  font-size: 1.1rem;
+  
+  /* حذف خط زیر لینک */
+  text-decoration: none !important;
   
   position: relative;
   overflow: hidden;
@@ -290,7 +297,25 @@ html[dir="rtl"] .profile-name:hover {
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
+/* Glass Shine Effect */
 .contact-links a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gradient Background on Hover */
+.contact-links a::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -298,38 +323,60 @@ html[dir="rtl"] .profile-name:hover {
   opacity: 0;
   border-radius: inherit;
   transition: opacity 0.3s ease;
+  z-index: 0;
 }
 
 .contact-links a:hover {
   transform: translateY(-3px) scale(1.08);
+  border-color: var(--border-highlight);
   color: #ffffff;
+  text-decoration: none !important;
   box-shadow: 
     0 6px 16px rgba(99, 102, 241, 0.35),
-    0 0 20px rgba(99, 102, 241, 0.2);
+    0 0 20px var(--primary-glow, rgba(99, 102, 241, 0.3)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .contact-links a:hover::before {
+  opacity: 0;
+}
+
+.contact-links a:hover::after {
   opacity: 1;
 }
 
-.contact-links a i,
-.contact-links a img {
+/* Icon Styling */
+.contact-links a i {
+  position: relative;
   z-index: 2;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
 
-.contact-links a:hover i,
-.contact-links a:hover img {
+.contact-links a:hover i {
   transform: scale(1.1);
+  color: #ffffff;
 }
 
-/* Icon Image Styling */
-.contact-links a img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  transition: filter 0.25s ease, transform 0.25s ease;
+/* Active/Focus States */
+.contact-links a:active {
+  transform: translateY(-1px) scale(1.05);
+  text-decoration: none !important;
+}
+
+.contact-links a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  text-decoration: none !important;
+}
+
+.contact-links a:visited {
+  text-decoration: none !important;
+}
+
+/* Glow Effect for Active Icon */
+.contact-links a:hover i {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
 }
 
 
@@ -739,6 +786,7 @@ html[dir="rtl"] .about-modal-body {
   .contact-links a {
     width: 44px;
     height: 44px;
+    font-size: 1.15rem;
   }
 
   .about-box {
@@ -777,6 +825,7 @@ html[dir="rtl"] .about-modal-body {
   .contact-links a {
     width: 42px;
     height: 42px;
+    font-size: 1.1rem;
   }
 
   .about-box {
@@ -815,6 +864,31 @@ html[dir="rtl"] .about-modal-body {
 
   .about-box {
     padding: 1.3rem;
+  }
+}
+
+
+/* =======================================================
+   🎨 THEME TRANSITION SUPPORT
+======================================================= */
+html.theme-transitioning .contact-links a,
+html.theme-transitioning .contact-links a i {
+  transition: color 0.35s ease,
+              background-color 0.35s ease,
+              border-color 0.35s ease !important;
+}
+
+
+/* =======================================================
+   ♿ ACCESSIBILITY
+======================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .intro-header-box,
+  .intro-img-wrapper,
+  .contact-links a,
+  .about-box,
+  .about-modal-content {
+    transition-duration: 0.01ms !important;
   }
 }
 

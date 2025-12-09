@@ -77,47 +77,55 @@
 
     console.log(`🎨 [FAB] Applying palette: ${styleName}`);
 
-    // Add transition class for smooth color change
-    document.documentElement.classList.add('theme-transitioning');
-    document.body.classList.add('theme-transitioning');
+    // Wait for DOM to be ready
+    requestAnimationFrame(() => {
+      // Add transition class for smooth color change
+      document.documentElement.classList.add('theme-transitioning');
+      document.body.classList.add('theme-transitioning');
 
-    // Apply to DOM - CRITICAL: Set on both html and body
-    document.documentElement.setAttribute('data-theme-style', styleName);
-    document.body.setAttribute('data-theme-style', styleName);
-    
-    // Also apply as dataset for easier access
-    document.documentElement.dataset.themeStyle = styleName;
-    document.body.dataset.themeStyle = styleName;
+      // Apply to DOM - CRITICAL: Set on both html and body
+      document.documentElement.setAttribute('data-theme-style', styleName);
+      document.body.setAttribute('data-theme-style', styleName);
+      
+      // Also apply as dataset for easier access
+      document.documentElement.dataset.themeStyle = styleName;
+      document.body.dataset.themeStyle = styleName;
 
-    // Persist to storage
-    if (persist) {
-      CONFIG.saveSetting(CONFIG.storage.themeStyle, styleName);
-    }
+      // Force repaint
+      void document.documentElement.offsetHeight;
 
-    // Highlight active swatch
-    highlightActiveSwatch(styleName);
+      // Persist to storage
+      if (persist) {
+        CONFIG.saveSetting(CONFIG.storage.themeStyle, styleName);
+      }
 
-    // Remove transition class after animation
-    setTimeout(() => {
-      document.documentElement.classList.remove('theme-transitioning');
-      document.body.classList.remove('theme-transitioning');
-    }, 350);
+      // Highlight active swatch
+      highlightActiveSwatch(styleName);
 
-    // Emit event
-    const event = new CustomEvent(CONFIG.events.fabPaletteSelect, {
-      detail: { color: styleName },
+      // Remove transition class after animation
+      setTimeout(() => {
+        document.documentElement.classList.remove('theme-transitioning');
+        document.body.classList.remove('theme-transitioning');
+      }, 350);
+
+      // Emit events
+      const event = new CustomEvent(CONFIG.events.fabPaletteSelect, {
+        detail: { color: styleName },
+        bubbles: true,
+        cancelable: false
+      });
+      document.dispatchEvent(event);
+
+      // Emit legacy event for backward compatibility
+      if (window.EventHub && typeof window.EventHub.emit === 'function') {
+        window.EventHub.emit(CONFIG.events.paletteChanged, { color: styleName });
+      }
+
+      // Show notification
+      showNotification(`Palette: ${styleName}`, '🎨');
+      
+      console.log(`✅ [FAB] Palette applied: ${styleName}`);
     });
-    document.dispatchEvent(event);
-
-    // Emit legacy event for backward compatibility
-    if (window.EventHub && typeof window.EventHub.emit === 'function') {
-      window.EventHub.emit(CONFIG.events.paletteChanged, { color: styleName });
-    }
-
-    // Show notification
-    showNotification(`Palette: ${styleName}`, '🎨');
-    
-    console.log(`✅ [FAB] Palette applied: ${styleName}`);
   }
 
   /**
@@ -443,14 +451,30 @@
       return;
     }
 
-    // Load initial palette
-    const initialStyle =
-      CONFIG.getCurrentThemeStyle() ||
+    // Wait for CONFIG to be available
+    if (typeof CONFIG === 'undefined') {
+      console.warn('⚠️ [FAB] CONFIG not ready, retrying...');
+      setTimeout(initialize, 200);
+      return;
+    }
+
+    // Load initial palette from multiple sources (priority order)
+    const initialStyle = 
+      document.body.getAttribute('data-theme-style') ||
       document.documentElement.getAttribute('data-theme-style') ||
+      CONFIG.getCurrentThemeStyle() ||
       'default';
 
     console.log(`🎨 [FAB] Applying initial palette: ${initialStyle}`);
-    applyThemeStyle(initialStyle, false);
+    
+    // Apply immediately without animation
+    document.documentElement.setAttribute('data-theme-style', initialStyle);
+    document.body.setAttribute('data-theme-style', initialStyle);
+    document.documentElement.dataset.themeStyle = initialStyle;
+    document.body.dataset.themeStyle = initialStyle;
+    
+    // Highlight without animation
+    highlightActiveSwatch(initialStyle);
 
     // Update icons
     updateFabIcons();
@@ -459,8 +483,10 @@
     setupEventListeners();
     setupStateListeners();
 
-    // Run intro animation
-    runIntroAnimation();
+    // Run intro animation (with delay to ensure everything is ready)
+    setTimeout(() => {
+      runIntroAnimation();
+    }, 500);
 
     // Mark as initialized
     window.fabInitialized = true;

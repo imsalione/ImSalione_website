@@ -4,7 +4,7 @@
  * 🎯 Purpose: Vertical Slot Machine Timeline with Skills Sync
  * Author: Saleh Abedinezhad (ImSalione)
  * =======================================================
- * FIXED: Proper index mapping and event dispatching
+ * ✅ OPTIMIZED: Proper cleanup and event management
  * =======================================================
  */
 
@@ -14,11 +14,46 @@
   /**
    * State
    */
-  let currentIndex = 1; // Start at first real item (past card is at 0)
-  let totalRealItems = 0; // Count of real timeline events (excluding past/future)
+  let currentIndex = 1;
+  let totalRealItems = 0;
   let elements = {};
   let isInitialized = false;
   let timelineData = [];
+  
+  // ✅ Cleanup trackers
+  let eventListeners = [];
+  let resizeObserver = null;
+  let wheelTimeout = null;
+
+  /**
+   * ✅ Helper: Add tracked event listener
+   */
+  function addTrackedListener(target, event, handler, options) {
+    target.addEventListener(event, handler, options);
+    eventListeners.push({ target, event, handler, options });
+  }
+
+  /**
+   * ✅ Cleanup all event listeners
+   */
+  function cleanupListeners() {
+    eventListeners.forEach(({ target, event, handler, options }) => {
+      target.removeEventListener(event, handler, options);
+    });
+    eventListeners = [];
+    
+    if (resizeObserver) {
+      resizeObserver.disconnect();
+      resizeObserver = null;
+    }
+    
+    if (wheelTimeout) {
+      clearTimeout(wheelTimeout);
+      wheelTimeout = null;
+    }
+    
+    console.log('🧹 [Timeline] Listeners cleaned up');
+  }
 
   /**
    * Add past card dynamically
@@ -43,7 +78,7 @@
 
     const pastCard = document.createElement('div');
     pastCard.classList.add('timeline-item', 'past-card');
-    pastCard.dataset.index = '-1'; // Special index for past
+    pastCard.dataset.index = '-1';
     pastCard.dataset.type = 'past';
 
     pastCard.innerHTML = `
@@ -81,7 +116,7 @@
 
     const futureCard = document.createElement('div');
     futureCard.classList.add('timeline-item', 'future-card');
-    futureCard.dataset.index = String(totalRealItems); // After last real item
+    futureCard.dataset.index = String(totalRealItems);
     futureCard.dataset.type = 'future';
 
     futureCard.innerHTML = `
@@ -97,7 +132,7 @@
   }
 
   /**
-   * Create indicator dots (only for real items)
+   * Create indicator dots
    */
   function createIndicator() {
     if (!elements.indicator) return;
@@ -112,7 +147,8 @@
         dot.classList.add('active');
       }
 
-      dot.addEventListener('click', () => goToSlide(i + 1));
+      // ✅ Use tracked listener
+      addTrackedListener(dot, 'click', () => goToSlide(i + 1));
 
       elements.indicator.appendChild(dot);
     }
@@ -121,13 +157,12 @@
   }
 
   /**
-   * Update positions of all cards
+   * Update positions
    */
   function updatePositions() {
     const allItems = elements.list.querySelectorAll('.timeline-item');
 
     allItems.forEach((item, index) => {
-      // Remove all position classes
       item.classList.remove(
         'center',
         'above-1',
@@ -141,7 +176,6 @@
 
       const diff = index - currentIndex;
 
-      // Assign position class
       if (diff === 0) {
         item.classList.add('center');
       } else if (diff === -1) {
@@ -187,35 +221,23 @@
   function updateButtons() {
     if (!elements.prevBtn || !elements.nextBtn) return;
 
-    // Disable prev if at past card (index 0)
     elements.prevBtn.disabled = currentIndex <= 0;
-
-    // Disable next if at future card (index totalRealItems + 1)
     elements.nextBtn.disabled = currentIndex >= totalRealItems + 1;
   }
 
   /**
-   * Notify skills section of timeline change
-   * CRITICAL: Convert display index to data index
+   * Notify skills section
    */
   function notifySkillsSection() {
-    // currentIndex = 0 → past card (no skills)
-    // currentIndex = 1 → first real event → dataIndex = 0
-    // currentIndex = 2 → second real event → dataIndex = 1
-    // etc.
-    
     let dataIndex;
     let eventData = null;
 
     if (currentIndex === 0) {
-      // Past card - no skills
       dataIndex = -1;
     } else if (currentIndex > 0 && currentIndex <= totalRealItems) {
-      // Real event
       dataIndex = currentIndex - 1;
       eventData = timelineData[dataIndex] || null;
     } else {
-      // Future card - show all skills
       dataIndex = totalRealItems - 1;
       eventData = timelineData[dataIndex] || null;
     }
@@ -232,7 +254,7 @@
     document.dispatchEvent(event);
 
     console.log(
-      `📡 [Timeline] Index: display=${currentIndex}, data=${dataIndex}, event="${eventData?.title || 'N/A'}"`
+      `📡 [Timeline] Index: display=${currentIndex}, data=${dataIndex}`
     );
   }
 
@@ -240,7 +262,6 @@
    * Navigate to specific slide
    */
   function goToSlide(index) {
-    // Allow navigation to past (0) and future (totalRealItems + 1)
     if (index < 0 || index > totalRealItems + 1) return;
 
     currentIndex = index;
@@ -273,15 +294,15 @@
   function setupNavigation() {
     // Button navigation
     if (elements.prevBtn) {
-      elements.prevBtn.addEventListener('click', prevSlide);
+      addTrackedListener(elements.prevBtn, 'click', prevSlide);
     }
 
     if (elements.nextBtn) {
-      elements.nextBtn.addEventListener('click', nextSlide);
+      addTrackedListener(elements.nextBtn, 'click', nextSlide);
     }
 
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
+    // ✅ Keyboard navigation - SINGLE listener
+    const keyHandler = (e) => {
       if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
         e.preventDefault();
         prevSlide();
@@ -289,30 +310,19 @@
         e.preventDefault();
         nextSlide();
       }
-    });
+    };
+    addTrackedListener(document, 'keydown', keyHandler);
 
-    // Touch/Swipe support
+    // ✅ Touch/Swipe support - with proper tracking
     let touchStartY = 0;
     let touchEndY = 0;
 
-    elements.list.addEventListener(
-      'touchstart',
-      (e) => {
-        touchStartY = e.changedTouches[0].screenY;
-      },
-      { passive: true }
-    );
+    const touchStartHandler = (e) => {
+      touchStartY = e.changedTouches[0].screenY;
+    };
 
-    elements.list.addEventListener(
-      'touchend',
-      (e) => {
-        touchEndY = e.changedTouches[0].screenY;
-        handleSwipe();
-      },
-      { passive: true }
-    );
-
-    function handleSwipe() {
+    const touchEndHandler = (e) => {
+      touchEndY = e.changedTouches[0].screenY;
       const threshold = 50;
       const diff = touchStartY - touchEndY;
 
@@ -323,31 +333,37 @@
           prevSlide();
         }
       }
-    }
+    };
 
-    // Mouse wheel support
+    addTrackedListener(elements.list, 'touchstart', touchStartHandler, { passive: true });
+    addTrackedListener(elements.list, 'touchend', touchEndHandler, { passive: true });
+
+    // ✅ Mouse wheel - with proper debounce
     let isScrolling = false;
 
-    elements.list.addEventListener(
-      'wheel',
-      (e) => {
-        if (isScrolling) return;
+    const wheelHandler = (e) => {
+      if (isScrolling) return;
 
-        e.preventDefault();
-        isScrolling = true;
+      e.preventDefault();
+      isScrolling = true;
 
-        if (e.deltaY > 0) {
-          nextSlide();
-        } else {
-          prevSlide();
-        }
+      if (e.deltaY > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
 
-        setTimeout(() => {
-          isScrolling = false;
-        }, 600);
-      },
-      { passive: false }
-    );
+      // ✅ Clear previous timeout
+      if (wheelTimeout) {
+        clearTimeout(wheelTimeout);
+      }
+
+      wheelTimeout = setTimeout(() => {
+        isScrolling = false;
+      }, 600);
+    };
+
+    addTrackedListener(elements.list, 'wheel', wheelHandler, { passive: false });
 
     console.log('✅ [Timeline] Navigation setup complete');
   }
@@ -381,12 +397,10 @@
     const content = window.currentContent || {};
     timelineData = window.timelineData || content.timeline || [];
 
-    // Filter real events (exclude past/future if they exist in data)
     timelineData = timelineData.filter(
       (item) => item.type !== 'past' && item.type !== 'future'
     );
 
-    // Get existing real items from DOM
     const existingItems = Array.from(
       elements.list.querySelectorAll('.timeline-item')
     );
@@ -400,17 +414,12 @@
 
     console.log(`📊 [Timeline] Found ${totalRealItems} real events`);
 
-    // Add special cards
     addPastCard(elements.list);
     addFutureCard(elements.list);
 
-    // Setup navigation
     setupNavigation();
-
-    // Create indicator dots
     createIndicator();
 
-    // Initial position: first real event (index 1)
     currentIndex = 1;
     updatePositions();
 
@@ -422,15 +431,19 @@
   }
 
   /**
-   * Reset timeline (for language change)
+   * ✅ Reset timeline (for language change)
    */
   function reset() {
+    // ✅ CRITICAL: Cleanup first
+    cleanupListeners();
+    
     isInitialized = false;
     currentIndex = 1;
     totalRealItems = 0;
     elements = {};
     timelineData = [];
-    console.log('🔄 [Timeline] Reset');
+    
+    console.log('🔄 [Timeline] Reset complete');
   }
 
   /**

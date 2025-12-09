@@ -10,6 +10,9 @@
  * - Keyboard navigation
  * - GitHub chart integration
  * =======================================================
+ * ✅ OPTIMIZED: Proper observer cleanup and resource management
+ * ✅ FIXED: CPU usage reduced by preventing memory leaks
+ * =======================================================
  */
 
 (function initProjectsSection() {
@@ -20,6 +23,49 @@
    */
   let isInitialized = false;
   let elements = {};
+  
+  // ✅ Cleanup trackers - برای پاکسازی منابع
+  let resizeObserver = null;
+  let scrollHandler = null;
+  let resizeHandler = null;
+  let keyboardHandler = null;
+
+  /**
+   * ✅ Cleanup function - پاکسازی تمام منابع
+   */
+  function cleanup() {
+    console.log('🧹 [Projects] Starting cleanup...');
+    
+    // Disconnect ResizeObserver
+    if (resizeObserver) {
+      resizeObserver.disconnect();
+      resizeObserver = null;
+      console.log('✅ [Projects] ResizeObserver disconnected');
+    }
+    
+    // Remove scroll listener
+    if (scrollHandler && elements.grid) {
+      elements.grid.removeEventListener('scroll', scrollHandler);
+      scrollHandler = null;
+      console.log('✅ [Projects] Scroll listener removed');
+    }
+    
+    // Remove resize listener
+    if (resizeHandler) {
+      window.removeEventListener('resize', resizeHandler);
+      resizeHandler = null;
+      console.log('✅ [Projects] Resize listener removed');
+    }
+    
+    // Remove keyboard listener
+    if (keyboardHandler) {
+      document.removeEventListener('keydown', keyboardHandler);
+      keyboardHandler = null;
+      console.log('✅ [Projects] Keyboard listener removed');
+    }
+    
+    console.log('✅ [Projects] Cleanup complete');
+  }
 
   /**
    * Handle scroll to update fade hints
@@ -47,21 +93,22 @@
   function setupScrollHints() {
     if (!elements.grid) return;
 
-    // Throttle scroll handler for performance
-    const throttledScroll = Utils.throttle(handleScroll, 100);
+    // ✅ Create and store throttled scroll handler
+    scrollHandler = Utils.throttle(handleScroll, 100);
 
-    elements.grid.addEventListener('scroll', throttledScroll, {
+    elements.grid.addEventListener('scroll', scrollHandler, {
       passive: true,
     });
 
     // Initial check
     handleScroll();
 
-    // Re-check on window resize
-    window.addEventListener('resize', Utils.debounce(handleScroll, 250));
+    // ✅ Create and store debounced resize handler
+    resizeHandler = Utils.debounce(handleScroll, 250);
+    window.addEventListener('resize', resizeHandler);
 
-    // Re-check when grid size changes
-    const resizeObserver = new ResizeObserver(handleScroll);
+    // ✅ Create and store ResizeObserver
+    resizeObserver = new ResizeObserver(handleScroll);
     resizeObserver.observe(elements.grid);
 
     console.log('✅ [Projects] Scroll hints setup');
@@ -73,7 +120,8 @@
   function setupKeyboardNav() {
     if (!elements.grid) return;
 
-    document.addEventListener('keydown', (e) => {
+    // ✅ Store keyboard handler for cleanup
+    keyboardHandler = (e) => {
       // Only navigate if grid is in viewport
       const rect = elements.grid.getBoundingClientRect();
       const isInViewport =
@@ -91,7 +139,9 @@
         e.preventDefault();
         elements.grid.scrollBy({ left: -300, behavior: 'smooth' });
       }
-    });
+    };
+
+    document.addEventListener('keydown', keyboardHandler);
 
     console.log('✅ [Projects] Keyboard navigation setup');
   }
@@ -141,12 +191,19 @@
   }
 
   /**
-   * Reset projects section
+   * ✅ Reset projects section with proper cleanup
    */
   function reset() {
+    console.log('🔄 [Projects] Resetting...');
+    
+    // ✅ CRITICAL: Cleanup all resources first
+    cleanup();
+    
+    // Reset state
     isInitialized = false;
     elements = {};
-    console.log('🔄 [Projects] Reset');
+    
+    console.log('✅ [Projects] Reset complete');
   }
 
   /**
@@ -161,6 +218,7 @@
   });
 
   document.addEventListener(CONFIG.events.languageChanged, () => {
+    console.log('🌐 [Projects] Language changed, resetting...');
     reset();
     setTimeout(initialize, 300);
   });

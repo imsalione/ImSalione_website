@@ -35,11 +35,11 @@
     --border-highlight: rgba(99, 102, 241, 0.35);
     
     /* Enhanced blur and effects */
-    --blur: 24px;
+    --blur: 12px;
     --shadow-color: rgba(0, 0, 0, 0.6);
     
     /* Glass shine and edge effects */
-    --glass-shine: rgba(255, 255, 255, 0.06);
+    --glass-shine: rgba(255, 255, 255, 0.014);
     --glass-edge: rgba(99, 102, 241, 0.25);
     
     /* Scrollbar styling */
@@ -52,7 +52,7 @@
     background: linear-gradient(
         180deg,
         var(--scrollbar-thumb),
-        rgba(99, 102, 241, 0.3)
+        rgba(99, 101, 241, 0.082)
     );
 }
 

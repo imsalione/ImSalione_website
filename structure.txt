@@ -1,58 +1,92 @@
-ImSalione/
-│
-├── index.html                ← صفحه اصلی (فراخوانی partialها + FAB)
-│
-├── content/
-│   ├── fa.json               ← داده فارسی
-│   └── en.json               ← داده انگلیسی
-│
-├── css/
-│   ├── base.css              ← رنگ‌ها، بک‌گراند، glass-panel
-│   ├── layout.css            ← گرید و ریسپانسیو
-│   ├── common.css            ← استایل‌های عمومی (عنوان، فونت، دکمه‌ها)
-│   ├── fab.css               ← استایل دکمه شناور FAB
-│   └── sections/
-│       ├── section-intro.css
-│       ├── section-timeline.css
-│       ├── section-skills.css
-│       └── section-projects.css
-│
-├── js/
-│   ├── config.js
-│   ├── utils.js
-│   ├── main.js
-│   │
-│   ├── core/
-│   │   ├── router.js
-│   │   └── dom-manager.js
-│   │
-│   ├── sections/
-│   │   ├── section-intro.js
-│   │   ├── section-timeline.js
-│   │   ├── section-skills.js
-│   │   └── section-projects.js
-│   │
-│   ├── fab.js
-│   ├── github-contrib.js
-│   └── eventHub.js
-│
-├── partials/
-│   ├── section-intro.html
-│   ├── section-timeline.html
-│   ├── section-skills.html
-│   └── section-projects.html
-│   └── fab.html
-│
-├── assets/
-│   ├── profile.jpg
-│   ├── icons/
-│   └── images/
-│       ├── bg.svg
-│       └── project-cards/
-│
-├── api/
-│   └── github_contrib.php
-│
-├── .htaccess
-├── robots.txt
-└── sitemap.xml
+Folder PATH listing
+Volume serial number is 3A10-CC11
+C:.
+|   .env
+|   .gitattributes
+|   .gitignore
+|   .htaccess
+|   index.html
+|   robots.txt
+|   sitemap.xml
+|   structure.txt
+|   
++---api
+|   |   cacert.pem
+|   |   github_contrib.php
+|   |   
+|   \---cache
+|           github.json
+|           
++---assets
+|   |   profile.jpg
+|   |   
+|   +---icons
+|   |       email.svg
+|   |       github.svg
+|   |       instagram.svg
+|   |       linkedin.svg
+|   |       phone.svg
+|   |       
+|   \---images
+|       |   bg.jpg
+|       |   bg1.svg
+|       |   bg2.svg
+|       |   bg3.jpg
+|       |   
+|       \---project-cards
+|               diabetes-prediction.png
+|               etl.png
+|               excel-dashboard.png
+|               minirates.png
+|               python-course.png
+|               xwork.png
+|               
++---content
+|       en.json
+|       fa.json
+|       
++---css
+|   |   base.css
+|   |   common.css
+|   |   fab.css
+|   |   github-contrib.css
+|   |   layout.css
+|   |   
+|   +---sections
+|   |       section-intro.css
+|   |       section-projects.css
+|   |       section-skills.css
+|   |       section-timeline.css
+|   |       
+|   \---themes
+|           dark.css
+|           light.css
+|           palette-system.css
+|           
++---js
+|   |   config.js
+|   |   debug-event-flow.js
+|   |   eventHub.js
+|   |   fab.js
+|   |   github-contrib.js
+|   |   main.js
+|   |   utils.js
+|   |   
+|   +---core
+|   |       dom-manager.js
+|   |       router.js
+|   |       
+|   \---sections
+|           section-intro.js
+|           section-projects.js
+|           section-skills.js
+|           section-timeline.js
+|           
+\---partials
+        fab.html
+        github-contrib.html
+        section-intro.html
+        section-projects.html
+        section-skills.html
+        section-timeline.html
+        
