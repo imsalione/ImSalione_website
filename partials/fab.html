@@ -1,5 +1,5 @@
 <!-- =======================================================
- ⚙️ FAB Menu - Enhanced Glassmorphism Partial
+ ⚙️ FAB Menu - Enhanced with Background Selector
  File: partials/fab.html
  Author: Saleh Abedinezhad (ImSalione)
  
@@ -7,7 +7,7 @@
  - Theme toggle (dark/light)
  - Language toggle (FA/EN)
  - Color palette selector
- - Enhanced glassmorphism styling
+ - Background selector ✨ NEW
 ======================================================= -->
 
 <div id="fabMenu" role="menu" aria-label="Settings Menu">
@@ -24,6 +24,18 @@
 
   <!-- Submenu Options -->
   <div id="fabSubmenu" class="fab-submenu" role="menu">
+    <!-- ✨ NEW: Background Toggle -->
+    <button
+      id="backgroundToggle"
+      class="fab-option"
+      aria-label="Change Background"
+      aria-haspopup="menu"
+      title="Background"
+      tabindex="0"
+    >
+      <i class="fas fa-image" aria-hidden="true"></i>
+    </button>
+
     <!-- Palette Toggle -->
     <button
       id="paletteToggle"
@@ -162,6 +174,16 @@
       style="background: linear-gradient(135deg, #a855f7, #06b6d4)"
     ></button>
   </div>
+
+  <!-- ✨ NEW: Background Submenu -->
+  <div
+    id="fabBackground"
+    class="fab-background-menu"
+    role="menu"
+    aria-label="Backgrounds"
+  >
+    <!-- Backgrounds will be dynamically generated -->
+  </div>
 </div>
 
 <!-- Keyboard Navigation Script -->
@@ -174,7 +196,7 @@
     if (!fabMenu) return;
 
     const focusableElements = fabMenu.querySelectorAll(
-      'button[tabindex="0"], .color-swatch[tabindex="0"]'
+      'button[tabindex="0"], .color-swatch[tabindex="0"], .background-preview[tabindex="0"]'
     );
 
     let currentIndex = -1;
@@ -198,12 +220,12 @@
       elements[currentIndex]?.focus();
     });
 
-    // Handle Enter/Space on color swatches
-    fabMenu.querySelectorAll('.color-swatch').forEach((swatch) => {
-      swatch.addEventListener('keydown', (e) => {
+    // Handle Enter/Space on color swatches and backgrounds
+    fabMenu.querySelectorAll('.color-swatch, .background-preview').forEach((item) => {
+      item.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          swatch.click();
+          item.click();
         }
       });
     });

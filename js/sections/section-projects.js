@@ -5,14 +5,14 @@
  * Author: Saleh Abedinezhad (ImSalione)
  * =======================================================
  * Features:
- * - Horizontal scroll management with mouse wheel
+ * - Smooth momentum-based horizontal scroll
+ * - Fast AND smooth (best of both worlds)
  * - Scroll fade hints
  * - Keyboard navigation
- * - Clickable cards (no separate buttons)
+ * - Clickable cards
  * - GitHub chart integration
  * =======================================================
- * ✅ OPTIMIZED: Proper observer cleanup and resource management
- * ✅ NEW: Mouse wheel horizontal scroll
+ * ✅ PERFECTED: Momentum scrolling با interpolation
  * =======================================================
  */
 
@@ -25,64 +25,52 @@
   let isInitialized = false;
   let elements = {};
   
-  // ✅ Cleanup trackers
+  // Cleanup trackers
   let resizeObserver = null;
   let scrollHandler = null;
   let resizeHandler = null;
   let keyboardHandler = null;
   let wheelHandler = null;
-  let mouseEnterHandler = null;
-  let mouseLeaveHandler = null;
+  
+  // ✨ Momentum scrolling state
+  let targetScroll = 0;
+  let currentScroll = 0;
+  let rafId = null;
 
   /**
-   * ✅ Cleanup function
+   * Cleanup function
    */
   function cleanup() {
     console.log('🧹 [Projects] Starting cleanup...');
     
-    // Disconnect ResizeObserver
     if (resizeObserver) {
       resizeObserver.disconnect();
       resizeObserver = null;
-      console.log('✅ [Projects] ResizeObserver disconnected');
     }
     
-    // Remove scroll listener
     if (scrollHandler && elements.grid) {
       elements.grid.removeEventListener('scroll', scrollHandler);
       scrollHandler = null;
-      console.log('✅ [Projects] Scroll listener removed');
     }
     
-    // Remove resize listener
     if (resizeHandler) {
       window.removeEventListener('resize', resizeHandler);
       resizeHandler = null;
-      console.log('✅ [Projects] Resize listener removed');
     }
     
-    // Remove keyboard listener
     if (keyboardHandler) {
       document.removeEventListener('keydown', keyboardHandler);
       keyboardHandler = null;
-      console.log('✅ [Projects] Keyboard listener removed');
     }
 
-    // Remove wheel listener
     if (wheelHandler && elements.grid) {
       elements.grid.removeEventListener('wheel', wheelHandler);
       wheelHandler = null;
-      console.log('✅ [Projects] Wheel listener removed');
     }
-
-    // Remove mouse enter/leave listeners
-    if (mouseEnterHandler && elements.grid) {
-      elements.grid.removeEventListener('mouseenter', mouseEnterHandler);
-      mouseEnterHandler = null;
-    }
-    if (mouseLeaveHandler && elements.grid) {
-      elements.grid.removeEventListener('mouseleave', mouseLeaveHandler);
-      mouseLeaveHandler = null;
+    
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
     }
     
     console.log('✅ [Projects] Cleanup complete');
@@ -94,51 +82,83 @@
   function handleScroll() {
     if (!elements.grid) return;
 
-    const maxScroll = elements.grid.scrollWidth - elements.grid.clientWidth;
+    const { scrollLeft, scrollWidth, clientWidth } = elements.grid;
+    const maxScroll = scrollWidth - clientWidth;
 
-    // Add/remove scroll state classes
-    elements.grid.classList.toggle(
-      'scrolled-left',
-      elements.grid.scrollLeft > 10
-    );
-
-    elements.grid.classList.toggle(
-      'scrolled-right',
-      elements.grid.scrollLeft < maxScroll - 10
-    );
+    elements.grid.classList.toggle('scrolled-left', scrollLeft > 10);
+    elements.grid.classList.toggle('scrolled-right', scrollLeft < maxScroll - 10);
   }
 
   /**
-   * ✨ Setup horizontal scroll with mouse wheel
+   * ✨ Smooth interpolation loop
+   * این متد scroll را به صورت نرم و تدریجی انجام می‌دهد
+   */
+  function smoothScrollLoop() {
+    if (!elements.grid) return;
+    
+    // محاسبه فاصله بین موقعیت فعلی و target
+    const delta = targetScroll - currentScroll;
+    
+    // ✨ Interpolation factor - هرچه کمتر، نرم‌تر
+    // 0.15 = نرم و آرام
+    // 0.25 = متعادل (پیشنهادی)
+    // 0.35 = سریع‌تر
+    const lerp = 0.25;
+    
+    // اگر فاصله خیلی کم شد، مستقیم برو به target
+    if (Math.abs(delta) < 0.5) {
+      currentScroll = targetScroll;
+      elements.grid.scrollLeft = currentScroll;
+      rafId = null;
+      return;
+    }
+    
+    // ✨ Linear interpolation برای حرکت نرم
+    currentScroll += delta * lerp;
+    elements.grid.scrollLeft = currentScroll;
+    
+    // ادامه loop
+    rafId = requestAnimationFrame(smoothScrollLoop);
+  }
+
+  /**
+   * ✨ Setup smooth horizontal scroll با momentum
    */
   function setupHorizontalScroll() {
     if (!elements.grid) return;
 
-    // ✨ تبدیل اسکرول عمودی به افقی
-    wheelHandler = (e) => {
-      // فقط زمانی که اسکرول عمودی وجود ندارد
-      if (e.deltaY !== 0) {
+    // ضریب سرعت
+    const SCROLL_SPEED = 1.5;
+    
+    wheelHandler = function(e) {
+      const hasVerticalOverflow = this.scrollHeight > this.clientHeight;
+      
+      if (!hasVerticalOverflow && e.deltaY) {
         e.preventDefault();
-        elements.grid.scrollLeft += e.deltaY;
+        
+        // ✨ Update target scroll
+        targetScroll += e.deltaY * SCROLL_SPEED;
+        
+        // محدود کردن به range معتبر
+        const maxScroll = this.scrollWidth - this.clientWidth;
+        targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+        
+        // Initialize current scroll اگر اولین بار است
+        if (currentScroll === 0 && this.scrollLeft > 0) {
+          currentScroll = this.scrollLeft;
+        }
+        
+        // شروع smooth scroll loop اگر در حال اجرا نیست
+        if (!rafId) {
+          currentScroll = this.scrollLeft;
+          rafId = requestAnimationFrame(smoothScrollLoop);
+        }
       }
     };
 
-    // ✨ فعال‌سازی اسکرول افقی با ورود ماوس
-    mouseEnterHandler = () => {
-      elements.grid.classList.add('horizontal-scroll-active');
-      elements.grid.addEventListener('wheel', wheelHandler, { passive: false });
-    };
+    elements.grid.addEventListener('wheel', wheelHandler, { passive: false });
 
-    // ✨ غیرفعال‌سازی با خروج ماوس
-    mouseLeaveHandler = () => {
-      elements.grid.classList.remove('horizontal-scroll-active');
-      elements.grid.removeEventListener('wheel', wheelHandler);
-    };
-
-    elements.grid.addEventListener('mouseenter', mouseEnterHandler);
-    elements.grid.addEventListener('mouseleave', mouseLeaveHandler);
-
-    console.log('✅ [Projects] Horizontal scroll setup');
+    console.log('✅ [Projects] Smooth momentum scroll enabled');
   }
 
   /**
@@ -147,23 +167,46 @@
   function setupScrollHints() {
     if (!elements.grid) return;
 
-    // ✅ Create and store throttled scroll handler
-    scrollHandler = Utils.throttle(handleScroll, 100);
+    let ticking = false;
+    
+    scrollHandler = function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
 
-    elements.grid.addEventListener('scroll', scrollHandler, {
-      passive: true,
-    });
-
-    // Initial check
+    elements.grid.addEventListener('scroll', scrollHandler, { passive: true });
     handleScroll();
 
-    // ✅ Create and store debounced resize handler
-    resizeHandler = Utils.debounce(handleScroll, 250);
+    resizeHandler = function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener('resize', resizeHandler);
 
-    // ✅ Create and store ResizeObserver
-    resizeObserver = new ResizeObserver(handleScroll);
-    resizeObserver.observe(elements.grid);
+    try {
+      resizeObserver = new ResizeObserver(function() {
+        if (!ticking) {
+          requestAnimationFrame(function() {
+            handleScroll();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+      resizeObserver.observe(elements.grid);
+    } catch (e) {
+      console.warn('⚠️ [Projects] ResizeObserver not supported');
+    }
 
     console.log('✅ [Projects] Scroll hints setup');
   }
@@ -174,67 +217,61 @@
   function setupKeyboardNav() {
     if (!elements.grid) return;
 
-    // ✅ Store keyboard handler for cleanup
-    keyboardHandler = (e) => {
-      // Only navigate if grid is in viewport
+    keyboardHandler = function(e) {
       const rect = elements.grid.getBoundingClientRect();
-      const isInViewport =
-        rect.top >= 0 &&
-        rect.bottom <=
-          (window.innerHeight || document.documentElement.clientHeight);
+      const isVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
 
-      if (!isInViewport) return;
+      if (!isVisible) return;
 
-      // Arrow key navigation
       if (e.key === 'ArrowRight') {
         e.preventDefault();
-        elements.grid.scrollBy({ left: 300, behavior: 'smooth' });
+        targetScroll = elements.grid.scrollLeft + 300;
+        const maxScroll = elements.grid.scrollWidth - elements.grid.clientWidth;
+        targetScroll = Math.min(targetScroll, maxScroll);
+        
+        if (!rafId) {
+          currentScroll = elements.grid.scrollLeft;
+          rafId = requestAnimationFrame(smoothScrollLoop);
+        }
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        elements.grid.scrollBy({ left: -300, behavior: 'smooth' });
+        targetScroll = elements.grid.scrollLeft - 300;
+        targetScroll = Math.max(targetScroll, 0);
+        
+        if (!rafId) {
+          currentScroll = elements.grid.scrollLeft;
+          rafId = requestAnimationFrame(smoothScrollLoop);
+        }
       }
     };
 
     document.addEventListener('keydown', keyboardHandler);
-
     console.log('✅ [Projects] Keyboard navigation setup');
   }
 
   /**
-   * ✨ Setup clickable cards
+   * Setup clickable cards
    */
   function setupClickableCards() {
     if (!elements.grid) return;
 
-    const cards = elements.grid.querySelectorAll('.project-card:not(.github-activity-card)');
+    const projectCards = elements.grid.querySelectorAll('.project-card:not(.github-activity-card)');
     
-    cards.forEach(card => {
-      // بدست آوردن لینک از data attribute یا از دکمه قبلی
-      const link = card.dataset.projectUrl || 
-                   card.querySelector('a')?.href || 
-                   card.querySelector('[href]')?.href;
+    projectCards.forEach(function(card) {
+      const url = card.dataset.projectUrl;
       
-      if (link) {
-        card.style.cursor = 'pointer';
-        
-        card.addEventListener('click', (e) => {
-          // جلوگیری از باز شدن لینک اگر روی عناصر داخلی کلیک شد
-          if (e.target.tagName === 'A' || e.target.closest('a')) {
-            return;
-          }
-          
-          window.open(link, '_blank', 'noopener,noreferrer');
+      if (url) {
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('a')) return;
+          window.open(url, '_blank', 'noopener,noreferrer');
         });
       }
     });
 
-    // Setup GitHub card click
     const githubCard = elements.grid.querySelector('.github-activity-card');
     if (githubCard) {
-      githubCard.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A' || e.target.closest('a')) {
-          return;
-        }
+      githubCard.addEventListener('click', function(e) {
+        if (e.target.closest('a')) return;
         window.open('https://github.com/ImSalione', '_blank', 'noopener,noreferrer');
       });
     }
@@ -246,12 +283,10 @@
    * Load GitHub chart
    */
   function loadGithubChart() {
-    setTimeout(() => {
-      if (window.injectGithubCard) {
+    setTimeout(function() {
+      if (window.injectGithubCard && typeof window.injectGithubCard === 'function') {
         console.log('📊 [Projects] Loading GitHub chart...');
         window.injectGithubCard();
-      } else {
-        console.warn('⚠️ [Projects] GitHub chart loader not available');
       }
     }, 800);
   }
@@ -267,17 +302,17 @@
 
     console.log('🚀 [Projects] Initializing...');
 
-    // Get elements
-    elements = {
-      grid: document.querySelector('.projects-grid'),
-    };
+    elements.grid = document.querySelector('.projects-grid');
 
     if (!elements.grid) {
       console.warn('⚠️ [Projects] Grid not found');
       return;
     }
 
-    // Setup features
+    // Initialize scroll positions
+    targetScroll = elements.grid.scrollLeft;
+    currentScroll = elements.grid.scrollLeft;
+
     setupScrollHints();
     setupHorizontalScroll();
     setupKeyboardNav();
@@ -285,41 +320,50 @@
     loadGithubChart();
 
     isInitialized = true;
-    console.log('✅ [Projects] Initialized');
+    console.log('✅ [Projects] Initialized - Momentum scroll mode');
   }
 
   /**
-   * ✅ Reset projects section with proper cleanup
+   * Reset projects section
    */
   function reset() {
     console.log('🔄 [Projects] Resetting...');
-    
-    // ✅ CRITICAL: Cleanup all resources first
     cleanup();
-    
-    // Reset state
     isInitialized = false;
+    targetScroll = 0;
+    currentScroll = 0;
     elements = {};
-    
     console.log('✅ [Projects] Reset complete');
   }
 
   /**
-   * Event listeners
+   * Event listeners setup
    */
-  document.addEventListener(CONFIG.events.projectsRendered, initialize);
-
-  document.addEventListener(CONFIG.events.renderReady, () => {
-    if (!isInitialized) {
-      setTimeout(initialize, 100);
+  function setupEventListeners() {
+    if (window.EventHub && typeof window.EventHub.on === 'function') {
+      EventHub.on(CONFIG.events.projectsRendered, initialize);
+      EventHub.on(CONFIG.events.renderReady, function() {
+        if (!isInitialized) setTimeout(initialize, 100);
+      });
+      EventHub.on(CONFIG.events.languageChanged, function() {
+        console.log('🌐 [Projects] Language changed');
+        reset();
+        setTimeout(initialize, 300);
+      });
+    } else {
+      document.addEventListener(CONFIG.events.projectsRendered, initialize);
+      document.addEventListener(CONFIG.events.renderReady, function() {
+        if (!isInitialized) setTimeout(initialize, 100);
+      });
+      document.addEventListener(CONFIG.events.languageChanged, function() {
+        console.log('🌐 [Projects] Language changed');
+        reset();
+        setTimeout(initialize, 300);
+      });
     }
-  });
+  }
 
-  document.addEventListener(CONFIG.events.languageChanged, () => {
-    console.log('🌐 [Projects] Language changed, resetting...');
-    reset();
-    setTimeout(initialize, 300);
-  });
+  setupEventListeners();
 
-  console.log('✅ [Projects] Module loaded');
+  console.log('✅ [Projects] Module loaded - Smooth momentum scrolling');
 })();

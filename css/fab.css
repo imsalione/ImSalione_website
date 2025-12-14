@@ -1,13 +1,13 @@
 /* =======================================================
- ⚙️ FAB Menu - Enhanced Glassmorphism Style
+ ⚙️ FAB Menu - Enhanced with Background Selector
  File: css/fab.css
  Author: Saleh Abedinezhad (ImSalione)
  
  Enhanced Features:
  - True glassmorphism with high transparency
+ - Background selector ✨ NEW
  - Smooth animations and transitions
  - Theme-aware styling
- - Accessibility support
 ======================================================= */
 
 /* =======================================================
@@ -389,6 +389,147 @@ html[dir="rtl"] #fabPalette.open {
 
 
 /* =======================================================
+   🖼️ BACKGROUND SUBMENU - ✨ NEW
+======================================================= */
+#fabBackground {
+  position: absolute;
+  right: calc(100% + 0.75rem);
+  bottom: 0;
+  
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  padding: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+  
+  /* Enhanced Glassmorphism */
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--border-highlight);
+  
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px) scale(0.8);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: -1;
+}
+
+html[dir="rtl"] #fabBackground {
+  right: auto;
+  left: calc(100% + 0.75rem);
+  transform: translateX(-10px) scale(0.8);
+}
+
+#fabBackground.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0) scale(1);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+html[dir="rtl"] #fabBackground.open {
+  transform: translateX(0) scale(1);
+}
+
+/* Shine Effect */
+#fabBackground::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Custom Scrollbar for Background Menu */
+#fabBackground::-webkit-scrollbar {
+  width: 6px;
+}
+
+#fabBackground::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#fabBackground::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+
+/* =======================================================
+   🖼️ BACKGROUND PREVIEWS - ✨ NEW
+======================================================= */
+.background-preview {
+  width: 80px;
+  height: 60px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Hover Effect */
+.background-preview:hover {
+  transform: scale(1.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Active Background */
+.background-preview.fab-bg-active {
+  border-color: var(--primary);
+  border-width: 3px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 0 20px var(--primary),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Check mark for active background */
+.background-preview.fab-bg-active::before {
+  content: "✓";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1;
+}
+
+
+/* =======================================================
    ✨ INTRO ANIMATION
 ======================================================= */
 .fab-intro-pulse {
@@ -523,19 +664,26 @@ html[dir="rtl"] .fab-notification.fab-notification-show {
     height: 44px;
   }
 
-  #fabPalette {
+  #fabPalette,
+  #fabBackground {
     right: calc(100% + 0.5rem);
     padding: 0.6rem;
     gap: 0.4rem;
   }
 
-  html[dir="rtl"] #fabPalette {
+  html[dir="rtl"] #fabPalette,
+  html[dir="rtl"] #fabBackground {
     left: calc(100% + 0.5rem);
   }
 
   .color-swatch {
     width: 32px;
     height: 32px;
+  }
+
+  .background-preview {
+    width: 70px;
+    height: 50px;
   }
 
   /* Notification در موبایل بالای FAB */
@@ -566,7 +714,8 @@ html[dir="rtl"] .fab-notification.fab-notification-show {
 /* Focus States */
 #fabMain:focus-visible,
 .fab-option:focus-visible,
-.color-swatch:focus-visible {
+.color-swatch:focus-visible,
+.background-preview:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
@@ -584,7 +733,9 @@ html[dir="rtl"] .fab-notification.fab-notification-show {
   #fabMain,
   .fab-option,
   .color-swatch,
+  .background-preview,
   #fabPalette,
+  #fabBackground,
   #fabSubmenu,
   .fab-notification {
     transition-duration: 0.01ms !important;

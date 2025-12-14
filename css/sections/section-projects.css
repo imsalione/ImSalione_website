@@ -6,7 +6,7 @@
  
  Enhanced Features:
  - True glassmorphism matching intro section
- - Smooth horizontal scroll on hover
+ - SMOOTH horizontal scroll with high performance
  - Clickable cards (no separate buttons)
  - Animated card entrances
  - Theme-aware glass effects
@@ -48,24 +48,32 @@
   flex-direction: row;
   gap: 1rem;
   padding: 0.5rem 0.3rem;
+  
+  /* ✨ SMOOTH scroll با CSS */
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
+  scroll-behavior: auto; /* JS handle می‌کند */
+  
   -webkit-overflow-scrolling: touch;
   align-items: stretch;
   min-height: 0;
   position: relative;
   cursor: grab;
+  
+  /* ⚡ بهینه‌سازی عملکرد */
+  will-change: scroll-position;
+  
+  /* ✨ Smooth scroll با transition */
+  scroll-snap-type: none;
 }
 
 .projects-grid:active {
   cursor: grabbing;
 }
 
-/* ✨ اسکرول افقی با چرخ ماوس */
-.projects-grid.horizontal-scroll-active {
-  overflow-x: auto;
+/* ✨ Smooth scrolling با CSS برای احساس نرمی */
+.projects-grid.smooth-scrolling {
+  scroll-behavior: smooth;
 }
 
 /* Custom Horizontal Scrollbar */
@@ -118,11 +126,14 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  scroll-snap-align: start;
   
   /* ✨ کل کارت کلیک‌پذیر */
   cursor: pointer;
   text-decoration: none;
+  
+  /* ⚡ بهینه‌سازی GPU */
+  transform: translateZ(0);
+  backface-visibility: hidden;
   
   transition: 
     transform var(--transition),
@@ -151,13 +162,13 @@
   }
   100% {
     opacity: 1;
-    transform: translateX(0) scale(1);
+    transform: translateX(0) scale(1) translateZ(0);
   }
 }
 
 /* Hover Effect */
 .project-card:hover {
-  transform: translateY(-3px) scale(1.02);
+  transform: translateY(-3px) scale(1.02) translateZ(0);
   box-shadow:
     0 18px 50px var(--shadow-color),
     0 0 30px rgba(99, 102, 241, 0.15),
@@ -504,7 +515,7 @@ html[dir="rtl"] .projects-grid::after {
   }
   
   .projects-grid {
-    scroll-behavior: auto;
+    scroll-behavior: auto !important;
   }
 }
 

@@ -3,7 +3,7 @@
  * 📄 File: js/config.js
  * 🎯 Global Configuration – ImSalione Portfolio
  * =======================================================
- * ✅ CONFIGURED: PHP API endpoint
+ * ✅ UPDATED: Added background management
  * =======================================================
  */
 
@@ -20,6 +20,7 @@
     defaultLang: 'fa',
     defaultTheme: 'dark',
     defaultThemeStyle: 'default',
+    defaultBackground: 'bg.jpg', // ✨ NEW: Default background
 
     // ========== HTML Partials Paths ==========
     partials: {
@@ -49,6 +50,15 @@
     themeCSSPath: 'css/themes/',
     themeLinkId: 'theme-css-link',
 
+    // ✨ NEW: Background Settings
+    backgroundPath: 'assets/images/backgrounds/',
+    availableBackgrounds: [
+      'bg.jpg',
+      'bg1.svg',
+      'bg2.svg',
+      'bg3.jpg'
+    ],
+
     // ========== Application Events ==========
     events: {
       appReady: 'appReady',
@@ -59,6 +69,7 @@
       languageChanged: 'languageChanged',
       themeChanged: 'themeChanged',
       paletteChanged: 'paletteChanged',
+      backgroundChanged: 'backgroundChanged', // ✨ NEW
       introRendered: 'introRendered',
       timelineRendered: 'timelineRendered',
       skillsRendered: 'skillsRendered',
@@ -67,6 +78,7 @@
       fabThemeToggle: 'fabThemeToggle',
       fabLangToggle: 'fabLangToggle',
       fabPaletteSelect: 'fabPaletteSelect',
+      fabBackgroundSelect: 'fabBackgroundSelect', // ✨ NEW
     },
 
     // ========== Contact Icons Mapping ==========
@@ -84,31 +96,16 @@
       lang: 'lang',
       theme: 'theme',
       themeStyle: 'themeStyle',
+      background: 'background', // ✨ NEW
       fabIntroShown: 'fabIntroShown',
+      firstVisitSetup: 'firstVisitSetup', // ✨ NEW: Track first visit
     },
 
     // ========== API Endpoints ==========
     api: {
-      /**
-       * ✅ OPTION 1: PHP API (Recommended - uses your token)
-       * Make sure api/github_contrib.php exists
-       */
       githubContributions: (username) => {
         return `api/github_contrib.php?username=${username}&t=${Date.now()}`;
       },
-      
-      /**
-       * ✅ OPTION 2: Static JSON (for testing without server)
-       * Uncomment this to use static file instead:
-       */
-      // githubContributions: (username) => 'api/github.json',
-      
-      /**
-       * ✅ OPTION 3: Public API (no token needed, but has rate limits)
-       * Uncomment this to use public API:
-       */
-      // githubContributions: (username) => 
-      //   `https://github-contributions-api.jogruber.de/v4/${username}?y=last`,
     },
 
     // ========== Utility Functions ==========
@@ -142,6 +139,36 @@
       }
     },
 
+    // ✨ NEW: Get current background
+    getCurrentBackground() {
+      try {
+        return localStorage.getItem(this.storage.background) || this.defaultBackground;
+      } catch (err) {
+        console.warn('⚠️ Cannot access localStorage:', err);
+        return this.defaultBackground;
+      }
+    },
+
+    // ✨ NEW: Check if first visit
+    isFirstVisit() {
+      try {
+        return !localStorage.getItem(this.storage.firstVisitSetup);
+      } catch (err) {
+        return false;
+      }
+    },
+
+    // ✨ NEW: Mark setup as complete
+    markSetupComplete() {
+      try {
+        localStorage.setItem(this.storage.firstVisitSetup, '1');
+        return true;
+      } catch (err) {
+        console.warn('⚠️ Cannot save setup status:', err);
+        return false;
+      }
+    },
+
     saveSetting(key, value) {
       try {
         localStorage.setItem(key, value);
@@ -171,4 +198,5 @@
     'color:#ffaa00;font-weight:bold;'
   );
   console.log('📡 GitHub API:', window.CONFIG.api.githubContributions('test'));
+  console.log('🎨 Backgrounds:', window.CONFIG.availableBackgrounds);
 })();
