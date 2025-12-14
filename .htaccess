@@ -1,93 +1,14 @@
-# ===============================
-# 🌐 ImSalione Website Configuration
-# ===============================
-
-# Use UTF-8 encoding
-AddDefaultCharset UTF-8
+# =======================================================
+# 🌐 Minimal Config for XAMPP Testing
+# =======================================================
 
 # Enable rewrite engine
 <IfModule mod_rewrite.c>
     RewriteEngine On
-
-    # Redirect www to non-www (optional)
-    RewriteCond %{HTTP_HOST} ^www\.imsalione\.ir$ [NC]
-    RewriteRule ^(.*)$ https://imsalione.ir/$1 [L,R=301]
-
-    # Redirect HTTP to HTTPS
-    RewriteCond %{HTTPS} !=on
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-    # Serve index.html as default
     DirectoryIndex index.html
 </IfModule>
 
-# ===============================
-# 🧱 Security and Access Control
-# ===============================
-
-# Deny access to hidden files and folders (e.g. .git, .env)
-<FilesMatch "^\.">
-    Require all denied
-</FilesMatch>
-
-# Deny access to config files
-<FilesMatch "(?i)(composer\.json|package\.json|gulpfile\.js|README\.md|LICENSE)">
-    Require all denied
-</FilesMatch>
-
-# Deny access to PHP files in /api (for direct access)
-<DirectoryMatch "api">
-    <FilesMatch "\.php$">
-        Require all denied
-    </FilesMatch>
-</DirectoryMatch>
-
-# Allow access only through AJAX (optional advanced rule)
-<IfModule mod_setenvif.c>
-    SetEnvIfNoCase Referer "^https://(www\.)?imsalione\.ir" allow_from_site
-    <FilesMatch "github_contrib\.php$">
-        Order deny,allow
-        Deny from all
-        Allow from env=allow_from_site
-    </FilesMatch>
-</IfModule>
-
-# ===============================
-# 🔐 Security Headers
-# ===============================
-
-<IfModule mod_headers.c>
-    # Prevent MIME type sniffing
-    Header set X-Content-Type-Options "nosniff"
-
-    # Disable caching for API responses
-    <FilesMatch "\.php$">
-        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
-    </FilesMatch>
-
-    # Basic security headers
-    Header set Referrer-Policy "no-referrer-when-downgrade"
-    Header always set X-Frame-Options "SAMEORIGIN"
-    Header set X-XSS-Protection "1; mode=block"
-</IfModule>
-
-# ===============================
-# 🧭 Sitemap and Robots
-# ===============================
-Redirect 301 /sitemap.xml https://www.imsalione.ir/sitemap.xml
-Redirect 301 /robots.txt https://www.imsalione.ir/robots.txt
-
-# ===============================
-# 🧰 Compression and Caching
-# ===============================
-<IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
-</IfModule>
-
-<IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType text/html "access plus 1 day"
-    ExpiresByType text/css "access plus 1 week"
-    ExpiresByType application/javascript "access plus 1 week"
-    ExpiresByType image/* "access plus 1 month"
-</IfModule>
+# Allow Override for .htaccess (already set in httpd.conf, but good practice)
+# <Directory "/path/to/ImSalione Website">
+#     AllowOverride All
+# </Directory>

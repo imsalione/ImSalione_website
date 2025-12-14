@@ -4,7 +4,9 @@
  * 🎯 Purpose: JSON-Driven DOM Renderer
  * Author: Saleh Abedinezhad (ImSalione)
  * =======================================================
- * FIXED: Timeline renders with proper data structure
+ * ✨ UPDATED: Projects section with clickable cards (no buttons)
+ * GitHub card sized to match other project cards
+ * Timeline renders with proper data structure
  * Skills section properly initialized
  * =======================================================
  */
@@ -40,24 +42,36 @@
         timelineTitle: 'سوابق کاری و تحصیلی',
         skillsTitle: 'مهارت‌ها',
         projectsTitle: 'پروژه‌ها',
-        projectView: 'مشاهده پروژه',
         skillsLabel: 'مهارت',
         currentEvent: 'رویداد فعال:',
         navigateTimeline: 'برای مشاهده مهارت‌ها، تایم‌لاین را حرکت دهید...',
+        githubLive: 'گیتهاب لایو 🔥',
+        loading: 'در حال بارگذاری...',
       },
       en: {
         introTitle: 'About Me',
         timelineTitle: 'Work & Education',
         skillsTitle: 'Skills',
         projectsTitle: 'Projects',
-        projectView: 'View Project',
         skillsLabel: 'Skills',
         currentEvent: 'Current Event:',
         navigateTimeline: 'Navigate timeline to see skills...',
+        githubLive: 'LIVE 🔥',
+        loading: 'Loading...',
       },
     };
 
     return labels[lang] || labels.en;
+  }
+
+  /**
+   * Escape HTML to prevent XSS
+   */
+  function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
   }
 
   const DomManager = {
@@ -127,6 +141,7 @@
                 ? `tel:${value}`
                 : value;
             link.target = '_blank';
+            link.rel = 'noopener noreferrer';
             link.setAttribute('data-type', key);
 
             contact.appendChild(link);
@@ -175,7 +190,7 @@
         // Create structure
         container.innerHTML = `
           <div class="timeline-wrapper">
-            <h2 class="section-title">${labels.timelineTitle}</h2>
+            <h2 class="section-title">${escapeHtml(labels.timelineTitle)}</h2>
             <div class="timeline-indicator"></div>
             <div class="timeline-list"></div>
             <div class="timeline-nav">
@@ -201,9 +216,9 @@
 
           itemDiv.innerHTML = `
             <div>
-              <h3>${item.title || ''}</h3>
-              <small>${item.date || ''}</small>
-              <p>${item.subtitle || item.description || ''}</p>
+              <h3>${escapeHtml(item.title || '')}</h3>
+              <small>${escapeHtml(item.date || '')}</small>
+              <p>${escapeHtml(item.subtitle || item.description || '')}</p>
             </div>
           `;
 
@@ -238,7 +253,7 @@
         // Create structure
         container.innerHTML = `
           <div class="skills-wrapper">
-            <h2 class="section-title">${labels.skillsTitle}</h2>
+            <h2 class="section-title">${escapeHtml(labels.skillsTitle)}</h2>
             
             <div class="skills-progress-bar">
               <div class="progress-fill"></div>
@@ -246,14 +261,14 @@
                 <span class="current-skills">0</span>
                 <span class="separator">/</span>
                 <span class="total-skills">0</span>
-                <span class="label">${labels.skillsLabel}</span>
+                <span class="label">${escapeHtml(labels.skillsLabel)}</span>
               </div>
             </div>
 
             <div class="timeline-context">
               <div class="context-icon">🎯</div>
               <div class="context-text">
-                <span class="context-label">${labels.currentEvent}</span>
+                <span class="context-label">${escapeHtml(labels.currentEvent)}</span>
                 <span class="context-event">—</span>
               </div>
             </div>
@@ -261,7 +276,7 @@
             <div class="skills-grid" id="skills-grid">
               <div class="empty-state">
                 <div class="empty-icon">🌱</div>
-                <p class="empty-text">${labels.navigateTimeline}</p>
+                <p class="empty-text">${escapeHtml(labels.navigateTimeline)}</p>
               </div>
             </div>
             
@@ -300,6 +315,7 @@
 
     /**
      * Render Projects Section
+     * ✨ UPDATED: Clickable cards (no buttons), GitHub card sized to match
      */
     renderProjects(projects, labels) {
       const wrapper = document.querySelector(
@@ -326,7 +342,7 @@
 
         grid.innerHTML = '';
 
-        // GitHub Card (static)
+        // ✨ GitHub Card (first card, sized to match other cards)
         grid.insertAdjacentHTML(
           'beforeend',
           `
@@ -335,16 +351,25 @@
               <div class="card-front">
                 <div class="gh-header">
                   <div class="gh-header-left">
-                    <span class="live-label">GITHUB LIVE 🔥</span>
+                    <span class="live-label" title="Real-time GitHub activity">${escapeHtml(labels.githubLive)}</span>
                   </div>
-                  <i class="fab fa-github github-icon"></i>
+                  <a
+                    class="github-icon"
+                    href="https://github.com/ImSalione"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="View GitHub Profile"
+                    onclick="event.stopPropagation();"
+                  >
+                    <i class="fab fa-github"></i>
+                  </a>
                 </div>
                 <div class="gh-chart-wrap">
-                  <canvas id="ghContribChart"></canvas>
                   <div class="chart-loader">
                     <div class="spinner"></div>
-                    <span class="loading-text">Loading...</span>
+                    <span class="loading-text">${escapeHtml(labels.loading)}</span>
                   </div>
+                  <canvas id="ghContribChart"></canvas>
                 </div>
               </div>
             </div>
@@ -352,21 +377,21 @@
         `
         );
 
-        // Project Cards from JSON
+        // ✨ Project Cards from JSON (clickable, no buttons)
         if (Array.isArray(projects)) {
           projects.forEach((project) => {
             const card = document.createElement('div');
             card.className = 'project-card';
+            
+            // ✨ Add data-project-url for clickable functionality
+            if (project.link) {
+              card.dataset.projectUrl = project.link;
+            }
 
             card.innerHTML = `
               <div class="project-content">
-                <h3 class="project-title">${project.title || ''}</h3>
-                <p class="project-desc">${project.desc || ''}</p>
-                ${
-                  project.link
-                    ? `<a href="${project.link}" target="_blank" class="project-link">${labels.projectView}</a>`
-                    : ''
-                }
+                <h3 class="project-title">${escapeHtml(project.title || '')}</h3>
+                <p class="project-desc">${escapeHtml(project.desc || '')}</p>
               </div>
             `;
 
@@ -376,7 +401,7 @@
 
         renderStatus.projects = true;
         this.emitEvent(CONFIG.events.projectsRendered);
-        console.log('✅ [DomManager] Projects rendered');
+        console.log(`✅ [DomManager] Projects rendered with ${projects?.length || 0} projects`);
       } catch (err) {
         console.error('❌ [DomManager] Projects render error:', err);
       }

@@ -1,21 +1,15 @@
 /**
  * =======================================================
  * 📄 File: js/config.js
- * 🎯 Global Configuration — ImSalione Portfolio
- * Author: Saleh Abedinezhad (ImSalione)
+ * 🎯 Global Configuration – ImSalione Portfolio
  * =======================================================
- * Purpose:
- *   🌐 Language & Theme Defaults
- *   📁 Content JSON Paths
- *   🧩 Partial HTML Paths & Mount Points
- *   ⚙️ Standardized Global Events (Pub/Sub)
+ * ✅ CONFIGURED: PHP API endpoint
  * =======================================================
  */
 
 (function initConfig() {
   'use strict';
 
-  // Prevent re-initialization
   if (window.CONFIG) {
     console.warn('⚠️ CONFIG already initialized, skipping');
     return;
@@ -57,28 +51,19 @@
 
     // ========== Application Events ==========
     events: {
-      // Core lifecycle events
       appReady: 'appReady',
       partialLoaded: 'partialLoaded',
       partialsReady: 'partialsReady',
       dataReady: 'dataReady',
       renderReady: 'renderReady',
-
-      // Settings change events
       languageChanged: 'languageChanged',
       themeChanged: 'themeChanged',
       paletteChanged: 'paletteChanged',
-
-      // Section render events
       introRendered: 'introRendered',
       timelineRendered: 'timelineRendered',
       skillsRendered: 'skillsRendered',
       projectsRendered: 'projectsRendered',
-
-      // Timeline-Skills synchronization
       timelineIndexChanged: 'timelineIndexChanged',
-
-      // FAB events
       fabThemeToggle: 'fabThemeToggle',
       fabLangToggle: 'fabLangToggle',
       fabPaletteSelect: 'fabPaletteSelect',
@@ -104,14 +89,29 @@
 
     // ========== API Endpoints ==========
     api: {
-      githubContributions: (username) =>
-        `https://github-contributions-api.deno.dev/${username}.json`,
+      /**
+       * ✅ OPTION 1: PHP API (Recommended - uses your token)
+       * Make sure api/github_contrib.php exists
+       */
+      githubContributions: (username) => {
+        return `api/github_contrib.php?username=${username}&t=${Date.now()}`;
+      },
+      
+      /**
+       * ✅ OPTION 2: Static JSON (for testing without server)
+       * Uncomment this to use static file instead:
+       */
+      // githubContributions: (username) => 'api/github.json',
+      
+      /**
+       * ✅ OPTION 3: Public API (no token needed, but has rate limits)
+       * Uncomment this to use public API:
+       */
+      // githubContributions: (username) => 
+      //   `https://github-contributions-api.jogruber.de/v4/${username}?y=last`,
     },
 
     // ========== Utility Functions ==========
-    /**
-     * Get current language from localStorage
-     */
     getCurrentLang() {
       try {
         return localStorage.getItem(this.storage.lang) || this.defaultLang;
@@ -121,9 +121,6 @@
       }
     },
 
-    /**
-     * Get current theme from localStorage
-     */
     getCurrentTheme() {
       try {
         return localStorage.getItem(this.storage.theme) || this.defaultTheme;
@@ -133,9 +130,6 @@
       }
     },
 
-    /**
-     * Get current theme style (palette) from localStorage
-     */
     getCurrentThemeStyle() {
       try {
         return (
@@ -148,9 +142,6 @@
       }
     },
 
-    /**
-     * Save setting to localStorage safely
-     */
     saveSetting(key, value) {
       try {
         localStorage.setItem(key, value);
@@ -161,9 +152,6 @@
       }
     },
 
-    /**
-     * Get contact icon type from URL
-     */
     getContactIconType(url) {
       if (!url) return 'website';
       const lowerUrl = url.toLowerCase();
@@ -182,4 +170,5 @@
     '%c✅ CONFIG loaded successfully',
     'color:#ffaa00;font-weight:bold;'
   );
+  console.log('📡 GitHub API:', window.CONFIG.api.githubContributions('test'));
 })();

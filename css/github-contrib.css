@@ -3,27 +3,103 @@
  File: css/github-contrib.css
  Purpose: GitHub contribution chart card with live data
  Author: Saleh Abedinezhad
+ 
+ ✨ CHANGES:
+ - Card sized to match other project cards perfectly
+ - Same glassmorphism style as intro section
+ - Clickable card (no separate button)
+ - Optimized layout for limited vertical space
 ======================================================= */
 
 /* =======================================================
    📦 BASE CARD STRUCTURE
 ======================================================= */
 .project-card.github-activity-card {
+  /* ✨ هم‌اندازه با سایر کارت‌ها */
+  min-width: 280px;
+  max-width: 320px;
+  height: 100%;
+  
+  /* Enhanced Glassmorphism - مطابق intro */
   background: var(--bg-card);
-  backdrop-filter: blur(var(--blur)) saturate(180%);
+  backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
+  
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  box-shadow: 0 6px 20px var(--shadow-color);
-  min-height: 220px;
+  
+  box-shadow:
+    0 8px 32px var(--shadow-color),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 1px 0 var(--border-highlight);
+  
   position: relative;
   overflow: hidden;
+  
+  /* ✨ کارت کلیک‌پذیر */
+  cursor: pointer;
+  text-decoration: none;
+  
   transition: all var(--transition);
 }
 
 .project-card.github-activity-card:hover {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 12px 32px var(--shadow-color);
+  box-shadow:
+    0 18px 50px var(--shadow-color),
+    0 0 30px rgba(99, 102, 241, 0.15),
+    0 0 0 1px var(--border-highlight),
+    inset 0 1px 0 var(--border-highlight);
   border-color: var(--border-highlight);
+}
+
+/* Glass Shine Effect */
+.project-card.github-activity-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  height: 40%;
+  background: linear-gradient(
+    180deg,
+    var(--glass-shine) 0%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.project-card.github-activity-card:hover::before {
+  opacity: 1;
+}
+
+/* Edge Glow Effect */
+.project-card.github-activity-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    var(--glass-edge),
+    transparent 90%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.project-card.github-activity-card:hover::after {
+  opacity: 1;
 }
 
 /* Disable Flip Animation */
@@ -54,6 +130,7 @@
   position: relative;
   z-index: 1;
   background: transparent;
+  min-height: 0;
 }
 
 
@@ -67,12 +144,15 @@
   position: relative;
   z-index: 2;
   flex-shrink: 0;
+  gap: 0.5rem;
 }
 
 .gh-header-left {
   display: flex;
   align-items: center;
   gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
 }
 
 
@@ -96,6 +176,7 @@
   box-shadow: 0 3px 8px rgba(99, 102, 241, 0.3);
   white-space: nowrap;
   animation: livePulse 2s ease-in-out infinite;
+  flex-shrink: 0;
 }
 
 @keyframes livePulse {
@@ -111,10 +192,10 @@
 
 
 /* =======================================================
-   🐙 GITHUB ICON
+   🙈 GITHUB ICON
 ======================================================= */
 .github-icon {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: var(--text-primary);
   transition: all var(--transition);
   cursor: pointer;
@@ -138,12 +219,13 @@
   justify-content: center;
   z-index: 2;
   min-height: 0;
+  overflow: hidden;
 }
 
 .gh-chart-wrap canvas {
   width: 100% !important;
   height: 100% !important;
-  max-height: 140px;
+  max-height: 100%;
   opacity: 0;
   transition: opacity 0.6s ease;
 }
@@ -175,8 +257,8 @@
 }
 
 .spinner {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   border: 2.5px solid var(--border-color);
   border-top: 2.5px solid var(--primary);
   border-radius: 50%;
@@ -189,7 +271,7 @@
 }
 
 .loading-text {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
   font-weight: 500;
@@ -230,7 +312,7 @@
 .chartjs-tooltip {
   background: var(--bg-secondary);
   color: var(--text-primary);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   padding: 4px 8px;
   border-radius: 6px;
   box-shadow: 0 2px 8px var(--shadow-color);
@@ -244,15 +326,26 @@
 /* =======================================================
    📱 RESPONSIVE DESIGN
 ======================================================= */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .project-card.github-activity-card {
+    min-width: 300px;
+    max-width: 340px;
+  }
+}
+
 @media (max-width: 768px) {
   .project-card.github-activity-card {
-    min-height: 200px;
+    min-width: 260px;
+    max-width: 280px;
+  }
+
+  .github-activity-card .card-front {
+    padding: 0.9rem;
+    gap: 0.5rem;
   }
 
   .gh-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.4rem;
+    flex-wrap: wrap;
   }
 
   .live-label {
@@ -261,21 +354,35 @@
   }
 
   .github-icon {
-    font-size: 1.2rem;
-  }
-
-  .gh-chart-wrap canvas {
-    max-height: 120px;
+    font-size: 1.1rem;
   }
 
   .spinner {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border-width: 2px;
   }
 
   .loading-text {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .project-card.github-activity-card {
+    min-width: 240px;
+    max-width: 260px;
+  }
+
+  .github-activity-card .card-front {
+    padding: 0.8rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .project-card.github-activity-card {
+    min-width: 320px;
+    max-width: 360px;
   }
 }
 

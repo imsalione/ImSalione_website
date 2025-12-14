@@ -5,13 +5,14 @@
  * Author: Saleh Abedinezhad (ImSalione)
  * =======================================================
  * Features:
- * - Horizontal scroll management
+ * - Horizontal scroll management with mouse wheel
  * - Scroll fade hints
  * - Keyboard navigation
+ * - Clickable cards (no separate buttons)
  * - GitHub chart integration
  * =======================================================
  * ✅ OPTIMIZED: Proper observer cleanup and resource management
- * ✅ FIXED: CPU usage reduced by preventing memory leaks
+ * ✅ NEW: Mouse wheel horizontal scroll
  * =======================================================
  */
 
@@ -24,14 +25,17 @@
   let isInitialized = false;
   let elements = {};
   
-  // ✅ Cleanup trackers - برای پاکسازی منابع
+  // ✅ Cleanup trackers
   let resizeObserver = null;
   let scrollHandler = null;
   let resizeHandler = null;
   let keyboardHandler = null;
+  let wheelHandler = null;
+  let mouseEnterHandler = null;
+  let mouseLeaveHandler = null;
 
   /**
-   * ✅ Cleanup function - پاکسازی تمام منابع
+   * ✅ Cleanup function
    */
   function cleanup() {
     console.log('🧹 [Projects] Starting cleanup...');
@@ -63,6 +67,23 @@
       keyboardHandler = null;
       console.log('✅ [Projects] Keyboard listener removed');
     }
+
+    // Remove wheel listener
+    if (wheelHandler && elements.grid) {
+      elements.grid.removeEventListener('wheel', wheelHandler);
+      wheelHandler = null;
+      console.log('✅ [Projects] Wheel listener removed');
+    }
+
+    // Remove mouse enter/leave listeners
+    if (mouseEnterHandler && elements.grid) {
+      elements.grid.removeEventListener('mouseenter', mouseEnterHandler);
+      mouseEnterHandler = null;
+    }
+    if (mouseLeaveHandler && elements.grid) {
+      elements.grid.removeEventListener('mouseleave', mouseLeaveHandler);
+      mouseLeaveHandler = null;
+    }
     
     console.log('✅ [Projects] Cleanup complete');
   }
@@ -85,6 +106,39 @@
       'scrolled-right',
       elements.grid.scrollLeft < maxScroll - 10
     );
+  }
+
+  /**
+   * ✨ Setup horizontal scroll with mouse wheel
+   */
+  function setupHorizontalScroll() {
+    if (!elements.grid) return;
+
+    // ✨ تبدیل اسکرول عمودی به افقی
+    wheelHandler = (e) => {
+      // فقط زمانی که اسکرول عمودی وجود ندارد
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        elements.grid.scrollLeft += e.deltaY;
+      }
+    };
+
+    // ✨ فعال‌سازی اسکرول افقی با ورود ماوس
+    mouseEnterHandler = () => {
+      elements.grid.classList.add('horizontal-scroll-active');
+      elements.grid.addEventListener('wheel', wheelHandler, { passive: false });
+    };
+
+    // ✨ غیرفعال‌سازی با خروج ماوس
+    mouseLeaveHandler = () => {
+      elements.grid.classList.remove('horizontal-scroll-active');
+      elements.grid.removeEventListener('wheel', wheelHandler);
+    };
+
+    elements.grid.addEventListener('mouseenter', mouseEnterHandler);
+    elements.grid.addEventListener('mouseleave', mouseLeaveHandler);
+
+    console.log('✅ [Projects] Horizontal scroll setup');
   }
 
   /**
@@ -147,6 +201,48 @@
   }
 
   /**
+   * ✨ Setup clickable cards
+   */
+  function setupClickableCards() {
+    if (!elements.grid) return;
+
+    const cards = elements.grid.querySelectorAll('.project-card:not(.github-activity-card)');
+    
+    cards.forEach(card => {
+      // بدست آوردن لینک از data attribute یا از دکمه قبلی
+      const link = card.dataset.projectUrl || 
+                   card.querySelector('a')?.href || 
+                   card.querySelector('[href]')?.href;
+      
+      if (link) {
+        card.style.cursor = 'pointer';
+        
+        card.addEventListener('click', (e) => {
+          // جلوگیری از باز شدن لینک اگر روی عناصر داخلی کلیک شد
+          if (e.target.tagName === 'A' || e.target.closest('a')) {
+            return;
+          }
+          
+          window.open(link, '_blank', 'noopener,noreferrer');
+        });
+      }
+    });
+
+    // Setup GitHub card click
+    const githubCard = elements.grid.querySelector('.github-activity-card');
+    if (githubCard) {
+      githubCard.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A' || e.target.closest('a')) {
+          return;
+        }
+        window.open('https://github.com/ImSalione', '_blank', 'noopener,noreferrer');
+      });
+    }
+
+    console.log('✅ [Projects] Clickable cards setup');
+  }
+
+  /**
    * Load GitHub chart
    */
   function loadGithubChart() {
@@ -183,7 +279,9 @@
 
     // Setup features
     setupScrollHints();
+    setupHorizontalScroll();
     setupKeyboardNav();
+    setupClickableCards();
     loadGithubChart();
 
     isInitialized = true;

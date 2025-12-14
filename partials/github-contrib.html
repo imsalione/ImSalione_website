@@ -1,6 +1,12 @@
 <!-- =======================================================
-🧩 GitHub Activity Card (Final Synced with Tooltip)
+🧩 GitHub Activity Card (Optimized & Clickable)
 Compatible with github-contrib.js & github-contrib.css
+======================================================= 
+✨ CHANGES:
+- Card sized to match other project cards
+- Entire card is clickable (opens GitHub profile)
+- Optimized layout for limited vertical space
+- Glass styling matching intro section
 ======================================================= -->
 <div class="project-card github-activity-card no-flip">
   <div class="card-inner">
@@ -8,14 +14,15 @@ Compatible with github-contrib.js & github-contrib.css
       <!-- 🔹 Header -->
       <div class="gh-header">
         <div class="gh-header-left">
-          <span class="live-label">GITHUB LIVE 🔥</span>
+          <span class="live-label" title="Real-time GitHub activity">LIVE 🔥</span>
         </div>
         <a
           class="github-icon"
           href="https://github.com/ImSalione"
           target="_blank"
-          rel="noopener"
-          aria-label="View on GitHub"
+          rel="noopener noreferrer"
+          aria-label="View GitHub Profile"
+          onclick="event.stopPropagation();"
         >
           <i class="fab fa-github"></i>
         </a>
@@ -29,8 +36,8 @@ Compatible with github-contrib.js & github-contrib.css
           <span class="loading-text">Loading...</span>
         </div>
 
-        <!-- Canvas for Chart -->
-        <canvas id="ghContribChart" height="160"></canvas>
+        <!-- Canvas for Chart (Optimized height for limited space) -->
+        <canvas id="ghContribChart"></canvas>
       </div>
     </div>
   </div>

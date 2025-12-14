@@ -7,6 +7,7 @@ Structure:
 - Dynamic JSON content loading
 - FAB controller for theme & language
 - NEW: Progressive Skill Tree synchronized with Timeline
+✅ FIXED: Chart.js added, theme loading fixed
 ======================================================= -->
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -24,10 +25,9 @@ Structure:
   <!-- Foundation -->
   <link rel="stylesheet" href="css/base.css">
 
-  <!-- Themes (only one active) -->
-  <link rel="stylesheet" href="css/themes/dark.css">
-  <!-- OR -->
-  <link rel="stylesheet" href="css/themes/light.css">
+  <!-- ✅ FIXED: Only load dark theme by default (light will be loaded dynamically by main.js) -->
+  <link rel="stylesheet" href="css/themes/dark.css" id="theme-css-link">
+  
   <!-- Palette-colors -->
   <link rel="stylesheet" href="css/themes/palette-system.css">
 
@@ -77,7 +77,10 @@ Structure:
   📜 JAVASCRIPT FILES (ORDER MATTERS!)
   ======================================================= -->
 
-  <!-- 1. Core -->
+  <!-- ✅ 0. CRITICAL: Chart.js MUST be loaded FIRST for GitHub chart -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
+
+  <!-- 1. Core Configuration -->
   <script src="js/config.js"></script>
   <script src="js/eventHub.js"></script>
   <script src="js/utils.js"></script>
@@ -89,7 +92,7 @@ Structure:
   <!-- 3. Main Controller -->
   <script src="js/main.js"></script>
   
-  <!-- 4. Components -->
+  <!-- 4. Components (GitHub module needs Chart.js) -->
   <script src="js/fab.js"></script>
   <script src="js/github-contrib.js"></script>
   
@@ -131,6 +134,16 @@ Structure:
     window.addEventListener('unhandledrejection', (e) => {
       console.error('🔴 Unhandled Promise Rejection:', e.reason);
     });
+  </script>
+
+  <!-- ✅ 8️⃣ Chart.js Verification (for debugging) -->
+  <script>
+    if (typeof Chart !== 'undefined') {
+      console.log('%c✅ Chart.js loaded successfully', 'color:#00ff88;font-weight:bold;');
+      console.log('   Version:', Chart.version);
+    } else {
+      console.error('❌ Chart.js failed to load!');
+    }
   </script>
 
 </body>
