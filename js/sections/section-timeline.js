@@ -4,7 +4,9 @@
  * 🎯 Purpose: Vertical Slot Machine Timeline with Skills Sync
  * Author: Saleh Abedinezhad (ImSalione)
  * =======================================================
- * ✅ OPTIMIZED: Proper cleanup and event management
+ * ✅ FIXED: Proper synchronization with skills section
+ * ✅ FIXED: Correct index management for past/future cards
+ * ✅ FIXED: Accurate event data dispatching
  * =======================================================
  */
 
@@ -12,21 +14,27 @@
   'use strict';
 
   /**
-   * State
+   * State management
+   * currentIndex: Display position (0 = past, 1+ = real events, last+1 = future)
+   * totalRealItems: Count of actual timeline events (excluding past/future)
    */
-  let currentIndex = 1;
+  let currentIndex = 1; // Start at first real event
   let totalRealItems = 0;
   let elements = {};
   let isInitialized = false;
   let timelineData = [];
   
-  // ✅ Cleanup trackers
+  // Cleanup trackers
   let eventListeners = [];
   let resizeObserver = null;
   let wheelTimeout = null;
 
   /**
-   * ✅ Helper: Add tracked event listener
+   * Add tracked event listener for proper cleanup
+   * @param {EventTarget} target - Element to attach listener to
+   * @param {string} event - Event type
+   * @param {Function} handler - Event handler function
+   * @param {Object} options - Event listener options
    */
   function addTrackedListener(target, event, handler, options) {
     target.addEventListener(event, handler, options);
@@ -34,7 +42,8 @@
   }
 
   /**
-   * ✅ Cleanup all event listeners
+   * Cleanup all event listeners
+   * Prevents memory leaks when language changes or page reloads
    */
   function cleanupListeners() {
     eventListeners.forEach(({ target, event, handler, options }) => {
@@ -56,7 +65,9 @@
   }
 
   /**
-   * Add past card dynamically
+   * Add past card to timeline
+   * This card represents the state before any events
+   * @param {HTMLElement} list - Timeline list container
    */
   function addPastCard(list) {
     const lang = document.documentElement.lang || 'fa';
@@ -90,11 +101,13 @@
     `;
 
     list.insertBefore(pastCard, list.firstChild);
-    console.log('✅ [Timeline] Past card added');
+    console.log('✅ [Timeline] Past card added at index -1');
   }
 
   /**
-   * Add future card dynamically
+   * Add future card to timeline
+   * This card represents future opportunities
+   * @param {HTMLElement} list - Timeline list container
    */
   function addFutureCard(list) {
     const lang = document.documentElement.lang || 'fa';
@@ -128,11 +141,12 @@
     `;
 
     list.appendChild(futureCard);
-    console.log('✅ [Timeline] Future card added');
+    console.log(`✅ [Timeline] Future card added at index ${totalRealItems}`);
   }
 
   /**
-   * Create indicator dots
+   * Create indicator dots for navigation
+   * Only real events get dots (past and future don't)
    */
   function createIndicator() {
     if (!elements.indicator) return;
@@ -143,11 +157,11 @@
       const dot = document.createElement('span');
       dot.dataset.index = i;
 
+      // Highlight active dot (currentIndex - 1 because index 0 is past card)
       if (i === currentIndex - 1) {
         dot.classList.add('active');
       }
 
-      // ✅ Use tracked listener
       addTrackedListener(dot, 'click', () => goToSlide(i + 1));
 
       elements.indicator.appendChild(dot);
@@ -157,12 +171,14 @@
   }
 
   /**
-   * Update positions
+   * Update positions of all timeline cards
+   * Creates slot machine effect with proper stacking
    */
   function updatePositions() {
     const allItems = elements.list.querySelectorAll('.timeline-item');
 
     allItems.forEach((item, index) => {
+      // Remove all position classes
       item.classList.remove(
         'center',
         'above-1',
@@ -176,6 +192,7 @@
 
       const diff = index - currentIndex;
 
+      // Apply position class based on distance from center
       if (diff === 0) {
         item.classList.add('center');
       } else if (diff === -1) {
@@ -195,11 +212,13 @@
 
     updateIndicator();
     updateButtons();
+    
+    // Always notify skills section when positions change
     notifySkillsSection();
   }
 
   /**
-   * Update indicator dots
+   * Update indicator dots to reflect current position
    */
   function updateIndicator() {
     if (!elements.indicator) return;
@@ -216,7 +235,8 @@
   }
 
   /**
-   * Update navigation buttons
+   * Update navigation button states
+   * Disable buttons at boundaries
    */
   function updateButtons() {
     if (!elements.prevBtn || !elements.nextBtn) return;
@@ -226,46 +246,68 @@
   }
 
   /**
-   * Notify skills section
+   * Notify skills section about timeline changes
+   * This is the key function for synchronization
    */
   function notifySkillsSection() {
     let dataIndex;
     let eventData = null;
 
+    /**
+     * Index mapping:
+     * currentIndex = 0 (past card) → dataIndex = -1 → no skills
+     * currentIndex = 1 (first event) → dataIndex = 0 → first event's skills
+     * currentIndex = 2 (second event) → dataIndex = 1 → cumulative skills up to second event
+     * ...
+     * currentIndex = totalRealItems (last event) → dataIndex = totalRealItems - 1 → all skills
+     * currentIndex = totalRealItems + 1 (future card) → dataIndex = totalRealItems - 1 → keep last skills
+     */
     if (currentIndex === 0) {
+      // Past card - no skills
       dataIndex = -1;
+      eventData = null;
     } else if (currentIndex > 0 && currentIndex <= totalRealItems) {
+      // Real event - get corresponding data
       dataIndex = currentIndex - 1;
       eventData = timelineData[dataIndex] || null;
     } else {
+      // Future card - keep last event's skills
       dataIndex = totalRealItems - 1;
       eventData = timelineData[dataIndex] || null;
     }
 
+    // Dispatch custom event for skills section
     const event = new CustomEvent(CONFIG.events.timelineIndexChanged, {
       detail: {
-        index: dataIndex,
-        total: totalRealItems,
-        eventData: eventData,
-        displayIndex: currentIndex,
+        index: dataIndex, // Data array index (-1 for past, 0+ for real events)
+        total: totalRealItems, // Total number of real events
+        eventData: eventData, // Full event data object
+        displayIndex: currentIndex, // Display position (0 for past, 1+ for events)
       },
     });
 
     document.dispatchEvent(event);
 
     console.log(
-      `📡 [Timeline] Index: display=${currentIndex}, data=${dataIndex}`
+      `📡 [Timeline] Event dispatched: display=${currentIndex}, data=${dataIndex}, total=${totalRealItems}`
     );
+    
+    if (eventData) {
+      console.log(`   └─ Event: "${eventData.title}" with ${eventData.skills_cumulative?.length || 0} cumulative skills`);
+    }
   }
 
   /**
    * Navigate to specific slide
+   * @param {number} index - Target display index
    */
   function goToSlide(index) {
     if (index < 0 || index > totalRealItems + 1) return;
 
     currentIndex = index;
     updatePositions();
+    
+    console.log(`🎯 [Timeline] Navigated to display index ${index}`);
   }
 
   /**
@@ -275,6 +317,7 @@
     if (currentIndex > 0) {
       currentIndex--;
       updatePositions();
+      console.log(`⬆️ [Timeline] Moved to previous: ${currentIndex}`);
     }
   }
 
@@ -285,11 +328,13 @@
     if (currentIndex <= totalRealItems) {
       currentIndex++;
       updatePositions();
+      console.log(`⬇️ [Timeline] Moved to next: ${currentIndex}`);
     }
   }
 
   /**
-   * Setup navigation
+   * Setup navigation controls
+   * Handles button clicks, keyboard, touch, and mouse wheel
    */
   function setupNavigation() {
     // Button navigation
@@ -301,7 +346,7 @@
       addTrackedListener(elements.nextBtn, 'click', nextSlide);
     }
 
-    // ✅ Keyboard navigation - SINGLE listener
+    // Keyboard navigation
     const keyHandler = (e) => {
       if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
         e.preventDefault();
@@ -313,7 +358,7 @@
     };
     addTrackedListener(document, 'keydown', keyHandler);
 
-    // ✅ Touch/Swipe support - with proper tracking
+    // Touch/Swipe support
     let touchStartY = 0;
     let touchEndY = 0;
 
@@ -338,7 +383,7 @@
     addTrackedListener(elements.list, 'touchstart', touchStartHandler, { passive: true });
     addTrackedListener(elements.list, 'touchend', touchEndHandler, { passive: true });
 
-    // ✅ Mouse wheel - with proper debounce
+    // Mouse wheel navigation with debounce
     let isScrolling = false;
 
     const wheelHandler = (e) => {
@@ -353,7 +398,6 @@
         prevSlide();
       }
 
-      // ✅ Clear previous timeout
       if (wheelTimeout) {
         clearTimeout(wheelTimeout);
       }
@@ -369,7 +413,8 @@
   }
 
   /**
-   * Initialize timeline
+   * Initialize timeline section
+   * Loads data, creates cards, and sets up navigation
    */
   function initialize() {
     if (isInitialized) {
@@ -379,7 +424,7 @@
 
     console.log('🎰 [Timeline] Initializing...');
 
-    // Get elements
+    // Get DOM elements
     elements = {
       list: document.querySelector('.timeline-list'),
       prevBtn: document.querySelector('.timeline-prev'),
@@ -393,14 +438,16 @@
       return;
     }
 
-    // Load timeline data
+    // Load timeline data from global scope
     const content = window.currentContent || {};
     timelineData = window.timelineData || content.timeline || [];
 
+    // Filter out past/future cards from data (they're added separately)
     timelineData = timelineData.filter(
       (item) => item.type !== 'past' && item.type !== 'future'
     );
 
+    // Count existing real timeline items
     const existingItems = Array.from(
       elements.list.querySelectorAll('.timeline-item')
     );
@@ -414,27 +461,34 @@
 
     console.log(`📊 [Timeline] Found ${totalRealItems} real events`);
 
+    // Add special cards
     addPastCard(elements.list);
     addFutureCard(elements.list);
 
+    // Setup navigation and indicators
     setupNavigation();
     createIndicator();
 
+    // Set initial position to first real event (index 1)
     currentIndex = 1;
-    updatePositions();
+    updatePositions(); // This will call notifySkillsSection()
 
     isInitialized = true;
 
     console.log(
       `✅ [Timeline] Initialized: ${totalRealItems} events + 2 special cards`
     );
+    console.log(`   └─ Initial position: display index ${currentIndex} (first real event)`);
   }
 
   /**
-   * ✅ Reset timeline (for language change)
+   * Reset timeline for language change
+   * Cleans up everything and prepares for re-initialization
    */
   function reset() {
-    // ✅ CRITICAL: Cleanup first
+    console.log('🔄 [Timeline] Resetting...');
+    
+    // Critical: cleanup first to prevent memory leaks
     cleanupListeners();
     
     isInitialized = false;
@@ -443,7 +497,7 @@
     elements = {};
     timelineData = [];
     
-    console.log('🔄 [Timeline] Reset complete');
+    console.log('✅ [Timeline] Reset complete');
   }
 
   /**
@@ -455,6 +509,7 @@
   });
 
   document.addEventListener(CONFIG.events.languageChanged, () => {
+    console.log('🌍 [Timeline] Language changed, resetting...');
     reset();
     setTimeout(initialize, 300);
   });

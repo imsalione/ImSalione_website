@@ -4,8 +4,10 @@
  * 🎯 Purpose: Progressive Skill Bar Chart (Glass UI)
  * Author: Saleh Abedinezhad (ImSalione)
  * =======================================================
- * ✅ OPTIMIZED: Bar chart with smooth growth animations
- * ✅ FEATURE: Skills grow progressively with timeline
+ * ✅ FIXED: Accurate skill level calculation with 4-tier system
+ * ✅ FIXED: Proper progress bar synchronization
+ * ✅ FIXED: Smart level badge upgrades (Beginner → Expert)
+ * ✅ FIXED: Smooth animations and state management
  * =======================================================
  */
 
@@ -13,12 +15,12 @@
   'use strict';
 
   /**
-   * State
+   * State management
    */
   let timelineData = [];
   let skillsData = {};
   let currentSkills = [];
-  let skillLevels = {}; // Track progress level for each skill
+  let skillMetadata = {}; // Tracks: { skillName: { level: number, firstIndex: number, badge: string } }
   let allSkillsCount = 0;
   let isInitialized = false;
   let elements = {};
@@ -28,7 +30,20 @@
   let isAnimating = false;
 
   /**
+   * Skill level tiers
+   * Maps progression percentage to skill level badge
+   */
+  const LEVEL_TIERS = [
+    { min: 0, max: 25, badge: 'Beginner', label: { fa: 'مبتدی', en: 'Beginner' } },
+    { min: 25, max: 50, badge: 'Intermediate', label: { fa: 'متوسط', en: 'Intermediate' } },
+    { min: 50, max: 75, badge: 'Advanced', label: { fa: 'پیشرفته', en: 'Advanced' } },
+    { min: 75, max: 100, badge: 'Expert', label: { fa: 'حرفه‌ای', en: 'Expert' } }
+  ];
+
+  /**
    * Get category color CSS variable
+   * @param {string} category - Skill category name
+   * @returns {string} CSS variable reference
    */
   function getCategoryColor(category) {
     const categoryKey = (category || 'other')
@@ -40,6 +55,7 @@
 
   /**
    * Calculate total unique skills from timeline
+   * @returns {number} Total number of unique skills across all events
    */
   function calculateTotalSkills() {
     const uniqueSkills = new Set();
@@ -53,41 +69,89 @@
   }
 
   /**
-   * Calculate skill progress level based on timeline position
+   * Calculate skill progression level with smart growth algorithm
+   * @param {string} skillName - Name of the skill
+   * @param {number} currentIndex - Current timeline index
+   * @returns {number} Progress percentage (20-100%)
    */
   function calculateSkillLevel(skillName, currentIndex) {
     let firstAppearance = -1;
-    let level = 0;
+    let lastAppearance = -1;
+    let appearanceCount = 0;
     
-    // Find when skill first appeared
+    // Scan timeline to find skill's journey
     for (let i = 0; i < timelineData.length; i++) {
       const skills = timelineData[i].skills_cumulative || [];
       if (skills.includes(skillName)) {
         if (firstAppearance === -1) {
           firstAppearance = i;
         }
+        lastAppearance = i;
         if (i <= currentIndex) {
-          level = i - firstAppearance + 1;
+          appearanceCount++;
         }
       }
     }
     
-    // Calculate percentage (20% base + random growth up to 100%)
-    const baseLevel = 20;
-    const maxGrowth = 80;
-    const growthPerStep = maxGrowth / Math.max(timelineData.length - firstAppearance, 1);
+    if (firstAppearance === -1 || appearanceCount === 0) {
+      return 20; // Minimum level for new skills
+    }
+
+    /**
+     * Smart Growth Algorithm:
+     * - Base level: 20% (everyone starts somewhere)
+     * - Growth rate: Based on how long skill has been active
+     * - Natural variation: ±8% for realistic feel
+     * - Cap: 100% maximum
+     */
+    const timelineSpan = lastAppearance - firstAppearance + 1;
+    const progressRatio = appearanceCount / timelineSpan;
     
-    let percentage = baseLevel + (level * growthPerStep);
+    // Calculate growth (60% available for growth from base 20%)
+    const availableGrowth = 80;
+    const earnedGrowth = availableGrowth * progressRatio;
     
-    // Add some randomness for natural feel
-    const randomVariation = (Math.random() - 0.5) * 10;
-    percentage = Math.max(20, Math.min(100, percentage + randomVariation));
+    // Base level + earned growth
+    let percentage = 20 + earnedGrowth;
+    
+    // Add natural variation for realism
+    const variation = (Math.random() - 0.5) * 16; // ±8%
+    percentage = percentage + variation;
+    
+    // Ensure bounds
+    percentage = Math.max(20, Math.min(100, percentage));
     
     return Math.round(percentage);
   }
 
   /**
+   * Get skill level badge based on percentage
+   * @param {number} percentage - Skill progress percentage
+   * @returns {Object} Badge info { badge, label }
+   */
+  function getSkillBadge(percentage) {
+    const lang = document.documentElement.lang || 'fa';
+    
+    for (const tier of LEVEL_TIERS) {
+      if (percentage >= tier.min && percentage < tier.max) {
+        return {
+          badge: tier.badge,
+          label: tier.label[lang] || tier.label.en
+        };
+      }
+    }
+    
+    // Default to Expert for 100%
+    const expertTier = LEVEL_TIERS[LEVEL_TIERS.length - 1];
+    return {
+      badge: expertTier.badge,
+      label: expertTier.label[lang] || expertTier.label.en
+    };
+  }
+
+  /**
    * Clear animation queue
+   * Prevents animation conflicts when rapidly changing timeline
    */
   function clearAnimationQueue() {
     animationQueue.forEach(timeoutId => clearTimeout(timeoutId));
@@ -97,7 +161,11 @@
   }
 
   /**
-   * Add timeout to queue
+   * Add timeout to animation queue
+   * Allows proper cleanup if animations are interrupted
+   * @param {Function} callback - Function to execute
+   * @param {number} delay - Delay in milliseconds
+   * @returns {number} Timeout ID
    */
   function queueTimeout(callback, delay) {
     const timeoutId = setTimeout(() => {
@@ -118,6 +186,7 @@
 
   /**
    * Initialize skills section
+   * Sets up DOM references and event listeners
    */
   async function initialize() {
     if (isInitialized) {
@@ -127,7 +196,7 @@
 
     console.log('🎯 [Skills] Initializing...');
 
-    // Get elements
+    // Get DOM elements
     elements = {
       grid: document.getElementById('skills-grid'),
       bar: document.querySelector('.progress-fill'),
@@ -145,12 +214,12 @@
       return;
     }
 
-    // Load data
+    // Load data from global scope
     const content = window.currentContent || {};
     timelineData = window.timelineData || content.timeline || [];
     skillsData = window.skillsData || content.skills || {};
 
-    // Filter out past/future events
+    // Filter out special cards
     timelineData = timelineData.filter(
       (item) => item.type !== 'past' && item.type !== 'future'
     );
@@ -176,69 +245,82 @@
     setupModal();
 
     isInitialized = true;
-    console.log('✅ [Skills] Initialized and waiting for timeline events');
+    console.log('✅ [Skills] Initialized and listening for timeline events');
+    
+    // Load initial skills from first timeline event after a short delay
+    // This ensures we display skills even if timeline event hasn't fired yet
+    setTimeout(() => {
+      if (timelineData.length > 0 && currentSkills.length === 0) {
+        const firstEvent = timelineData[0];
+        console.log('🔄 [Skills] Loading initial skills from first event');
+        updateSkills(0, firstEvent);
+      }
+    }, 200);
   }
 
   /**
    * Handle timeline change event
+   * Main synchronization point with timeline section
+   * @param {CustomEvent} e - Timeline change event
    */
   function handleTimelineChange(e) {
-    const { index, eventData, displayIndex } = e.detail;
+    const { index, eventData, displayIndex, total } = e.detail;
     
-    console.log(`🔔 [Skills] Timeline changed: display=${displayIndex}, data=${index}`);
+    console.log(`🔔 [Skills] Timeline changed: display=${displayIndex}, data=${index}, total=${total}`);
 
-    // Handle special cases
+    // Handle past card (clear all skills)
     if (index === -1) {
-      // Past card - clear all skills
-      console.log('📊 [Skills] Past card - clearing skills');
-      updateSkills(-1);
+      console.log('📊 [Skills] Past card - clearing all skills');
+      updateSkills(-1, null);
       return;
     }
 
-    // Regular event
-    updateSkills(index);
+    // Handle real events
+    if (index >= 0 && eventData) {
+      console.log(`📊 [Skills] Event "${eventData.title}" at index ${index}`);
+      updateSkills(index, eventData);
+    }
   }
 
   /**
-   * Update skills based on timeline index
+   * Update skills display based on timeline position
+   * @param {number} index - Timeline data index (-1 for past)
+   * @param {Object} eventData - Current event data
    */
-  function updateSkills(index) {
-    // Cancel any ongoing animations
+  function updateSkills(index, eventData) {
+    // Cancel ongoing animations
     if (isAnimating) {
       console.log('⏳ [Skills] Cancelling ongoing animations...');
       clearAnimationQueue();
     }
 
-    // Handle past card (clear all)
+    // Handle past card (clear everything)
     if (index === -1) {
       const newSkills = [];
       
       if (elements.event) {
-        elements.event.textContent = '—';
+        const lang = document.documentElement.lang || 'fa';
+        elements.event.textContent = lang === 'fa' ? 'آغاز مسیر' : 'The Beginning';
       }
       
-      animateSkillsChange(newSkills, 'آغاز مسیر', -1);
+      animateSkillsChange(newSkills, null, -1);
       return;
     }
 
-    // Get event data
-    const event = timelineData[index];
-    
-    if (!event) {
-      console.warn(`⚠️ [Skills] No event at index ${index}`);
-      return;
-    }
+    // Get skills for current event
+    const newSkills = eventData?.skills_cumulative || [];
 
-    const newSkills = event.skills_cumulative || [];
+    console.log(`📊 [Skills] Event: "${eventData?.title}"`);
+    console.log(`📊 [Skills] Cumulative skills: ${newSkills.length}`);
 
-    console.log(`📊 [Skills] Event: "${event.title}"`);
-    console.log(`📊 [Skills] Skills count: ${newSkills.length}`);
-
-    animateSkillsChange(newSkills, event.title, index);
+    animateSkillsChange(newSkills, eventData?.title, index);
   }
 
   /**
-   * Animate skills change with smooth bar chart transitions
+   * Animate skills change with smooth transitions
+   * @param {Array} newSkills - Array of skill names to display
+   * @param {string} eventTitle - Current event title
+   * @param {number} timelineIndex - Current timeline index
    */
   function animateSkillsChange(newSkills, eventTitle, timelineIndex) {
     isAnimating = true;
@@ -257,7 +339,7 @@
       }, 500);
     }
 
-    // Calculate diff
+    // Calculate what changed
     const toAdd = newSkills.filter((s) => !currentSkills.includes(s));
     const toRemove = currentSkills.filter((s) => !newSkills.includes(s));
     const toUpdate = currentSkills.filter((s) => newSkills.includes(s));
@@ -266,10 +348,10 @@
     console.log(`➖ [Skills] Removing: ${toRemove.length}`, toRemove);
     console.log(`🔄 [Skills] Updating: ${toUpdate.length}`, toUpdate);
 
-    // Update current skills
+    // Update current skills list
     currentSkills = [...newSkills];
 
-    // Remove skills
+    // Phase 1: Remove skills
     if (toRemove.length > 0) {
       toRemove.forEach((skillName, idx) => {
         const card = elements.grid.querySelector(`[data-skill="${skillName}"]`);
@@ -279,7 +361,7 @@
             queueTimeout(() => {
               if (card.parentNode) {
                 card.remove();
-                delete skillLevels[skillName];
+                delete skillMetadata[skillName];
               }
             }, 400);
           }, idx * 30);
@@ -287,25 +369,45 @@
       });
     }
 
-    // Update existing skills with new progress
+    // Phase 2: Update existing skills with new progress
     if (toUpdate.length > 0 && timelineIndex >= 0) {
       toUpdate.forEach((skillName) => {
         const card = elements.grid.querySelector(`[data-skill="${skillName}"]`);
         if (card) {
           const newLevel = calculateSkillLevel(skillName, timelineIndex);
-          skillLevels[skillName] = newLevel;
+          const badgeInfo = getSkillBadge(newLevel);
           
+          // Update metadata
+          skillMetadata[skillName] = {
+            level: newLevel,
+            badge: badgeInfo.badge,
+            badgeLabel: badgeInfo.label
+          };
+          
+          // Update progress bar
           const progressFill = card.querySelector('.skill-progress-fill');
           if (progressFill) {
             queueTimeout(() => {
               progressFill.style.width = `${newLevel}%`;
             }, 100);
           }
+          
+          // Update badge
+          const badgeElement = card.querySelector('.skill-level');
+          if (badgeElement && badgeElement.textContent !== badgeInfo.label) {
+            queueTimeout(() => {
+              badgeElement.textContent = badgeInfo.label;
+              badgeElement.classList.add('level-upgraded');
+              queueTimeout(() => {
+                badgeElement.classList.remove('level-upgraded');
+              }, 500);
+            }, 150);
+          }
         }
       });
     }
 
-    // Add new skills
+    // Phase 3: Add new skills
     const removeDelay = toRemove.length * 30 + 100;
     
     queueTimeout(() => {
@@ -315,6 +417,7 @@
       }
 
       toAdd.forEach((skillName, idx) => {
+        // Check if already exists
         if (elements.grid && elements.grid.querySelector(`[data-skill="${skillName}"]`)) {
           return;
         }
@@ -329,19 +432,28 @@
         const initialLevel = timelineIndex >= 0 
           ? calculateSkillLevel(skillName, timelineIndex)
           : 20;
-        skillLevels[skillName] = initialLevel;
+        
+        const badgeInfo = getSkillBadge(initialLevel);
+        
+        // Store metadata
+        skillMetadata[skillName] = {
+          level: initialLevel,
+          badge: badgeInfo.badge,
+          badgeLabel: badgeInfo.label
+        };
 
         queueTimeout(() => {
           if (elements.grid) {
-            addSkillBar(skillName, skillInfo, initialLevel);
+            addSkillBar(skillName, skillInfo, initialLevel, badgeInfo.label);
           }
         }, idx * 50);
       });
 
-      // Update empty state after all operations
+      // Phase 4: Update empty state and finalize
       const finalDelay = toAdd.length * 50 + 100;
       queueTimeout(() => {
         updateEmptyState();
+        updateProgressBar();
         if (animationQueue.length === 1) {
           isAnimating = false;
         }
@@ -350,16 +462,17 @@
       
     }, removeDelay);
 
-    // Update progress bar
-    updateProgressBar();
-
-    console.log(`📊 [Skills] Updated: ${currentSkills.length}/${allSkillsCount}`);
+    console.log(`📊 [Skills] Current: ${currentSkills.length}/${allSkillsCount}`);
   }
 
   /**
-   * Add skill bar to chart with animation
+   * Add skill bar card to the grid
+   * @param {string} skillName - Skill identifier
+   * @param {Object} skillInfo - Skill data from JSON
+   * @param {number} progressLevel - Initial progress percentage
+   * @param {string} badgeLabel - Skill level badge text
    */
-  function addSkillBar(skillName, skillInfo, progressLevel) {
+  function addSkillBar(skillName, skillInfo, progressLevel, badgeLabel) {
     if (!elements.grid) {
       console.warn('⚠️ [Skills] Grid not available for adding bar');
       return;
@@ -378,16 +491,17 @@
       <div class="skill-progress">
         <div class="skill-progress-fill" style="width: 0%"></div>
       </div>
-      <div class="skill-level">${skillInfo.level || ''}</div>
+      <div class="skill-level">${badgeLabel}</div>
     `;
 
-    card.addEventListener('click', () => showModal(skillInfo));
+    // Click handler for modal
+    card.addEventListener('click', () => showModal(skillInfo, skillMetadata[skillName]));
 
     elements.grid.appendChild(card);
 
     // Trigger entry animation
     requestAnimationFrame(() => {
-      void card.offsetWidth;
+      void card.offsetWidth; // Force reflow
       card.classList.add('entering');
       
       // Animate progress bar after card enters
@@ -402,6 +516,7 @@
 
   /**
    * Update empty state visibility
+   * Shows placeholder when no skills are displayed
    */
   function updateEmptyState() {
     if (!elements.emptyState) return;
@@ -414,7 +529,8 @@
   }
 
   /**
-   * Update progress bar
+   * Update progress bar to reflect skill acquisition
+   * Shows visual feedback of overall progress
    */
   function updateProgressBar() {
     if (elements.bar && allSkillsCount > 0) {
@@ -435,6 +551,7 @@
 
   /**
    * Setup skill detail modal
+   * Handles modal interactions and keyboard shortcuts
    */
   function setupModal() {
     if (!elements.modal) {
@@ -458,6 +575,7 @@
       backdrop.addEventListener('click', closeModal);
     }
 
+    // Keyboard shortcut (Escape key)
     document.addEventListener('keydown', (e) => {
       if (
         e.key === 'Escape' &&
@@ -472,9 +590,11 @@
   }
 
   /**
-   * Show skill detail modal
+   * Show skill detail modal with current metadata
+   * @param {Object} skillInfo - Skill data from JSON
+   * @param {Object} metadata - Current skill metadata
    */
-  function showModal(skillInfo) {
+  function showModal(skillInfo, metadata) {
     if (!elements.modal) return;
 
     const modalElements = {
@@ -486,7 +606,7 @@
     };
 
     if (modalElements.icon) {
-      modalElements.icon.textContent = skillInfo.icon || '';
+      modalElements.icon.textContent = skillInfo.icon || '💡';
     }
 
     if (modalElements.title) {
@@ -500,7 +620,9 @@
     }
 
     if (modalElements.level) {
-      modalElements.level.textContent = skillInfo.level || '';
+      // Show current badge or fallback to JSON level
+      const displayLevel = metadata?.badgeLabel || skillInfo.level || 'Beginner';
+      modalElements.level.textContent = displayLevel;
     }
 
     if (modalElements.description) {
@@ -510,16 +632,17 @@
     elements.modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 
-    console.log(`💡 [Skills] Modal opened: ${skillInfo.name}`);
+    console.log(`💡 [Skills] Modal opened: ${skillInfo.name} (${metadata?.badge || 'N/A'})`);
   }
 
   /**
-   * Expose showModal globally
+   * Expose showModal globally for external access
    */
   window.showModal = showModal;
 
   /**
-   * Reset skills section
+   * Reset skills section for language change
+   * Clears state and prepares for re-initialization
    */
   function reset() {
     console.log('🔄 [Skills] Resetting...');
@@ -528,7 +651,7 @@
     
     isInitialized = false;
     currentSkills = [];
-    skillLevels = {};
+    skillMetadata = {};
     allSkillsCount = 0;
     elements = {};
     timelineData = [];

@@ -54,9 +54,12 @@
     backgroundPath: 'assets/images/backgrounds/',
     availableBackgrounds: [
       'bg.jpg',
-      'bg1.svg',
-      'bg2.svg',
-      'bg3.jpg'
+      'bg1.jpg',
+      'bg2.jpg',
+      'bg3.jpg',
+      'bg4.jpg',
+      'bg5.jpg',
+      'bg6.jpg',
     ],
 
     // ========== Application Events ==========

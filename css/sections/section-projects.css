@@ -49,10 +49,10 @@
   gap: 1rem;
   padding: 0.5rem 0.3rem;
   
-  /* ✨ SMOOTH scroll با CSS */
+  /* ✨ SMOOTH scroll with CSS */
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-behavior: auto; /* JS handle می‌کند */
+  scroll-behavior: auto;
   
   -webkit-overflow-scrolling: touch;
   align-items: stretch;
@@ -60,10 +60,9 @@
   position: relative;
   cursor: grab;
   
-  /* ⚡ بهینه‌سازی عملکرد */
   will-change: scroll-position;
   
-  /* ✨ Smooth scroll با transition */
+  /* ✨ Smooth scroll with transition */
   scroll-snap-type: none;
 }
 
@@ -71,7 +70,6 @@
   cursor: grabbing;
 }
 
-/* ✨ Smooth scrolling با CSS برای احساس نرمی */
 .projects-grid.smooth-scrolling {
   scroll-behavior: smooth;
 }
@@ -102,7 +100,7 @@
    🎴 PROJECT CARD - Enhanced Glass (Matching Intro)
 ======================================================= */
 .project-card {
-  /* Enhanced Glassmorphism - مطابق intro */
+  /* Enhanced Glassmorphism */
   background: var(--bg-card);
   backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
   -webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(105%);
@@ -127,11 +125,9 @@
   display: flex;
   flex-direction: column;
   
-  /* ✨ کل کارت کلیک‌پذیر */
   cursor: pointer;
   text-decoration: none;
-  
-  /* ⚡ بهینه‌سازی GPU */
+
   transform: translateZ(0);
   backface-visibility: hidden;
   
@@ -215,6 +211,9 @@
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask-composite: exclude;
   z-index: 0;
   opacity: 0.5;
@@ -261,7 +260,6 @@ html[dir="rtl"] .project-card:hover .project-title {
   transform: translateX(-2px);
 }
 
-/* ✨ افزودن آیکون لینک به عنوان */
 .project-title::after {
   content: "↗";
   display: inline-block;
@@ -313,73 +311,6 @@ html[dir="rtl"] .project-desc {
   background: var(--border-color);
   border-radius: 2px;
 }
-
-
-/* =======================================================
-   🎨 SCROLL FADE HINTS
-======================================================= */
-.projects-grid::before,
-.projects-grid::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 6px;
-  width: 40px;
-  z-index: 10;
-  pointer-events: none;
-  transition: opacity var(--transition);
-}
-
-.projects-grid::before {
-  left: 0;
-  background: linear-gradient(
-    90deg,
-    var(--bg-primary) 0%,
-    transparent 100%
-  );
-  opacity: 0;
-}
-
-.projects-grid::after {
-  right: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--bg-primary) 100%
-  );
-}
-
-/* Show Left Fade When Scrolled */
-.projects-grid.scrolled-left::before {
-  opacity: 0.8;
-}
-
-/* Hide Right Fade at End */
-.projects-grid.scrolled-right::after {
-  opacity: 0;
-}
-
-/* RTL Support for Fade Effects */
-html[dir="rtl"] .projects-grid::before {
-  left: auto;
-  right: 0;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--bg-primary) 100%
-  );
-}
-
-html[dir="rtl"] .projects-grid::after {
-  right: auto;
-  left: 0;
-  background: linear-gradient(
-    90deg,
-    var(--bg-primary) 0%,
-    transparent 100%
-  );
-}
-
 
 /* =======================================================
    📱 RESPONSIVE - TABLET
